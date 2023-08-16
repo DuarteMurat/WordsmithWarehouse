@@ -1,4 +1,4 @@
-﻿using ClassLibrary;
+using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
 namespace WordsmithWarehouse.Data
@@ -11,5 +11,5 @@ namespace WordsmithWarehouse.Data
         {
             
         }
-    }
+     }
 }
