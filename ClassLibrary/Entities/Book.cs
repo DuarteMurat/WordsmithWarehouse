@@ -4,25 +4,29 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace ClassLibrary
+namespace ClassLibrary.Entities
 {
     public class Book
     {
-
         #region Main Book Information
         [Required]
         public int Id { get; set; }
-        
+
         [Required]
+        [MaxLength(100, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string Title { get; set; }
-        
+
+        [MaxLength(100, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string? Subtitle { get; set; }
-        
+
         [Required]
+        [MaxLength(10, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string ISBN { get; set; }
 
         [Required]
+        [MaxLength(50, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string Author { get; set; }
         #endregion
 
