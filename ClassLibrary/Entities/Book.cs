@@ -28,6 +28,8 @@ namespace ClassLibrary.Entities
         [Required]
         [MaxLength(50, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string Author { get; set; }
+
+        public User user { get; set; }
         #endregion
 
         #region Book Avaialability

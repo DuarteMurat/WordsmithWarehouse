@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 
 namespace ClassLibrary.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
         [MaxLength(50, ErrorMessage = "The field {0} can only contain up to {1} characters.")]
         public string FirstName { get; set; }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Entities;
+using WordsmithWarehouse.Data;
 
 namespace WordsmithWarehouse.Controllers
 {
