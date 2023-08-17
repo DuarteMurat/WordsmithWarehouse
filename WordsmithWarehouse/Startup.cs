@@ -13,7 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
+using WordsmithWarehouse.Data.Repositories;
 using WordsmithWarehouse.Helpers;
+using WordsmithWarehouse.Interfaces.Helpers;
+using WordsmithWarehouse.Interfaces.Repositories;
 
 namespace WordsmithWarehouse
 {
@@ -49,6 +52,9 @@ namespace WordsmithWarehouse
             services.AddTransient<SeedDb>();
 
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IConverterHelper, ConverterHelper>();
             
             services.AddControllersWithViews();
             

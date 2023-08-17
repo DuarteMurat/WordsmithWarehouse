@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace WordsmithWarehouse.Helpers
+namespace WordsmithWarehouse.Interfaces.Helpers
 {
     public interface IUserHelper
     {
