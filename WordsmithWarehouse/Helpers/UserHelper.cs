@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Interfaces.Helpers;
+using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Helpers
 {
