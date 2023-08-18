@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Data;
-using ClassLibrary.Entities;
-using WordsmithWarehouse.Models;
-using WordsmithWarehouse.Interfaces.Repositories;
 using WordsmithWarehouse.Interfaces.Helpers;
-using Microsoft.AspNetCore.Authorization;
+using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Controllers
 {
-    [Authorize]
     public class BooksController : Controller
     {
         private readonly IBookRepository _bookRepository;
@@ -50,6 +44,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -80,6 +75,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -134,6 +130,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
