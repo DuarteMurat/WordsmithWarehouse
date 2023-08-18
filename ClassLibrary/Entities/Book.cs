@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 
 namespace ClassLibrary.Entities
 {
-    public class Book
+    public class Book : IEntity
     {
         #region Main Book Information
         [Required]
@@ -29,7 +30,7 @@ namespace ClassLibrary.Entities
         [MaxLength(50, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string Author { get; set; }
 
-        public User user { get; set; }
+        public User User { get; set; }
         #endregion
 
         #region Book Avaialability

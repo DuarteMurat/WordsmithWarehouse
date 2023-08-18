@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Interfaces.Helpers;
 
 namespace WordsmithWarehouse.Helpers
 {

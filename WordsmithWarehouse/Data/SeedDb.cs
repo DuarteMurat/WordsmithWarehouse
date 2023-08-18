@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Helpers;
+using WordsmithWarehouse.Interfaces.Helpers;
 
 namespace WordsmithWarehouse.Data
 {

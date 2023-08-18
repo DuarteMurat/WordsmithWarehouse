@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Entities;
-using WordsmithWarehouse.Data;
+using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Interfaces.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WordsmithWarehouse.Controllers
@@ -15,33 +17,34 @@ namespace WordsmithWarehouse.Controllers
     [Authorize]
     public class BooksController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IBookRepository _bookRepository;
+        private readonly IImageHelper _imageHelper;
+        private readonly IConverterHelper _converterHelper;
 
-        public BooksController(DataContext context)
+        public BooksController(IBookRepository bookRepository,
+            IConverterHelper converterHelper,
+            IImageHelper imageHelper)
         {
-            _context = context;
+            _bookRepository = bookRepository;
+            _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            return View(_bookRepository.GetAll().OrderBy(b => b.Title));
         }
 
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
-            {
                 return NotFound();
-            }
 
             return View(book);
         }
@@ -57,15 +60,23 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Subtitle,ISBN,Author,IsAvailableOnline,IsAvailablePhysical,ImageURL")] Book book)
+        public async Task<IActionResult> Create(BookViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                var path = string.Empty;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                }
+
+                var book = _converterHelper.ConvertToBook(model, path, true);
+
+                await _bookRepository.CreateAsync(book);
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(model);
         }
 
         // GET: Books/Edit/5
@@ -76,12 +87,14 @@ namespace WordsmithWarehouse.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
             {
                 return NotFound();
             }
-            return View(book);
+
+            var model = _converterHelper.ConvertToBookViewModel(book);
+            return View(model);
         }
 
         // POST: Books/Edit/5
@@ -89,23 +102,24 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Subtitle,ISBN,Author,IsAvailableOnline,IsAvailablePhysical,ImageURL")] Book book)
+        public async Task<IActionResult> Edit(BookViewModel model)
         {
-            if (id != book.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    var path = model.ImageURL;
+
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+
+                    var book = _converterHelper.ConvertToBook(model, path, false);
+
+                    await _bookRepository.UpdateAsync(book);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!await _bookRepository.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +130,7 @@ namespace WordsmithWarehouse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(model);
         }
 
         // GET: Books/Delete/5
@@ -127,8 +141,7 @@ namespace WordsmithWarehouse.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
             {
                 return NotFound();
@@ -142,15 +155,10 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            var book = await _bookRepository.GetByIdAsync(id);
+            await _bookRepository.DeleteAsync(book);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
-        {
-            return _context.Books.Any(e => e.Id == id);
-        }
     }
 }
