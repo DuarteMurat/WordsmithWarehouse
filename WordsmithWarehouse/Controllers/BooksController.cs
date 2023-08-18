@@ -10,9 +10,11 @@ using ClassLibrary.Entities;
 using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Interfaces.Repositories;
 using WordsmithWarehouse.Interfaces.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WordsmithWarehouse.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly IBookRepository _bookRepository;
