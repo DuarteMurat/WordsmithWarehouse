@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Entities;
 using WordsmithWarehouse.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WordsmithWarehouse.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly DataContext _context;

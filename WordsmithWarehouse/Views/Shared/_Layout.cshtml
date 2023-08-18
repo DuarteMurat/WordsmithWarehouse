@@ -42,11 +42,25 @@
                 </div>
                 <div class="col-2">
                     <div class="navbar-collapse collapse flex-">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item navbar-right">
-                                <a class="nav-link text-dark " asp-area="" asp-controller="" asp-action="" style="padding-left:150px;"> Sign In | Register </a>
-                            </li>
-                        </ul>
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <ul class="list-group-horizontal">
+                                <il class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
+                                </il>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item navbar-right">
+                                    <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Login" style="padding-left:150px;"> Sign In | Register </a>
+                                </li>
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>
