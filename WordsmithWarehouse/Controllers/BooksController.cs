@@ -14,14 +14,17 @@ namespace WordsmithWarehouse.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly ITagRepository _tagRepository;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
-            IImageHelper imageHelper)
+            IImageHelper imageHelper,
+            ITagRepository tagRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
+            _tagRepository = tagRepository;
         }
 
         // GET: Books
@@ -47,7 +50,12 @@ namespace WordsmithWarehouse.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return View();
+            var model = new BookViewModel
+            {
+                Tags = _tagRepository.GetComboTags(),
+            };
+
+            return View(model);
         }
 
         // POST: Books/Create
@@ -75,7 +83,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -130,7 +138,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Delete/5
-        [Authorize]
+        [Authorize (Roles ="Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
