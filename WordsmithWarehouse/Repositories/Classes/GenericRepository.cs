@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
-using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Data;
+using WordsmithWarehouse.Repositories.Interfaces;
 
-namespace WordsmithWarehouse.Data.Repositories
+namespace WordsmithWarehouse.Repositories.Classes
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
     {

@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
-using WordsmithWarehouse.Data.Repositories;
-using WordsmithWarehouse.Helpers;
-using WordsmithWarehouse.Interfaces.Helpers;
-using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Helpers.Classes;
+using WordsmithWarehouse.Helpers.Interfaces;
+using WordsmithWarehouse.Repositories.Classes;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse
 {

@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using WordsmithWarehouse.Models;
 
-namespace WordsmithWarehouse.Interfaces.Helpers
+namespace WordsmithWarehouse.Helpers.Interfaces
 {
     public interface IConverterHelper
     {

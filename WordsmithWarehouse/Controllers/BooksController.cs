@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Interfaces.Helpers;
-using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -25,7 +25,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_bookRepository.GetAll().OrderBy(b => b.Title));
         }
@@ -44,7 +44,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Create
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Interfaces.Helpers;
+using WordsmithWarehouse.Helpers.Interfaces;
 
 namespace WordsmithWarehouse.Data
 {
@@ -27,6 +27,9 @@ namespace WordsmithWarehouse.Data
         {
             await _context.Database.EnsureCreatedAsync();
 
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Customer");
+
             var user = await _userHelper.GetUserByEmailAsync("bf0teste@gmail.com");
             if (user == null)
             { 
@@ -44,6 +47,14 @@ namespace WordsmithWarehouse.Data
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
+
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+            }
+
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
             if (!_context.Books.Any())
@@ -63,7 +74,7 @@ namespace WordsmithWarehouse.Data
                 Title = title,
                 ISBN = "0000000000",
                 Author = "Ninguém",
-            }) ;
+            });
         }
     }
 }

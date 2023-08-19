@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace WordsmithWarehouse.Interfaces.Helpers
+namespace WordsmithWarehouse.Helpers.Interfaces
 {
     public interface IImageHelper
     {
