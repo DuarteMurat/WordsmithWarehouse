@@ -34,11 +34,11 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
 
             return View(book);
         }
@@ -80,13 +80,13 @@ namespace WordsmithWarehouse.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
             }
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
             }
 
             var model = _converterHelper.ConvertToBookViewModel(book);
@@ -135,13 +135,13 @@ namespace WordsmithWarehouse.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
             }
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("BookNotFound");
             }
 
             return View(book);
@@ -155,6 +155,11 @@ namespace WordsmithWarehouse.Controllers
             var book = await _bookRepository.GetByIdAsync(id);
             await _bookRepository.DeleteAsync(book);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult BookNotFound()
+        {
+            return View();
         }
 
     }
