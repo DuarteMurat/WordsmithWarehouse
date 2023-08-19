@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace WordsmithWarehouse.Interfaces.Repositories
+namespace WordsmithWarehouse.Repositories.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {

@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Interfaces.Helpers;
+using WordsmithWarehouse.Helpers.Interfaces;
 
-namespace WordsmithWarehouse.Helpers
+namespace WordsmithWarehouse.Helpers.Classes
 {
     public class ImageHelper : IImageHelper
     {

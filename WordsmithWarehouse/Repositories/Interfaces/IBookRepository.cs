@@ -1,6 +1,6 @@
 ﻿using ClassLibrary.Entities;
 
-namespace WordsmithWarehouse.Interfaces.Repositories
+namespace WordsmithWarehouse.Repositories.Interfaces
 {
     public interface IBookRepository : IGenericRepository<Book>
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsmithWarehouse.Interfaces.Helpers;
+using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Controllers

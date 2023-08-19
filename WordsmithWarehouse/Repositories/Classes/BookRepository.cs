@@ -1,8 +1,9 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
-using WordsmithWarehouse.Interfaces.Repositories;
+using WordsmithWarehouse.Data;
+using WordsmithWarehouse.Repositories.Interfaces;
 
-namespace WordsmithWarehouse.Data.Repositories
+namespace WordsmithWarehouse.Repositories.Classes
 {
     public class BookRepository : GenericRepository<Book>, IBookRepository
     {
