@@ -7,6 +7,7 @@ namespace WordsmithWarehouse.Data
     public class DataContext : IdentityDbContext
     {
         public DbSet<Book> Books { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
