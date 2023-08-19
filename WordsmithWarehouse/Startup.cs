@@ -51,12 +51,13 @@ namespace WordsmithWarehouse
             
             services.AddTransient<SeedDb>();
 
-            services.AddScoped<IUserHelper, UserHelper>();
-
+            //Repositories
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
 
+            //Helpers
+            services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
-
             services.AddScoped<IConverterHelper, ConverterHelper>();
 
             services.ConfigureApplicationCookie(options =>
@@ -87,7 +88,6 @@ namespace WordsmithWarehouse
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
 
             app.UseRouting();
