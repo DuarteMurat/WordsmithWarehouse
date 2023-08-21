@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 <body>
     <header>
@@ -14,7 +15,7 @@
             <div class="container-fluid">
                 <div class="col-2">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="images/TempLogo.png" alt="Wordsmith Warehouse" width="170" height="70">
+                        <img src="/images/TempLogo.png" alt="Wordsmith Warehouse" width="170" height="70">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -24,12 +25,6 @@
                 <div class="col-7">
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
                         <ul class="navbar-nav flex-grow-0">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
                         </ul>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -86,22 +81,77 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom" style="padding-top:0px">
             <ul class="nav navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" style="font-family: 'Merriweather', serif; font-size: xx-large; color: black;" href="#">Wordsmith Warehouse</a>
+                    <a class="nav-link" style="font-family: 'Merriweather', serif; font-size: xx-large; color: black;" asp-controller="Home" asp-action="Index">Wordsmith Warehouse</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="site-footer footer container-fluid">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <h6>About&#9874</h6>
+                    <p class="text-justify">
+                    <p>Welcome to Wordsmith Warehouse &ndash; Your Online Literary Haven!</p>
+                    <p>
+                    Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
+                    </p>
+                </div>
+
+                <div class="col-xs-6 col-md-3">
+                    <h6>Categories</h6>
+                    <ul class="footer-links">
+                        <li><a href="">Best Sellers</a></li>
+                        <li><a href="">Classics</a></li>
+                        <li><a href="">New Releases</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-6 col-md-3">
+                    <h6>Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
         <div class="container">
-            &copy; 2023 - Wordsmith Warehouse - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">
+                        Copyright &copy; 2023 All Rights Reserved by
+                        <a href="#">Wordsmith Warehouse</a>.
+                    </p>
+                </div>
+                
+                <div class="footer-buttons">
+                    <a href="https://github.com/DuarteMurat" class="github-button" target="_blank">
+                        <img src="/images./GitHub-Mark (1).png" alt="GitHub Logo">
+                    </a>
+                </div>
+                <div class="footer-buttons">
+                    <a href="https://github.com/brunoferreira03" class="github-button" target="_blank">
+                        <img src="/images./GitHub-Mark (1).png" alt="GitHub Logo">
+                    </a>
+                </div>
+                <div class="footer-buttons">
+                    <a href="https://github.com/DuarteMurat/WordsmithWarehouse" class="github-button" target="_blank">
+                        <img src="/images./GitHub-Mark (1).png" alt="GitHub Logo">
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
