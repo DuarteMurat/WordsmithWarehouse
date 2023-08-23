@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\images\Books\**" />
-    <Content Remove="wwwroot\images\Books\**" />
-    <EmbeddedResource Remove="wwwroot\images\Books\**" />
-    <None Remove="wwwroot\images\Books\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
@@ -28,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Books\" />
+    <Folder Include="wwwroot\images\Authors\" />
   </ItemGroup>
 
 </Project>
