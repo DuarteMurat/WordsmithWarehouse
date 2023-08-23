@@ -37,5 +37,27 @@ namespace WordsmithWarehouse.Helpers.Classes
                 User = book.User,
             };
         }
+
+        public Author ConvertToAuthor(AuthorViewModel model, string path, bool isNew)
+        {
+            return new Author
+            {
+                Id = isNew ? 0 : model.Id,
+                Name = model.Name,
+                Description = model.Description,
+                ImageURL = path,
+            };
+        }
+
+        public AuthorViewModel ConvertToAuthorViewModel(Author author)
+        {
+            return new AuthorViewModel
+            {
+                Id = author.Id,
+                Name = author.Name,
+                ImageURL = author.ImageURL,
+                Description = author.Description,
+            };
+        }
     }
 }
