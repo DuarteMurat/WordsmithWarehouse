@@ -16,19 +16,16 @@ namespace WordsmithWarehouse.Repositories.Classes
             _context = context;
         }
 
-        public IEnumerable<SelectListItem> GetComboTags()
+        public List<Tag> GetTagsList()
         {
-            var list = _context.Tags.Select(t => new SelectListItem
-            {
-                Text = t.Name,
-                Value = t.Id.ToString()
-            }).OrderBy(l => l.Text).ToList();
+            var list = new List<Tag>();
 
-            list.Insert(0, new SelectListItem
+            list = _context.Tags.Select(t => new Tag
             {
-                Text = "Select a Tag",
-                Value = "0"
-            });
+                Id = t.Id,
+                Name = t.Name,
+                isActive = t.isActive,
+            }).OrderBy(t => t.Name).ToList();
 
             return list;
         }
