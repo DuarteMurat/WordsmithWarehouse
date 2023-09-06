@@ -7,6 +7,6 @@ namespace WordsmithWarehouse.Repositories.Interfaces
 {
     public interface ITagRepository : IGenericRepository<Tag>
     {
-        public IEnumerable<SelectListItem> GetComboTags();
+       List<Tag> GetTagsList();
     }
 }

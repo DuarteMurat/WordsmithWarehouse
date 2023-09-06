@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordsmithWarehouse.Data;
 
 namespace WordsmithWarehouse.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230905133824_addBooktoTag")]
+    partial class addBooktoTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,17 +95,13 @@ namespace WordsmithWarehouse.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookId")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TagId")
+                    b.Property<int>("TagId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("BookTags");
                 });
@@ -115,6 +113,9 @@ namespace WordsmithWarehouse.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -122,6 +123,8 @@ namespace WordsmithWarehouse.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Tags");
                 });
@@ -359,19 +362,11 @@ namespace WordsmithWarehouse.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ClassLibrary.Entities.BookTags", b =>
+            modelBuilder.Entity("ClassLibrary.Entities.Tag", b =>
                 {
-                    b.HasOne("ClassLibrary.Entities.Book", "Book")
-                        .WithMany()
+                    b.HasOne("ClassLibrary.Entities.Book", null)
+                        .WithMany("Tags")
                         .HasForeignKey("BookId");
-
-                    b.HasOne("ClassLibrary.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId");
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -423,6 +418,11 @@ namespace WordsmithWarehouse.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ClassLibrary.Entities.Book", b =>
+                {
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

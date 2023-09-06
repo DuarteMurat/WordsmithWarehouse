@@ -12,9 +12,6 @@ namespace WordsmithWarehouse.Models
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
 
-        [Display(Name = "Tags")]
-        [Range(1, int.MaxValue, ErrorMessage ="Please Select a Tag")]
-        public int TagId { get; set; }
-        public IEnumerable<SelectListItem> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

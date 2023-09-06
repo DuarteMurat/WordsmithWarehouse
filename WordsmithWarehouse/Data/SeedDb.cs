@@ -12,15 +12,12 @@ namespace WordsmithWarehouse.Data
     {
         private readonly DataContext _context;
 
-        private Random _random;
-
         private readonly IUserHelper _userHelper;
 
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
             _userHelper = userHelper;
-            _random = new Random();
         }
 
         public async Task SeedAsync()
