@@ -77,7 +77,12 @@ namespace WordsmithWarehouse.Data
             {
                 Title = title,
                 ISBN = "0000000000",
-                Author = "Ninguém",
+                Author = new Author
+                {
+                    Id = 0,
+                    Name= "Ninguém",
+                    Description = "He is no one",
+                },
             });
         }
 

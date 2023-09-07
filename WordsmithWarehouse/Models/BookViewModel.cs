@@ -12,6 +12,9 @@ namespace WordsmithWarehouse.Models
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
 
+        public IEnumerable<SelectListItem> Authors { get; set; }
+
         public List<Tag> Tags { get; set; }
+
     }
 }
