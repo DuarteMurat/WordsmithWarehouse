@@ -62,6 +62,13 @@ namespace WordsmithWarehouse.Data
                 AddBook("Book 4");
                 await _context.SaveChangesAsync();
             }
+
+            //if (!_context.Tags.Any())
+            //{
+            //    AddTag("Fantasy", 1);
+            //    AddTag("Sci-Fi", 2);
+            //    await _context.SaveChangesAsync();
+            //}
         }
 
         private void AddBook(string title)
@@ -71,6 +78,15 @@ namespace WordsmithWarehouse.Data
                 Title = title,
                 ISBN = "0000000000",
                 Author = "Ninguém",
+            });
+        }
+
+        private void AddTag(string title, int id)
+        {
+            _context.Tags.Add(new Tag
+            {
+                Name = title,
+                isActive = false,
             });
         }
     }

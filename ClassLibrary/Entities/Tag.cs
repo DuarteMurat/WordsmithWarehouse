@@ -15,5 +15,7 @@ namespace ClassLibrary.Entities
 
         public bool isActive { get; set; }
 
+        public ICollection<BookTags> BookTags { get; set; }
+
     }
 }

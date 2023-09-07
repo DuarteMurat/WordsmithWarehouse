@@ -18,19 +18,16 @@ namespace WordsmithWarehouse.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly ITagRepository _tagRepository;
-        private readonly IBookTagsRepository _bookTagsRepository;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper,
-            ITagRepository tagRepository,
-            IBookTagsRepository bookTagsRepository)
+            ITagRepository tagRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
             _tagRepository = tagRepository;
-            _bookTagsRepository = bookTagsRepository;
         }
 
         // GET: Books
@@ -81,26 +78,11 @@ namespace WordsmithWarehouse.Controllers
                 }
 
                 var book = _converterHelper.ConvertToBook(model, path, true);
-                
+
 
                 await _bookRepository.CreateAsync(book);
 
-                if (model.Tags != null)
-                {
-                    foreach (Tag tag in model.Tags)
-                    {
-                        if (tag.isActive)
-                        {
-                            var booktags = new BookTags
-                            {
-                                Book = book,
-                                Tag = tag,
-                            };
-
-                            await _bookTagsRepository.CreateAsync(booktags); 
-                        }
-                    }
-                }
+                await _tagRepository.CreateBookTags(book, model.Tags);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -163,7 +145,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Delete/5
-        [Authorize (Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

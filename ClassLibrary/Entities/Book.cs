@@ -32,7 +32,7 @@ namespace ClassLibrary.Entities
 
         public User User { get; set; }
 
-        //public List<Tag> Tags { get; set; }
+        public ICollection<BookTags> BookTags { get; set; }
         #endregion
 
         #region Book Avaialability

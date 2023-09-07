@@ -13,7 +13,10 @@ namespace ClassLibrary.Entities
 
         public Book Book { get; set; }
 
+        public int BookId { get; set; }
+
         public Tag Tag { get; set; }
 
+        public int TagId { get; set; }
     }
 }
