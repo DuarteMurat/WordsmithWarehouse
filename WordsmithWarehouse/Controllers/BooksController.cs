@@ -15,16 +15,19 @@ namespace WordsmithWarehouse.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly ITagRepository _tagRepository;
+        private readonly IAuthorRepository _authorRepository;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper,
-            ITagRepository tagRepository)
+            ITagRepository tagRepository,
+            IAuthorRepository authorRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
             _tagRepository = tagRepository;
+            _authorRepository = authorRepository;
         }
 
         // GET: Books
@@ -52,9 +55,10 @@ namespace WordsmithWarehouse.Controllers
         {
             var model = new BookViewModel
             {
-                Tags = _tagRepository.GetComboTags(),
+                //Tags = _tagRepository.GetComboTags(),
+                Authors = _authorRepository.GetComboAuthors(),
             };
-
+                
             return View(model);
         }
 
@@ -74,6 +78,8 @@ namespace WordsmithWarehouse.Controllers
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
                 }
 
+                model.Author = await _authorRepository.GetByIdAsync(model.AuthorId);
+
                 var book = _converterHelper.ConvertToBook(model, path, true);
 
                 await _bookRepository.CreateAsync(book);
@@ -82,7 +88,7 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
-        // GET: Books/Edit/5
+        // GET: Books/Edit/5 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -169,6 +175,5 @@ namespace WordsmithWarehouse.Controllers
         {
             return View();
         }
-
     }
 }

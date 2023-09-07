@@ -19,6 +19,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 ISBN = model.ISBN,
                 Subtitle = model.Subtitle,
                 User = model.User,
+                AuthorId = model.AuthorId,
             };
         }
 
@@ -35,6 +36,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 ISBN = book.ISBN,
                 Subtitle = book.Subtitle,
                 User = book.User,
+                AuthorId = book.AuthorId,
             };
         }
 

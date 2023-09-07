@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Data;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,12 +28,13 @@ namespace ClassLibrary.Entities
         public string ISBN { get; set; }
 
         [Required]
-        [MaxLength(50, ErrorMessage = "The field {0} can only contain up to {1} character")]
-        public string Author { get; set; }
+        public Author Author { get; set; }
+
+        public int AuthorId { get; set; }
 
         public User User { get; set; }
 
-        ICollection<Tag> Tags { get; set; }
+        public ICollection<BookAuthors> BookAuthors { get; set; }
         #endregion
 
         #region Book Avaialability
@@ -44,6 +46,7 @@ namespace ClassLibrary.Entities
 
         #region Book Image
         public string ImageURL { get; set; }
+        
         public string ImageFullPath
         {
             get
