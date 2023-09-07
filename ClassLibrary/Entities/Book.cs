@@ -35,6 +35,9 @@ namespace ClassLibrary.Entities
         public User User { get; set; }
 
         public ICollection<BookAuthors> BookAuthors { get; set; }
+
+        public ICollection<BookTags> BookTags { get; set; }
+
         #endregion
 
         #region Book Avaialability

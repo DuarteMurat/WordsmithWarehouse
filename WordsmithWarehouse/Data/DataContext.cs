@@ -8,12 +8,22 @@ namespace WordsmithWarehouse.Data
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<BookTags> BookTags { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookAuthors> BookAuthors { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Tag>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            base.OnModelCreating(builder); 
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
@@ -55,8 +58,8 @@ namespace WordsmithWarehouse.Controllers
         {
             var model = new BookViewModel
             {
-                //Tags = _tagRepository.GetComboTags(),
                 Authors = _authorRepository.GetComboAuthors(),
+                Tags = _tagRepository.GetTagsList(),
             };
                 
             return View(model);
@@ -82,7 +85,11 @@ namespace WordsmithWarehouse.Controllers
 
                 var book = _converterHelper.ConvertToBook(model, path, true);
 
+
                 await _bookRepository.CreateAsync(book);
+
+                await _tagRepository.CreateBookTags(book, model.Tags);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -144,7 +151,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Delete/5
-        [Authorize (Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

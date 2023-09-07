@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Entities
 {
-    public class Tag : IEntity
+    public class BookTags : IEntity
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public Book Book { get; set; }
 
-        public bool isActive { get; set; }
+        public int BookId { get; set; }
 
-        public ICollection<BookTags> BookTags { get; set; }
+        public Tag Tag { get; set; }
 
+        public int TagId { get; set; }
     }
 }

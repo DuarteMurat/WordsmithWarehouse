@@ -12,15 +12,12 @@ namespace WordsmithWarehouse.Data
     {
         private readonly DataContext _context;
 
-        private Random _random;
-
         private readonly IUserHelper _userHelper;
 
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
             _userHelper = userHelper;
-            _random = new Random();
         }
 
         public async Task SeedAsync()
@@ -65,6 +62,13 @@ namespace WordsmithWarehouse.Data
                 AddBook("Book 4");
                 await _context.SaveChangesAsync();
             }
+
+            //if (!_context.Tags.Any())
+            //{
+            //    AddTag("Fantasy", 1);
+            //    AddTag("Sci-Fi", 2);
+            //    await _context.SaveChangesAsync();
+            //}
         }
 
         private void AddBook(string title)
@@ -79,6 +83,15 @@ namespace WordsmithWarehouse.Data
                     Name= "Ninguém",
                     Description = "He is no one",
                 },
+            });
+        }
+
+        private void AddTag(string title, int id)
+        {
+            _context.Tags.Add(new Tag
+            {
+                Name = title,
+                isActive = false,
             });
         }
     }
