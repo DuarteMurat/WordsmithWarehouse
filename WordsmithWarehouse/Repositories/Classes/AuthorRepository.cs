@@ -23,9 +23,11 @@ namespace WordsmithWarehouse.Repositories.Classes
             throw new System.NotImplementedException();
         }
 
-        public async Task GetAuthorById(int id)
+        public Author GetAuthorById(int id)
         {
-            await _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
+            var author = _context.Authors.FirstOrDefault(a => a.Id == id);
+
+            return author;
         }
 
         public IEnumerable<SelectListItem> GetComboAuthors()

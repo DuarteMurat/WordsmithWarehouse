@@ -81,8 +81,6 @@ namespace WordsmithWarehouse.Controllers
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
                 }
 
-                model.Author = await _authorRepository.GetByIdAsync(model.AuthorId);
-
                 var book = _converterHelper.ConvertToBook(model, path, true);
 
 
@@ -111,6 +109,7 @@ namespace WordsmithWarehouse.Controllers
             }
 
             var model = _converterHelper.ConvertToBookViewModel(book);
+            model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
             return View(model);
         }
 

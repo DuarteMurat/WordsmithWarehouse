@@ -18,7 +18,5 @@ namespace ClassLibrary.Entities
         public string Description { get; set; }
 
         public string ImageURL { get; set; }
-
-        public ICollection<BookAuthors> BookAuthors { get; set; }
     }
 }
