@@ -10,7 +10,7 @@ namespace WordsmithWarehouse.Repositories.Interfaces
     {
         IEnumerable<SelectListItem> GetComboAuthors();
 
-        Task GetAuthorById(int id);
+        Author GetAuthorById(int id);
 
         Task CreateBookAuthors(Book book, List<Author> Authors);
     }

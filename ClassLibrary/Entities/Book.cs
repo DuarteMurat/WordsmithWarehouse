@@ -27,14 +27,12 @@ namespace ClassLibrary.Entities
         [MaxLength(10, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string ISBN { get; set; }
 
-        [Required]
-        public Author Author { get; set; }
+        public Author? Author { get; set; }
 
+        [Required]
         public int AuthorId { get; set; }
 
         public User User { get; set; }
-
-        public ICollection<BookAuthors> BookAuthors { get; set; }
 
         public ICollection<BookTags> BookTags { get; set; }
 
