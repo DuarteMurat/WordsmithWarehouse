@@ -49,7 +49,11 @@ namespace WordsmithWarehouse.Controllers
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            return View(book);
+            var model = _converterHelper.ConvertToBookViewModel(book);
+
+            model.Author = _authorRepository.GetAuthorById(model.AuthorId);
+
+            return View(model);
         }
 
         // GET: Books/Create
@@ -108,8 +112,11 @@ namespace WordsmithWarehouse.Controllers
                 return new NotFoundViewResult("BookNotFound");
             }
 
+            
             var model = _converterHelper.ConvertToBookViewModel(book);
             model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
+
+            model.Authors = _authorRepository.GetComboAuthors();
             return View(model);
         }
 
@@ -130,6 +137,7 @@ namespace WordsmithWarehouse.Controllers
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
 
                     var book = _converterHelper.ConvertToBook(model, path, false);
+
 
                     await _bookRepository.UpdateAsync(book);
                 }

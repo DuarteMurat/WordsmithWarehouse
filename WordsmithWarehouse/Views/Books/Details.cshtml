@@ -1,4 +1,4 @@
-﻿@model ClassLibrary.Entities.Book
+﻿@model WordsmithWarehouse.Models.BookViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -39,7 +39,7 @@
                     @Html.DisplayNameFor(model => model.Author)
                 </dt>
                 <dd class="col-10">
-                    @Html.DisplayFor(model => model.Author)
+                    @Html.DisplayFor(model => model.Author.Name)
                 </dd>
                 <dt class="col-2">
                     @Html.DisplayNameFor(model => model.IsAvailableOnline)

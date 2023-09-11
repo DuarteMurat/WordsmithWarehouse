@@ -29,7 +29,7 @@ namespace WordsmithWarehouse.Data
 
             var user = await _userHelper.GetUserByEmailAsync("bf0teste@gmail.com");
             if (user == null)
-            { 
+            {
                 user = new User
                 {
                     FirstName = "Admin",
@@ -54,18 +54,19 @@ namespace WordsmithWarehouse.Data
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
+            if (!_context.Authors.Any())
+            {
+                AddAuthor("Bruno Ferreira");
+
+                await _context.SaveChangesAsync();
+            }
+
             if (!_context.Books.Any())
             {
                 AddBook("Book 1");
                 AddBook("Book 2");
                 AddBook("Book 3");
-                AddBook("Book 4");
-                AddBook("Book 5");
-                AddBook("Book 6");
-                AddBook("Book 7");
-                AddBook("Book 8");
-                AddBook("Book 9");
-                AddBook("Book 10");
+
                 await _context.SaveChangesAsync();
             }
         }
@@ -77,6 +78,15 @@ namespace WordsmithWarehouse.Data
                 Title = title,
                 ISBN = "0000000000",
                 AuthorId = 1,
+            });
+        }
+
+        private void AddAuthor(string Name) 
+        {
+            _context.Authors.Add(new Author
+            {
+                Name = Name,
+                Description = "Olá",
             });
         }
     }
