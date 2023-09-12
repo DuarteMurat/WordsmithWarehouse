@@ -50,6 +50,8 @@ namespace WordsmithWarehouse.Controllers
                 return new NotFoundViewResult("BookNotFound");
 
             var model = _converterHelper.ConvertToBookViewModel(book);
+            model.bookTags = await _tagRepository.GetActiveBookTags(book);
+            model.Tags = _tagRepository.GetActiveTags(model);
 
             model.Author = _authorRepository.GetAuthorById(model.AuthorId);
 
@@ -65,7 +67,7 @@ namespace WordsmithWarehouse.Controllers
                 Authors = _authorRepository.GetComboAuthors(),
                 Tags = _tagRepository.GetTagsList(),
             };
-                
+
             return View(model);
         }
 
@@ -81,12 +83,10 @@ namespace WordsmithWarehouse.Controllers
                 var path = string.Empty;
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
-                {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
-                }
+
 
                 var book = _converterHelper.ConvertToBook(model, path, true);
-
 
                 await _bookRepository.CreateAsync(book);
 
@@ -102,21 +102,22 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return new NotFoundViewResult("BookNotFound");
-            }
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
-            {
                 return new NotFoundViewResult("BookNotFound");
-            }
 
             
             var model = _converterHelper.ConvertToBookViewModel(book);
             model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
 
             model.Authors = _authorRepository.GetComboAuthors();
+
+            model.bookTags = await _tagRepository.GetActiveBookTags(book);
+
+            model.Tags = _tagRepository.GetActiveTags(model);
+
             return View(model);
         }
 
@@ -137,20 +138,18 @@ namespace WordsmithWarehouse.Controllers
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
 
                     var book = _converterHelper.ConvertToBook(model, path, false);
+                    book = await _bookRepository.GetByIdAsync(book.Id);
 
+                    await _tagRepository.CreateBookTags(book, model.Tags);
 
                     await _bookRepository.UpdateAsync(book);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!await _bookRepository.ExistAsync(model.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -162,15 +161,11 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return new NotFoundViewResult("BookNotFound");
-            }
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
             if (book == null)
-            {
                 return new NotFoundViewResult("BookNotFound");
-            }
 
             return View(book);
         }

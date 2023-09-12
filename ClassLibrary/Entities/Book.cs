@@ -30,6 +30,7 @@ namespace ClassLibrary.Entities
         public Author? Author { get; set; }
 
         [Required]
+        [Display(Name = "Author")]
         public int AuthorId { get; set; }
 
         public User User { get; set; }

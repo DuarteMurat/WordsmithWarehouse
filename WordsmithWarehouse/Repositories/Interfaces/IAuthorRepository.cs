@@ -11,7 +11,5 @@ namespace WordsmithWarehouse.Repositories.Interfaces
         IEnumerable<SelectListItem> GetComboAuthors();
 
         Author GetAuthorById(int id);
-
-        Task CreateBookAuthors(Book book, List<Author> Authors);
     }
 }
