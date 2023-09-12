@@ -18,11 +18,6 @@ namespace WordsmithWarehouse.Repositories.Classes
             _context = context;
         }
 
-        public Task CreateBookAuthors(Book book, List<Author> Authors)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Author GetAuthorById(int id)
         {
             var author = _context.Authors.FirstOrDefault(a => a.Id == id);

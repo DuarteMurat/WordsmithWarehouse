@@ -56,7 +56,7 @@ namespace WordsmithWarehouse.Data
 
             if (!_context.Authors.Any())
             {
-                AddAuthor("Bruno Ferreira");
+                AddAuthor("Duarte Marques");
 
                 await _context.SaveChangesAsync();
             }
@@ -91,3 +91,4 @@ namespace WordsmithWarehouse.Data
         }
     }
 }
+
