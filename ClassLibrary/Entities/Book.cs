@@ -35,8 +35,13 @@ namespace ClassLibrary.Entities
 
         public User User { get; set; }
 
-        public ICollection<BookTags> BookTags { get; set; }
+        public string CoverType { get; set; }
 
+        public string Pages { get; set; }
+
+        public string Publisher { get; set; }
+
+        public string Synopsis { get; set; }
         #endregion
 
         #region Book Avaialability

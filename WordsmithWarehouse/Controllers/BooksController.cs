@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +37,16 @@ namespace WordsmithWarehouse.Controllers
         // GET: Books
         public IActionResult Index()
         {
-            return View(_bookRepository.GetAll().OrderBy(b => b.Title));
+            var list = _bookRepository.GetAll().OrderBy(b => b.Title);
+
+            List<BookViewModel> books = new List<BookViewModel>();
+            foreach (var item in list)
+            {
+                var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
+                itemToAdd.Author = _authorRepository.GetAuthorById(itemToAdd.AuthorId);
+                books.Add(itemToAdd);
+            }
+            return View(books);
         }
 
         // GET: Books/Details/5
