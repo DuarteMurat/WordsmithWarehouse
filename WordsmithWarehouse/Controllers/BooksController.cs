@@ -60,9 +60,8 @@ namespace WordsmithWarehouse.Controllers
                 return new NotFoundViewResult("BookNotFound");
 
             var model = _converterHelper.ConvertToBookViewModel(book);
-            model.bookTags = await _tagRepository.GetActiveBookTags(book);
-            model.Tags = _tagRepository.GetActiveTags(model);
 
+            model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
             model.Author = _authorRepository.GetAuthorById(model.AuthorId);
 
             return View(model);
@@ -88,6 +87,7 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var path = string.Empty;
@@ -95,12 +95,10 @@ namespace WordsmithWarehouse.Controllers
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
 
+                model.tagIds = _tagRepository.GetTagIds(model.Tags);
 
                 var book = _converterHelper.ConvertToBook(model, path, true);
-
                 await _bookRepository.CreateAsync(book);
-
-                await _tagRepository.CreateBookTags(book, model.Tags);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -115,6 +113,7 @@ namespace WordsmithWarehouse.Controllers
                 return new NotFoundViewResult("BookNotFound");
 
             var book = await _bookRepository.GetByIdAsync(id.Value);
+
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
@@ -123,10 +122,7 @@ namespace WordsmithWarehouse.Controllers
             model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
 
             model.Authors = _authorRepository.GetComboAuthors();
-
-            model.bookTags = await _tagRepository.GetActiveBookTags(book);
-
-            model.Tags = _tagRepository.GetActiveTags(model);
+            model.Tags = _tagRepository.MatchTagList(book.tagIds);
 
             return View(model);
         }
@@ -150,7 +146,7 @@ namespace WordsmithWarehouse.Controllers
                     var book = _converterHelper.ConvertToBook(model, path, false);
                     book = await _bookRepository.GetByIdAsync(book.Id);
 
-                    await _tagRepository.CreateBookTags(book, model.Tags);
+                    book.tagIds = _tagRepository.GetTagIds(model.Tags);
 
                     await _bookRepository.UpdateAsync(book);
                 }

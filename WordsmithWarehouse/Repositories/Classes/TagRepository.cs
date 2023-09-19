@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,47 +21,10 @@ namespace WordsmithWarehouse.Repositories.Classes
             _context = context;
         }
 
-        public async Task CreateBookTags(Book book, List<Tag> TagsFromModel)
-        {
-            if (TagsFromModel == null)
-            {
-                return;
-            }
-
-            foreach (var tag in TagsFromModel) // cycle all tags
-            {
-                if (await BookTagExists(book, tag)) // verify that the bookTag that references both book and tag exist
-                {
-                    if (!tag.isActive) // if the tag has been turned off
-                    {
-                        var bookTag = await _context.BookTags.FirstOrDefaultAsync(bt => bt.BookId == book.Id && bt.TagId == tag.Id);
-
-                        _context.BookTags.Remove(bookTag);
-                    }
-                    // if the tag is active, and already exists in the db, do nothing.
-                }
-                else // if the booktag does not exist
-                {
-                    if (tag.isActive) // and the tag is active, create the tag
-                    {
-                        var tagToUse = GetTagByName(tag.Name);
-                        tagToUse.isActive = true;
-                        var bookTag = new BookTags
-                        {
-                            BookId = book.Id,
-                            Tag = tagToUse,
-                        };
-                        tagToUse.isActive = false;
-
-                        await _context.BookTags.AddAsync(bookTag);
-                    }
-                    // if it's not active, do nothing and proceed.
-                }
-
-            }
-            await _context.SaveChangesAsync();
-        }
-
+        /// <summary>
+        /// Populates a list with all tags present in the database
+        /// </summary>
+        /// <returns></returns>
         public List<Tag> GetTagsList()
         {
             var list = new List<Tag>();
@@ -75,57 +39,69 @@ namespace WordsmithWarehouse.Repositories.Classes
             return list;
         }
 
-        public Tag GetTagByName(string name)
+        /// <summary>
+        /// Turns active tags into a comma separated string of IDs
+        /// </summary>
+        /// <param name="Tags">List of Tags to verify which ones are active</param>
+        /// <returns></returns>
+        public string GetTagIds(List<Tag> Tags)
         {
-            var tag = _context.Tags.FirstOrDefault(t => t.Name == name);
 
-            return tag;
-        }
+            string ids = string.Empty;
 
-        public async Task<List<BookTags>> GetActiveBookTags(Book book)
-        {
-            var bookTags = _context.BookTags.Where(bt => bt.BookId == book.Id).ToList();
+            if (Tags == null) return ids;
 
-            foreach (var booktag in bookTags)
+            foreach (var tag in Tags)
             {
-                booktag.Tag = await GetByIdAsync(booktag.TagId);
+                if (tag.isActive)
+                    ids += tag.Id.ToString() + ",";
             }
 
-            return bookTags;
+            ids = ids.Substring(0, ids.Length - 1);
+            return ids;
         }
 
-        public List<Tag> GetActiveTags(BookViewModel model)
+        /// <summary>
+        /// Gets corresponding tags according to the string of ids in the object
+        /// </summary>
+        /// <param name="source">string of ids in the object</param>
+        /// <returns>List of Tags populated with the according tags</returns>
+        public async Task<List<Tag>> GetTagsFromString(string source)
+        {
+            string[] ids = source.Split(',');
+            List<Tag> tags = new List<Tag>();
+
+            if (ids.Length <= 0) return tags;
+
+            foreach (var id in ids)
+            {
+                tags.Add(await GetByIdAsync(int.Parse(id)));
+            }
+
+            return tags;
+        }
+
+        /// <summary>
+        /// Get corresponding value of isActive for tags
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public List<Tag> MatchTagList(string source)
         {
             var tags = GetTagsList();
-            var tagsToUse = new List<Tag>();
+            string[] ids = source.Split(',');
 
-            foreach (var tag in tags)
-            {
-                tagsToUse.Add(tag);
-            }
+            if (ids.Length <= 0) return tags;
 
-            for (int i = 0; i < model.bookTags.Count; i++)
+            foreach (var item in ids)
             {
-                foreach (var tag in tagsToUse)
+                foreach (var tag in tags)
                 {
-                    if (tag.Id == model.bookTags[i].TagId)
-                    {
+                    if (int.Parse(item) == tag.Id)
                         tag.isActive = true;
-                    }
                 }
             }
-
-            return tagsToUse;
+            return tags;
         }
-
-        public async Task<bool> BookTagExists(Book book, Tag tag)
-        {
-            if (await _context.BookTags.AnyAsync(bt => bt.BookId == book.Id && bt.TagId == tag.Id))
-            {
-                return true;
-            }
-            else return false;
-        }
-
     }
 }
