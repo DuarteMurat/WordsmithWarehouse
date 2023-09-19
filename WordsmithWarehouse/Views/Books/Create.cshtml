@@ -14,8 +14,6 @@
 <hr />
 
 <form asp-action="Create" enctype="multipart/form-data">
-
-
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col" style="border-right:inset">
@@ -94,39 +92,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }
-
-
-@*<script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            const MainAuthorComboBox = document.getElementById("MainAuthorComboBox");
-            const NewAuthorComboBox = document.getElementById("NewAuthorComboBox");
-
-            MainAuthorComboBox.addEventListener("change", function () {
-                // Get the selected value from the source combobox
-                const selectedValue = MainAuthorComboBox.value;
-
-                // Create a new unrelated combobox
-                const newComboBox = document.createElement("select");
-                newComboBox.id = "newComboBox";
-
-                if (selectedValue !== "Select an author"){
-                    newComboBox.innerHTML = `
-                    <option value="newOption1">New Option 1</option>
-                    `
-                }
-
-               
-                NewAuthorComboBox.innerHTML = "";
-                NewAuthorComboBox.appendChild(newComboBox);
-        }
-</script>*@
-
-@*
->>>>>>> Stashed changes
-
-                <asp-for>@Model.AuthorId</asp-for>
-                    <asp-items>@Model.Authors</asp-items>`
-
-                    *@
