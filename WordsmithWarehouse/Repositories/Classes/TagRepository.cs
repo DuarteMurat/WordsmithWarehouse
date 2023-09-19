@@ -118,6 +118,11 @@ namespace WordsmithWarehouse.Repositories.Classes
             return tagsToUse;
         }
 
+        //public List<Tag> GetActiveTags(SearchBookViewModel model)
+        //{
+            
+        //}
+
         public async Task<bool> BookTagExists(Book book, Tag tag)
         {
             if (await _context.BookTags.AnyAsync(bt => bt.BookId == book.Id && bt.TagId == tag.Id))

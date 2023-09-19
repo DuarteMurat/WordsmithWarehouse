@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Classes;
 using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
@@ -193,6 +195,21 @@ namespace WordsmithWarehouse.Controllers
         public IActionResult BookNotFound()
         {
             return View();
+        }
+
+        public IActionResult SearchBooks()
+        {
+            var list = _bookRepository.GetAll().OrderBy(b => b.Title);
+
+            List<BookViewModel> books = new List<BookViewModel>();
+            foreach (var item in list)
+            {
+                var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
+                itemToAdd.Tags = _tagRepository.GetTagsList();
+                books.Add(itemToAdd);
+            }
+
+            return View(books);
         }
     }
 }
