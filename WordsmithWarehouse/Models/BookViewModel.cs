@@ -18,6 +18,7 @@ namespace WordsmithWarehouse.Models
 
         public Author ModelAuthor { get; set; }
 
+        [Display(Name = "Tags")]
         public List<BookTags> bookTags { get; set; }
 
     }

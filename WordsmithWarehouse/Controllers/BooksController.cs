@@ -39,7 +39,16 @@ namespace WordsmithWarehouse.Controllers
         // GET: Books
         public IActionResult Index()
         {
-            return View(_bookRepository.GetAll().OrderBy(b => b.Title));
+            var list = _bookRepository.GetAll().OrderBy(b => b.Title);
+
+            List<BookViewModel> books = new List<BookViewModel>();
+            foreach (var item in list)
+            {
+                var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
+                itemToAdd.Author = _authorRepository.GetAuthorById(itemToAdd.AuthorId);
+                books.Add(itemToAdd);
+            }
+            return View(books);
         }
 
         // GET: Books/Details/5
