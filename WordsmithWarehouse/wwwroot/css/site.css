@@ -225,7 +225,7 @@ a {
     }
 
 
-    /*-------------------------------------------------------Contact Us------------------------------------------------------*/
+/*-------------------------------------------------------Contact Us------------------------------------------------------*/
 
 /* Style inputs with type="text", select elements and textareas */
 input[type=text], select, textarea {
@@ -249,14 +249,43 @@ input[type=submit] {
     cursor: pointer;
 }
 
-    /* When moving the mouse over the submit button, add a darker green color */
-    input[type=submit]:hover {
-        background-color: #45a049;
-    }
+/* When moving the mouse over the submit button, add a darker green color */
+input[type=submit]:hover {
+    background-color: #45a049;
+}
 
 /* Add a background color and some padding around the form */
 .containercontact {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
+}
+
+/*SearchBooks page*/
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content: center;
+}
+
+.item {
+    text-align: center;
+    width: calc(100%); /* Adjust the width */
+    padding-bottom: 40px;
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.book-title{
+    margin-top: 10px;
+    text-align: center; /* Center the book title horizontally */
+    padding-right: 15px;
 }

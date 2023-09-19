@@ -12,5 +12,7 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Author ConvertToAuthor(AuthorViewModel model, string path, bool isNew);
 
         AuthorViewModel ConvertToAuthorViewModel(Author author);
+
+        SearchBookViewModel ConvertToSearchBookViewModel(Book book);
     }
 }

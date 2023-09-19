@@ -81,11 +81,7 @@ namespace WordsmithWarehouse.Repositories.Classes
             return tags;
         }
 
-        /// <summary>
-        /// Get corresponding value of isActive for tags
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
+
         public List<Tag> MatchTagList(string source)
         {
             var tags = GetTagsList();

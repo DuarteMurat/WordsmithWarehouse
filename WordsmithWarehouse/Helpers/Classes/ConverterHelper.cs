@@ -63,5 +63,18 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Description = author.Description,
             };
         }
+
+        public SearchBookViewModel ConvertToSearchBookViewModel(Book book)
+        {
+            return new SearchBookViewModel
+            {
+                BookId = book.Id,
+                ImageURL = book.ImageURL,
+                IsAvailableOnline = book.IsAvailableOnline,
+                IsAvailablePhysical = book.IsAvailablePhysical,
+                Title = book.Title,
+                AuthorId = book.AuthorId,
+            };
+        }
     }
 }
