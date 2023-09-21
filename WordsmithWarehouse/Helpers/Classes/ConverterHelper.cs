@@ -76,5 +76,41 @@ namespace WordsmithWarehouse.Helpers.Classes
                 AuthorId = book.AuthorId,
             };
         }
+
+        public Library ConvertToLibrary(LibraryViewModel model, bool isNew)
+        {
+            return new Library
+            {
+                Id = isNew ? 0 : model.Id,
+                Name = model.Name,
+                City = model.City,
+                Country = model.Country,
+                PostalCode = model.PostalCode,
+                OpeningHour = model.OpeningHour,
+                ClosingHour = model.ClosingHour,
+                PhoneNumber = model.PhoneNumber,
+                IsOpened = model.IsOpened,
+                Region = model.Region,
+                Adress = model.Adress,
+            };
+        }
+
+        public LibraryViewModel ConvertToLibraryViewModel(Library library)
+        {
+            return new LibraryViewModel
+            {
+                Id = library.Id,
+                Name = library.Name,
+                City = library.City,
+                Country = library.Country,
+                PostalCode = library.PostalCode,
+                OpeningHour = library.OpeningHour,
+                ClosingHour = library.ClosingHour,
+                PhoneNumber = library.PhoneNumber,
+                IsOpened = library.IsOpened,
+                Region = library.Region,
+                Adress = library.Adress,
+            };
+        }
     }
 }
