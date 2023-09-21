@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordsmithWarehouse.Data;
 
 namespace WordsmithWarehouse.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230919151519_LibraryEntityUpdate")]
+    partial class LibraryEntityUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,14 +129,8 @@ namespace WordsmithWarehouse.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Adress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ClosingHour")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
@@ -145,9 +141,6 @@ namespace WordsmithWarehouse.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("OpeningHour")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -156,6 +149,9 @@ namespace WordsmithWarehouse.Migrations
 
                     b.Property<string>("Region")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("TimeSpan")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
