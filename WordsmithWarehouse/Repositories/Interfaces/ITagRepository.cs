@@ -13,13 +13,11 @@ namespace WordsmithWarehouse.Repositories.Interfaces
 
         List<Tag> GetTagsList();
 
-        Task CreateBookTags(Book book, List<Tag> listOfTags);
+        string GetTagIds(List<Tag> Tags);
 
-        Tag GetTagByName(string name);
+        Task<List<Tag>> GetTagsFromString(string source);
 
-        Task<List<BookTags>> GetActiveBookTags(Book book);
-
-        List<Tag> GetActiveTags(BookViewModel model);
+        List<Tag> MatchTagList(string source);
 
 
     }

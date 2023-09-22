@@ -21,6 +21,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Subtitle = model.Subtitle,
                 User = model.User,
                 AuthorId = model.AuthorId,
+                tagIds = model.tagIds,
             };
         }
 
@@ -37,6 +38,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Subtitle = book.Subtitle,
                 User = book.User,
                 AuthorId = book.AuthorId,
+                tagIds= book.tagIds,
             };
         }
 

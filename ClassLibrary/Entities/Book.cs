@@ -33,6 +33,8 @@ namespace ClassLibrary.Entities
         [Display(Name = "Author")]
         public int AuthorId { get; set; }
 
+        public string tagIds { get; set; }
+
         public User User { get; set; }
 
         public string CoverType { get; set; }
