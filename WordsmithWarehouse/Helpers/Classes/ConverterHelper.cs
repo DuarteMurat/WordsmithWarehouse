@@ -110,5 +110,37 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Adress = library.Adress,
             };
         }
+
+        public BookReservation ConvertToBookReservation(BookReservationViewModel model, bool isNew)
+        {
+            return new BookReservation
+            {
+                Id = model.Id,
+                Book = model.Book,
+                User = model.User,
+                Library = model.Library,
+                ReservationDate = model.ReservationDate,
+                PickupDate = model.PickupDate,
+                ReturnDate = model.ReturnDate,
+                IsCancelled = model.IsCancelled,
+                IsCompleted = model.IsCompleted,
+            };
+        }
+
+        public BookReservationViewModel ConvertToBookReservationViewModel (BookReservation bookReservation)
+        {
+            return new BookReservationViewModel
+            {
+                Id = bookReservation.Id,
+                Book = bookReservation.Book,
+                User = bookReservation.User,
+                Library = bookReservation.Library,
+                ReservationDate = bookReservation.ReservationDate,
+                PickupDate = bookReservation.PickupDate,
+                ReturnDate = bookReservation.ReturnDate,
+                IsCancelled = bookReservation.IsCancelled,
+                IsCompleted = bookReservation.IsCompleted,
+            };
+        }
     }
 }

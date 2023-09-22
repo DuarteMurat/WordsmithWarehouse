@@ -18,5 +18,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Library ConvertToLibrary(LibraryViewModel model, bool isNew);
 
         LibraryViewModel ConvertToLibraryViewModel(Library library);
+
+        BookReservation ConvertToBookReservation(BookReservationViewModel model, bool Isnew);
+
+        BookReservationViewModel ConvertToBookReservationViewModel(BookReservation bookReservation);
     }
 }
