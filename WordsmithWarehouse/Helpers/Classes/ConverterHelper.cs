@@ -76,5 +76,73 @@ namespace WordsmithWarehouse.Helpers.Classes
                 AuthorId = book.AuthorId,
             };
         }
+
+        public Library ConvertToLibrary(LibraryViewModel model, bool isNew)
+        {
+            return new Library
+            {
+                Id = isNew ? 0 : model.Id,
+                Name = model.Name,
+                City = model.City,
+                Country = model.Country,
+                PostalCode = model.PostalCode,
+                OpeningHour = model.OpeningHour,
+                ClosingHour = model.ClosingHour,
+                PhoneNumber = model.PhoneNumber,
+                IsOpened = model.IsOpened,
+                Region = model.Region,
+                Adress = model.Adress,
+            };
+        }
+
+        public LibraryViewModel ConvertToLibraryViewModel(Library library)
+        {
+            return new LibraryViewModel
+            {
+                Id = library.Id,
+                Name = library.Name,
+                City = library.City,
+                Country = library.Country,
+                PostalCode = library.PostalCode,
+                OpeningHour = library.OpeningHour,
+                ClosingHour = library.ClosingHour,
+                PhoneNumber = library.PhoneNumber,
+                IsOpened = library.IsOpened,
+                Region = library.Region,
+                Adress = library.Adress,
+            };
+        }
+
+        public BookReservation ConvertToBookReservation(BookReservationViewModel model, bool isNew)
+        {
+            return new BookReservation
+            {
+                Id = model.Id,
+                Book = model.Book,
+                User = model.User,
+                Library = model.Library,
+                ReservationDate = model.ReservationDate,
+                PickupDate = model.PickupDate,
+                ReturnDate = model.ReturnDate,
+                IsCancelled = model.IsCancelled,
+                IsCompleted = model.IsCompleted,
+            };
+        }
+
+        public BookReservationViewModel ConvertToBookReservationViewModel (BookReservation bookReservation)
+        {
+            return new BookReservationViewModel
+            {
+                Id = bookReservation.Id,
+                Book = bookReservation.Book,
+                User = bookReservation.User,
+                Library = bookReservation.Library,
+                ReservationDate = bookReservation.ReservationDate,
+                PickupDate = bookReservation.PickupDate,
+                ReturnDate = bookReservation.ReturnDate,
+                IsCancelled = bookReservation.IsCancelled,
+                IsCompleted = bookReservation.IsCompleted,
+            };
+        }
     }
 }

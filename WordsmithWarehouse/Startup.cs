@@ -55,6 +55,8 @@ namespace WordsmithWarehouse
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
+            services.AddScoped<IBookReservationRepository, BookReservationRepository>();
 
             //Helpers
             services.AddScoped<IUserHelper, UserHelper>();
