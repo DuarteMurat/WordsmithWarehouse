@@ -1,16 +1,11 @@
-﻿using ClassLibrary.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
-using WordsmithWarehouse.Repositories.Classes;
 using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
@@ -119,7 +114,7 @@ namespace WordsmithWarehouse.Controllers
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            
+
             var model = _converterHelper.ConvertToBookViewModel(book);
             model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
 

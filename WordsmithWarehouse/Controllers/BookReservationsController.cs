@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Entities;
-using WordsmithWarehouse.Data;
-using WordsmithWarehouse.Repositories.Interfaces;
-using System.Runtime.CompilerServices;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -18,17 +12,22 @@ namespace WordsmithWarehouse.Controllers
     {
         private readonly IBookReservationRepository _bookReservationRepository;
         private readonly IConverterHelper _converterHelper;
+        private readonly IBookRepository _bookRepository;
 
-        public BookReservationsController(IBookReservationRepository bookReservationRepository, IConverterHelper converterHelper)
+        public BookReservationsController(IBookReservationRepository bookReservationRepository,
+            IConverterHelper converterHelper,
+            IBookRepository bookRepository)
         {
             _bookReservationRepository = bookReservationRepository;
             _converterHelper = converterHelper;
+            _bookRepository = bookRepository;
         }
 
         // GET: BookReservations
         public IActionResult Index()
         {
-            return View(_bookReservationRepository.GetAll().OrderBy(br => br.ReturnDate));
+            var list = _bookReservationRepository.GetAll().OrderBy(br => br.ReturnDate);
+            return View(list);
         }
 
         // GET: BookReservations/Details/5
@@ -46,6 +45,9 @@ namespace WordsmithWarehouse.Controllers
             }
 
             var model = _converterHelper.ConvertToBookReservationViewModel(bookReservation);
+            
+            model.Books = await _bookRepository.GetBooksFromString(bookReservation.BookIds);
+
 
             return View(model);
         }
@@ -53,7 +55,11 @@ namespace WordsmithWarehouse.Controllers
         // GET: BookReservations/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new BookReservationViewModel
+            {
+                Books = _bookRepository.GetBooksList(),
+            };
+            return View(model);
         }
 
         // POST: BookReservations/Create
@@ -65,6 +71,8 @@ namespace WordsmithWarehouse.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.BookIds = _bookRepository.GetBookIds(model.Books);
+
                 var bookReservation = _converterHelper.ConvertToBookReservation(model, true);
 
                 await _bookReservationRepository.CreateAsync(bookReservation);
