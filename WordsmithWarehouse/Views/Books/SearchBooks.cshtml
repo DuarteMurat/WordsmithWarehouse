@@ -37,22 +37,7 @@
             </table>
         </div>
         <div class="col">
-            <div class="grid-container">
-                @foreach (var item in Model)
-                {
-                    <div class="item" data-tags="@string.Join(",", item.Tags.Select(tag => tag.Name))">
-                        @if (!string.IsNullOrEmpty(item.ImageURL))
-                        {
-                            <div class="item-content">
-                                <a asp-action="Details" asp-route-id="@item.Id"><img src="@Url.Content(item.ImageURL)" alt="Image" style="width:200px;height:150px;max-width:100%;height:auto"></a>
-                                <div class="book-title">
-                                    <a asp-action="Details" asp-route-id="@item.Id" style="color:black">@Html.DisplayFor(modelItem => item.Title)</a>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
+            <partial name="_BookCard" />
         </div>
     </div>
 </body>
