@@ -91,6 +91,10 @@ namespace WordsmithWarehouse.Controllers
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                else
+                {
+                    path = "/images/Books/notfound.png";
+                };
 
                 model.tagIds = _tagRepository.GetTagIds(model.Tags);
 
@@ -140,8 +144,8 @@ namespace WordsmithWarehouse.Controllers
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
 
-                    var book = _converterHelper.ConvertToBook(model, path, false);
-                    book = await _bookRepository.GetByIdAsync(book.Id);
+                    var book = await _bookRepository.GetByIdAsync(model.Id);
+                    book = _converterHelper.ConvertToBook(model, path, false);
 
                     book.tagIds = _tagRepository.GetTagIds(model.Tags);
 

@@ -23,9 +23,4 @@
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\Authors\" />
-    <Folder Include="wwwroot\images\Books\" />
-  </ItemGroup>
-
 </Project>

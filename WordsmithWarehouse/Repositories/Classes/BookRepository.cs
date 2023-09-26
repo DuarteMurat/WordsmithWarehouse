@@ -36,7 +36,8 @@ namespace WordsmithWarehouse.Repositories.Classes
         {
             List<Book> books = new List<Book>();
 
-            if(ids.Length <= 0) return books;
+            if (string.IsNullOrEmpty(source))
+                return books;
 
             string[] ids = source.Split(',');
 
