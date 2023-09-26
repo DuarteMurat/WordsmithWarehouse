@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WordsmithWarehouse.Controllers;
 using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Repositories.Interfaces;
@@ -68,8 +69,12 @@ namespace WordsmithWarehouse.Repositories.Classes
         /// <returns>List of Tags populated with the according tags</returns>
         public async Task<List<Tag>> GetTagsFromString(string source)
         {
-            string[] ids = source.Split(',');
             List<Tag> tags = new List<Tag>();
+
+            if (string.IsNullOrEmpty(source))
+                return tags;
+
+            string[] ids = source.Split(',');
 
             if (ids.Length <= 0) return tags;
 

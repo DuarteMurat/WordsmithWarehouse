@@ -11,7 +11,8 @@
     <hr />
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
-        <a asp-action="Index" class="btn btn-info">Back to List</a>
+        <a asp-action="Index" class="btn btn-info">Back to List</a> |
+        <a id="reserveButton" class="btn btn-dark" style="color:azure">Reserve</a>
     </div>
     <hr />
     <dl class="row">
@@ -54,7 +55,7 @@
                     @Html.DisplayFor(model => model.IsAvailablePhysical)
                 </dd>
                 <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.bookTags)
+                    @Html.DisplayNameFor(model => model.Tags)
                 </dt>
                 @if (Model.Tags.Count > 0)
                 {
@@ -87,4 +88,17 @@
         </div>
     </dl>
 </div>
+
+@section scripts{
+    <script>
+        var bookcount = 0;
+        var reserveButton = document.getElementById("reserveButton");
+
+        reserveButton.addEventListener("click", function () {
+            bookcount += 1;
+
+            document.getElementById("bookcountDisplay").innerHTML = bookcount;
+        });
+    </script>
+};
 

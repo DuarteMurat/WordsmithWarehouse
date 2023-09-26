@@ -11,8 +11,6 @@ namespace ClassLibrary.Entities
     {
         public int Id { get; set; }
         
-        public List<Book> Book { get; set; } 
-        
         public User User { get; set; } 
 
         public Library Library { get; set; }
@@ -26,5 +24,7 @@ namespace ClassLibrary.Entities
         public bool IsCancelled { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public string BookIds { get; set; }
     }
 }
