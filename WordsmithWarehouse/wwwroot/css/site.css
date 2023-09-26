@@ -45,8 +45,9 @@ body {
     font-size: 15px;
     line-height: 24px;
     color: #737373;
-    position: absolute;
-    bottom: 0;
+    bottom:0;
+    position:static;
+    
 }
 
     .site-footer hr {

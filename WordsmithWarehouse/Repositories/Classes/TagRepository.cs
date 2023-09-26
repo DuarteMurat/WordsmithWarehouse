@@ -50,6 +50,9 @@ namespace WordsmithWarehouse.Repositories.Classes
 
             string ids = string.Empty;
 
+            if (Tags.Count == 0)
+                return ids;
+
             if (Tags == null) return ids;
 
             foreach (var tag in Tags)
@@ -58,7 +61,9 @@ namespace WordsmithWarehouse.Repositories.Classes
                     ids += tag.Id.ToString() + ",";
             }
 
-            ids = ids.Substring(0, ids.Length - 1);
+            if (!string.IsNullOrWhiteSpace(ids))
+                ids = ids.Substring(0, ids.Length - 1);
+            
             return ids;
         }
 
@@ -90,9 +95,10 @@ namespace WordsmithWarehouse.Repositories.Classes
         public List<Tag> MatchTagList(string source)
         {
             var tags = GetTagsList();
-            string[] ids = source.Split(',');
+            if (string.IsNullOrEmpty(source))
+                return tags;
 
-            if (ids.Length <= 0) return tags;
+            string[] ids = source.Split(',');
 
             foreach (var item in ids)
             {
@@ -103,6 +109,41 @@ namespace WordsmithWarehouse.Repositories.Classes
                 }
             }
             return tags;
+        }
+
+        public async Task<Tag> GetTagByName(string name)
+        {
+            return await _context.Tags.FirstOrDefaultAsync(t => t.Name == name);
+        }
+
+        public async Task<string> GetBooksWithTags(List<Book> source, string tagName)
+        {
+            string ids = string.Empty;
+            if (source.Count == 0)
+                return ids;
+
+            var tag = await GetTagByName(tagName);
+            if (tag == null) return ids;
+
+            foreach (var book in source)
+            {
+                if (!string.IsNullOrEmpty(book.tagIds))
+                {
+                    string[] separateIds = book.tagIds.Split(',');
+
+                    foreach (var tagId in separateIds)
+                    {
+                        if (tagId == tag.Id.ToString())
+                        {
+                            ids += book.Id.ToString() + ",";
+                        }
+                    }
+                }
+            }
+            if (ids.Length != 0)
+                ids = ids.Substring(0, ids.Length - 1);
+
+            return ids;
         }
     }
 }

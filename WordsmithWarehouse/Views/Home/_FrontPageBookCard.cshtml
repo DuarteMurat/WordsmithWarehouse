@@ -1,0 +1,23 @@
+﻿@model FrontPageViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="grid-container" style="border-width:3px; border-style:solid; border-color:lightgray">
+    @foreach (var item in Model.Books)
+    {
+        <div class="item" @*data-tags="@string.Join(",", item.Tags.Select(tag => tag.Name))"*@>
+            @if (!string.IsNullOrEmpty(item.ImageURL))
+            {
+                <div class="item-content" style="margin:10px 25px 0px 25px">
+                    <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id"><img src="@Url.Content(item.ImageURL)" alt="Image" style="width:200px;height:150px;max-width:100%;height:auto;"></a>
+                    <div class="book-title">
+                        <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id" style="color:black">@Html.DisplayFor(modelItem => item.Title)</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

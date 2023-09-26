@@ -34,12 +34,15 @@ namespace WordsmithWarehouse.Repositories.Classes
 
         public async Task<List<Book>> GetBooksFromString(string source)
         {
-            string[] ids = source.Split(',');
             List<Book> books = new List<Book>();
 
             if(ids.Length <= 0) return books;
 
-            foreach(var id in ids)
+            string[] ids = source.Split(',');
+
+            if (ids.Length <= 0) return books;
+
+            foreach (var id in ids)
             {
                 books.Add(await GetByIdAsync(int.Parse(id)));
             }
@@ -63,7 +66,7 @@ namespace WordsmithWarehouse.Repositories.Classes
                 ImageURL = b.ImageURL,
                 Pages = b.Pages,
                 Publisher = b.Publisher,
-                
+                tagIds = b.tagIds,
             }).OrderBy(t => t.Title).ToList();
 
             return list;

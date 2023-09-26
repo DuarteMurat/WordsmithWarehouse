@@ -6,21 +6,38 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBookRepository _bookRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            ITagRepository tagRepository, IBookRepository bookRepository)
         {
             _logger = logger;
+            _tagRepository = tagRepository;
+            _bookRepository = bookRepository;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // get all books
+            var model = new FrontPageViewModel
+            {
+                Books = _bookRepository.GetBooksList(),
+            };
+
+            // separate best sellers
+            model.BestSellerBooks = await _tagRepository.GetBooksWithTags(model.Books, "Best Seller");
+
+            model.Books = await _bookRepository.GetBooksFromString(model.BestSellerBooks);
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -33,8 +50,8 @@ namespace WordsmithWarehouse.Controllers
             return View();
         }
 
-        public IActionResult Contact() 
-        { 
+        public IActionResult Contact()
+        {
             return View();
         }
 
