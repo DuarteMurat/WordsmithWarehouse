@@ -19,6 +19,6 @@ namespace WordsmithWarehouse.Repositories.Interfaces
 
         List<Tag> MatchTagList(string source);
 
-
+        Task<string> GetBooksWithTags(List<Book> source, string tagName);
     }
 }
