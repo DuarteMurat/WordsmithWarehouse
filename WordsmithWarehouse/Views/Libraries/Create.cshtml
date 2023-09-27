@@ -57,13 +57,9 @@
                 <input asp-for="ClosingHour" type="time" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Create book</button> |
+                <a asp-action="Index" class="btn btn-info"> <i class="fas fa-chevron-left"></i> Back to List</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

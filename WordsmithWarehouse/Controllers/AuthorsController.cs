@@ -74,7 +74,7 @@ namespace WordsmithWarehouse.Controllers
                 }
                 else
                 {
-                    path = "/images/Authors/notfound.png";
+                    path = "/images/Authors/unknown.png";
                 }
 
                 var author = _converterHelper.ConvertToAuthor(model, path, true);
