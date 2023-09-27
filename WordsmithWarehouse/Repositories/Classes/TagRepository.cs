@@ -50,7 +50,7 @@ namespace WordsmithWarehouse.Repositories.Classes
 
             string ids = string.Empty;
 
-            if (Tags.Count == 0)
+            if (Tags.Count == 0 || Tags == null)
                 return ids;
 
             if (Tags == null) return ids;
@@ -59,7 +59,7 @@ namespace WordsmithWarehouse.Repositories.Classes
             {
                 if (tag.isActive)
                     ids += tag.Id.ToString() + ",";
-            }
+        }
 
             if (!string.IsNullOrWhiteSpace(ids))
                 ids = ids.Substring(0, ids.Length - 1);
