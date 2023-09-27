@@ -13,6 +13,7 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ImageURL"/>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -33,9 +34,20 @@
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.ImageURL))
+        {
+            <img src="@Url.Content(Model.ImageURL)" alt="Image">
+        }
+    </div>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

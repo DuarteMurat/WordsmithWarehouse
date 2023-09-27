@@ -22,6 +22,10 @@ namespace WordsmithWarehouse.Helpers.Classes
                 User = model.User,
                 AuthorId = model.AuthorId,
                 tagIds = model.tagIds,
+                CoverType = model.CoverType,
+                Pages = model.Pages,
+                Publisher = model.Publisher,
+                Synopsis = model.Synopsis,
             };
         }
 
@@ -39,6 +43,10 @@ namespace WordsmithWarehouse.Helpers.Classes
                 User = book.User,
                 AuthorId = book.AuthorId,
                 tagIds= book.tagIds,
+                CoverType= book.CoverType,
+                Pages = book.Pages,
+                Publisher = book.Publisher,
+                Synopsis= book.Synopsis,
             };
         }
 
