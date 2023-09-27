@@ -1,16 +1,11 @@
-﻿using ClassLibrary.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
-using WordsmithWarehouse.Repositories.Classes;
 using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
@@ -96,6 +91,10 @@ namespace WordsmithWarehouse.Controllers
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                else
+                {
+                    path = "/images/Books/notfound.png";
+                };
 
                 model.tagIds = _tagRepository.GetTagIds(model.Tags);
 
@@ -119,7 +118,7 @@ namespace WordsmithWarehouse.Controllers
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            
+
             var model = _converterHelper.ConvertToBookViewModel(book);
             model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
 
@@ -145,8 +144,8 @@ namespace WordsmithWarehouse.Controllers
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
 
-                    var book = _converterHelper.ConvertToBook(model, path, false);
-                    book = await _bookRepository.GetByIdAsync(book.Id);
+                    var book = await _bookRepository.GetByIdAsync(model.Id);
+                    book = _converterHelper.ConvertToBook(model, path, false);
 
                     book.tagIds = _tagRepository.GetTagIds(model.Tags);
 

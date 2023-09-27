@@ -72,10 +72,14 @@ namespace WordsmithWarehouse.Controllers
                 {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Authors");
                 }
+                else
+                {
+                    path = "/images/Authors/notfound.png";
+                }
 
                 var author = _converterHelper.ConvertToAuthor(model, path, true);
-
                 await _authorRepository.CreateAsync(author);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -112,7 +116,8 @@ namespace WordsmithWarehouse.Controllers
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Authors");
 
-                    var author = _converterHelper.ConvertToAuthor(model, path, false);
+                    var author = await _authorRepository.GetByIdAsync(model.Id);
+                    author = _converterHelper.ConvertToAuthor(model, path, false);
 
                     await _authorRepository.UpdateAsync(author);
                 }

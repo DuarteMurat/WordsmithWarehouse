@@ -38,7 +38,7 @@ namespace WordsmithWarehouse.Repositories.Classes
 
             if (string.IsNullOrEmpty(source))
                 return books;
-            
+
             string[] ids = source.Split(',');
 
             if (ids.Length <= 0) return books;
@@ -68,7 +68,6 @@ namespace WordsmithWarehouse.Repositories.Classes
                 Pages = b.Pages,
                 Publisher = b.Publisher,
                 tagIds = b.tagIds,
-
             }).OrderBy(t => t.Title).ToList();
 
             return list;

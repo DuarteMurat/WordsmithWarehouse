@@ -14,12 +14,9 @@ namespace WordsmithWarehouse.Models
 
         public IEnumerable<SelectListItem> Authors { get; set; }
 
+        [Display(Name = "Tags")]
         public List<Tag> Tags { get; set; }
 
         public Author ModelAuthor { get; set; }
-
-        [Display(Name = "Tags")]
-        public List<BookTags> bookTags { get; set; }
-
     }
 }

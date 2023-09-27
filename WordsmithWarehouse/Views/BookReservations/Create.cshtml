@@ -1,4 +1,4 @@
-﻿@model ClassLibrary.Entities.BookReservation
+﻿@model BookReservationViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -37,10 +37,26 @@
                     <input class="form-check-input" asp-for="IsCompleted" /> @Html.DisplayNameFor(model => model.IsCompleted)
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
         </form>
+    </div>
+    <div class="col-md-4">
+        <form>
+            <ul class="list-group list-group-flush" style="max-height: 30px">
+                @foreach (var book in Model.Books)
+                {
+                    <li class="list-group-item">
+                        <label>
+                            <input type="checkbox" name="selectedBooks" value="@book.Id">
+                            @book.Title
+                        </label>
+                    </li>
+                }
+            </ul>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </div>
 
