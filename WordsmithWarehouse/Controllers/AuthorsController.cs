@@ -90,15 +90,11 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var author = await _authorRepository.GetByIdAsync(id.Value);
             if (author == null)
-            {
                 return NotFound();
-            }
 
             var model = _converterHelper.ConvertToAuthorViewModel(author);
             return View(model);
@@ -128,13 +124,9 @@ namespace WordsmithWarehouse.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!await _authorRepository.ExistAsync(model.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -146,9 +138,7 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var author = await _authorRepository.GetByIdAsync(id.Value);
             if (author == null)

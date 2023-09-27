@@ -24,12 +24,11 @@ a {
     border-color: #1861ac;
 }
 
-
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+html{
     position: relative;
-    min-height: 100%;
+    min-height:100%;
 }
 
 body {
@@ -108,7 +107,6 @@ body {
         line-height: 40px;
         margin-left: 6px;
         margin-right: 0;
-        border-radius: 100%;
         background-color: #33353d
     }
 
@@ -161,7 +159,6 @@ body {
         height: 44px;
         text-align: center;
         margin-right: 8px;
-        border-radius: 100%;
         -webkit-transition: all .2s linear;
         -o-transition: all .2s linear;
         transition: all .2s linear
@@ -213,8 +210,6 @@ body {
     display: inline-block;
     width: 40px;
     height: 40px;
-    background-color: #333;
-    border-radius: 50%;
     text-align: center;
     line-height: 40px;
     margin: 0 10px;
@@ -227,7 +222,6 @@ body {
     .github-button img {
         width: 40px;
         height: 40px;
-        border-radius: 50%;
         transition: background-color 0.3s;
     }
 

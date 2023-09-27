@@ -6,38 +6,12 @@
 }
 
 
-<h1>Create Book</h1>
 
 
 <form asp-action="Create" enctype="multipart/form-data">
+
     <div class="row">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col" style="border-right:inset">
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Subtitle" class="control-label"></label>
-                <input asp-for="Subtitle" class="form-control" />
-                <span asp-validation-for="Subtitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ISBN" class="control-label"></label>
-                <input asp-for="ISBN" class="form-control" />
-                <span asp-validation-for="ISBN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-
-                <label asp-for="Author" class="control-label"></label>
-
-                <label asp-for="AuthorId" class="control-label"></label>
-
-                <select asp-for="AuthorId" asp-items="Model.Authors" class="form-control"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
-        </div>
+        <h1>Create Book</h1>
         <div class="col">
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -49,29 +23,109 @@
                     <input class="form-check-input" asp-for="IsAvailablePhysical" /> @Html.DisplayNameFor(model => model.IsAvailablePhysical)
                 </label>
             </div>
+    </div>
+    </div>
+    
+
+
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row" id="titleSubTitle">
+        @*Title(s)*@
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Subtitle" class="control-label"></label>
+                <input asp-for="Subtitle" class="form-control" />
+                <span asp-validation-for="Subtitle" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="authorCoAuthor">
+        @*Author(s)*@
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="AuthorId" class="control-label"></label>
+                <select asp-for="AuthorId" asp-items="Model.Authors" class="form-control"></select>
+                <span asp-validation-for="AuthorId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            Insert Co-Authors here
+        </div>
+    </div>
+
+    <div class="row" id="synopsis">
+        @*Synopsis*@
+        <label asp-for="Synopsis" class="control-label"></label>
+        <input asp-for="Synopsis" class="form-control" />
+        <span asp-validation-for="Synopsis" class="text-danger"></span>
+    </div>
+    <hr />
+
+    <div class="row" id="imageCoverPages">
+        @*Image / Cover / Pages*@
+        <div class="col">
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
                 <input asp-for="ImageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-            <h4>Tags</h4>
-
-            <div class="row" style="">
-                @{
-                    for (int i = 0; i < Model.Tags.Count; i++)
-                    {
-                        <label>
-                            &thinsp; @Html.DisplayName(Model.Tags[i].Name)
-                            <input asp-for="@Model.Tags[i].isActive" type="checkbox" /> &nbsp; |
-                            <input asp-for="@Model.Tags[i].Name" type="hidden" value="@Model.Tags[i].Name " />
-                            <input asp-for="@Model.Tags[i].Id" type="hidden" value="@Model.Tags[i].Id " />
-                        </label>
-                    }
-                }
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="CoverType" class="control-label"></label>
+                <input asp-for="CoverType" class="form-control" />
+                <span asp-validation-for="CoverType" class="text-danger"></span>
             </div>
         </div>
-
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Pages" class="control-label"></label>
+                <input asp-for="Pages" class="form-control" />
+                <span asp-validation-for="Pages" class="text-danger"></span>
+            </div>
+        </div>
     </div>
+
+    <div class="row" id="publisherISBN">
+        @* Publisher / ISBN *@
+        <div class="col">
+            <label asp-for="Publisher" class="control-label"></label>
+            <input asp-for="Publisher" class="form-control" />
+            <span asp-validation-for="Publisher" class="text-danger"></span>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="ISBN" class="control-label"></label>
+                <input asp-for="ISBN" class="form-control" />
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="tags">
+        @* Tags *@
+        @{
+            for (int i = 0; i < Model.Tags.Count; i++)
+            {
+                <label>
+                    &thinsp; @Html.DisplayName(Model.Tags[i].Name)
+                    <input asp-for="@Model.Tags[i].isActive" type="checkbox" /> &nbsp; |
+                    <input asp-for="@Model.Tags[i].Name" type="hidden" value="@Model.Tags[i].Name " />
+                    <input asp-for="@Model.Tags[i].Id" type="hidden" value="@Model.Tags[i].Id " />
+                </label>
+            }
+        }
+    </div>
+
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
