@@ -12,8 +12,8 @@
     <hr />
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-info">Back to List</a>
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button> |
+        <a asp-action="Index" class="btn btn-info"> <i class="fas fa-chevron-left"></i> Back to List</a>
     </form>
     <hr/>
     <dl class="row">
@@ -61,6 +61,5 @@
                 <img src="@Url.Content(Model.ImageURL)" alt="Image">
             }
         </div>
-        
     </dl>
 </div>

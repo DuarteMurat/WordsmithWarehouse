@@ -49,11 +49,12 @@ namespace ClassLibrary.Entities
         #region Book Avaialability
         [Display(Name = "Available Online")]
         public bool IsAvailableOnline { get; set; }
-        [Display(Name = "Available")]
+        [Display(Name = "Available in Store")]
         public bool IsAvailablePhysical { get; set; }
         #endregion
 
         #region Book Image
+        [Display(Name = "Image")]
         public string ImageURL { get; set; }
         
         public string ImageFullPath

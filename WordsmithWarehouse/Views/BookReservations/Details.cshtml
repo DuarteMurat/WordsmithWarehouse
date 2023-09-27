@@ -9,6 +9,11 @@
 <div>
     <h4>BookReservation</h4>
     <hr />
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a> |
+        <a asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a>
+    </div>
+    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ReservationDate)
@@ -41,8 +46,4 @@
             @Html.DisplayFor(model => model.IsCompleted)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>

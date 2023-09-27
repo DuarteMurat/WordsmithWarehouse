@@ -10,6 +10,12 @@
 <div>
     <h4>Author</h4>
     <hr />
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button> |
+        <a asp-action="Index" class="btn btn-info"> <i class="fas fa-chevron-left"></i> Back to List</a>
+    </form>
+    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -26,14 +32,11 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImageURL)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageURL)
-        </dd>
+        <div class="col">
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Url.Content(Model.ImageURL)" alt="Image">
+            }
+        </div>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
 </div>

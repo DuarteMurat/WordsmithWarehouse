@@ -78,6 +78,7 @@ namespace WordsmithWarehouse.Data
                 Title = title,
                 ISBN = "0000000000",
                 AuthorId = 1,
+                ImageURL = "/images/Books/notfound.png",
             });
         }
 
@@ -87,6 +88,7 @@ namespace WordsmithWarehouse.Data
             {
                 Name = Name,
                 Description = "Olá",
+                ImageURL = "/images/Authors/unknown.png",
             });
         }
     }

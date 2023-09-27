@@ -22,16 +22,20 @@ namespace ClassLibrary.Entities
 
         public string Adress { get; set; }
 
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"{0:HH:mm}" + "h")]
+        [Display(Name = "Opening Hour")]
         public DateTime OpeningHour { get; set; }
 
         [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"{0:HH:mm}" + "h")]
+        [Display(Name = "Closing Hour")]
         public DateTime ClosingHour { get; set; }
 
         [DataType(DataType.Time)]
