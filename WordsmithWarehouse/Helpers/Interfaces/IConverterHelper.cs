@@ -22,5 +22,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         BookReservation ConvertToBookReservation(BookReservationViewModel model, bool Isnew);
 
         BookReservationViewModel ConvertToBookReservationViewModel(BookReservation bookReservation);
+
+        User ConvertToUser (RegisterNewUserViewModel model, string path, bool isNew);
+
+        RegisterNewUserViewModel ConvertToRegisterNewUserViewModel(User user);
     }
 }

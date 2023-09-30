@@ -1,15 +1,13 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class FrontPageViewModel
+    public class UserViewModel : User
     {
-        public List<Book> Books { get; set; }
-
-        public string BestSellerBooks { get; set; }
+        [Display(Name = "Image")]
+        public IFormFile ImageFile { get; set; }
     }
 }

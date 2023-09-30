@@ -18,9 +18,9 @@ namespace WordsmithWarehouse.Repositories.Classes
             _context = context;
         }
 
-        public Author GetAuthorById(int id)
+        public async Task<Author> GetAuthorById(int id)
         {
-            var author = _context.Authors.FirstOrDefault(a => a.Id == id);
+            var author = await _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
 
             return author;
         }

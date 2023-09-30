@@ -51,20 +51,19 @@
                             </li>
                         }
                     </ul>
-                    
                 </div>
                 <div class="col-2">
                     <div class="navbar-collapse collapse justify-content-end">
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <ul class="navbar-nav list-group-horizontal">
+                                @*<partial name="_UserConfiguration"/>*@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                                 </li>
-
                             </ul>
                         }
                         else

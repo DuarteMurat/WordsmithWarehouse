@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
@@ -11,10 +12,13 @@ namespace WordsmithWarehouse.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IImageHelper _imageHelper;
 
-        public AccountController(IUserHelper userHelper)
+        public AccountController(IUserHelper userHelper, 
+            IImageHelper imageHelper)
         {
             _userHelper = userHelper;
+            _imageHelper = imageHelper;
         }
 
         public IActionResult Login()
@@ -67,14 +71,24 @@ namespace WordsmithWarehouse.Controllers
                 var user = await _userHelper.GetUserByEmailAsync(model.Username);
                 if (user == null)
                 {
+                    var path = string.Empty;
+
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Users");
+                    else
+                    {
+                        path = "/images/Users/notfound.png";
+                    };
+
                     user = new User
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.Username,
                         UserName = model.Username,
+                        ImageURL = path,
                     };
-
+                    
                     var result = await _userHelper.AddUserAsync(user, model.Password);
                     if (result != IdentityResult.Success)
                     {
@@ -111,6 +125,7 @@ namespace WordsmithWarehouse.Controllers
             {
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
+                model.ImageURL = user.ImageURL;
             }
 
             return View(model);
@@ -126,6 +141,7 @@ namespace WordsmithWarehouse.Controllers
                 {
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
+                    user.ImageURL = model.ImageURL;
                     var response = await _userHelper.UpdateUserAsync(user);
                     if (response.Succeeded)
                     {

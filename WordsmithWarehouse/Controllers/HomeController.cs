@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Repositories.Interfaces;
 
@@ -15,14 +17,17 @@ namespace WordsmithWarehouse.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBookRepository _bookRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly IUserHelper _userHelper;
 
         public HomeController(ILogger<HomeController> logger,
-            ITagRepository tagRepository, IBookRepository bookRepository)
+            ITagRepository tagRepository, 
+            IBookRepository bookRepository,
+            IUserHelper userHelper)
         {
             _logger = logger;
             _tagRepository = tagRepository;
             _bookRepository = bookRepository;
-
+            _userHelper = userHelper;
         }
 
         public async Task<IActionResult> Index()
