@@ -32,15 +32,15 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var list = _bookRepository.GetAll().OrderBy(b => b.Title);
+            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
 
             List<BookViewModel> books = new List<BookViewModel>();
             foreach (var item in list)
             {
                 var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
-                itemToAdd.Author = _authorRepository.GetAuthorById(itemToAdd.AuthorId);
+                itemToAdd.Author = await _authorRepository.GetAuthorById(itemToAdd.AuthorId);
                 books.Add(itemToAdd);
             }
             return View(books);
@@ -59,7 +59,7 @@ namespace WordsmithWarehouse.Controllers
             var model = _converterHelper.ConvertToBookViewModel(book);
 
             model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
-            model.Author = _authorRepository.GetAuthorById(model.AuthorId);
+            model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
 
             return View(model);
         }
@@ -120,7 +120,7 @@ namespace WordsmithWarehouse.Controllers
 
 
             var model = _converterHelper.ConvertToBookViewModel(book);
-            model.ModelAuthor = _authorRepository.GetAuthorById(book.AuthorId);
+            model.ModelAuthor = await _authorRepository.GetAuthorById(book.AuthorId);
 
             model.Authors = _authorRepository.GetComboAuthors();
             model.Tags = _tagRepository.MatchTagList(book.tagIds);
@@ -192,9 +192,9 @@ namespace WordsmithWarehouse.Controllers
             return View();
         }
 
-        public IActionResult SearchBooks()
+        public async Task<IActionResult> SearchBooks()
         {
-            var list = _bookRepository.GetAll().OrderBy(b => b.Title);
+            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
 
             List<BookViewModel> books = new List<BookViewModel>();
             foreach (var item in list)

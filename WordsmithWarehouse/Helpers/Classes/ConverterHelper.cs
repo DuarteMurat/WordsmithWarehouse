@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Collections;
 using System.Collections.Generic;
 using WordsmithWarehouse.Helpers.Interfaces;
@@ -150,6 +151,28 @@ namespace WordsmithWarehouse.Helpers.Classes
                 IsCancelled = bookReservation.IsCancelled,
                 IsCompleted = bookReservation.IsCompleted,
             };
+        }
+
+        public User ConvertToUser(RegisterNewUserViewModel model, string path, bool isNew)
+        {
+            return new User 
+            { 
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                ImageURL = model.ImageURL,
+            };
+
+        }
+
+        public RegisterNewUserViewModel ConvertToRegisterNewUserViewModel(User user)
+        {
+            return new RegisterNewUserViewModel 
+            { 
+                 FirstName = user.FirstName,
+                 LastName = user.LastName,
+                 ImageURL = user.ImageURL,
+            };
+
         }
     }
 }
