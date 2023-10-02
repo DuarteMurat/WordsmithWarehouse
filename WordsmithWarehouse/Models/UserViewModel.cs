@@ -9,5 +9,7 @@ namespace WordsmithWarehouse.Models
     {
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
+
+        public string Password { get; set; }
     }
 }

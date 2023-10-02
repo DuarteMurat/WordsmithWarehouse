@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Entities;
+using System.Collections.Generic;
 using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Helpers.Interfaces
@@ -26,5 +27,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         User ConvertToUser (RegisterNewUserViewModel model, string path, bool isNew);
 
         RegisterNewUserViewModel ConvertToRegisterNewUserViewModel(User user);
+
+        ManageUserViewModel ConvertToManageUserViewModel(User user);
+
+        IEnumerable<ManageUserViewModel> BulkConvertToManageUserViewModel(IEnumerable<User> users);
     }
 }

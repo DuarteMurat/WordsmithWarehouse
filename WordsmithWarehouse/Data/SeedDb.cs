@@ -39,6 +39,7 @@ namespace WordsmithWarehouse.Data
                     PhoneNumber = "987654321",
                     Address = "Rua de Almada",
                     ImageURL= "/images/Users/notfound.png",
+                    EmailConfirmed = true,
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");
