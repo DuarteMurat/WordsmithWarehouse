@@ -78,5 +78,18 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             return await _userManager.UpdateAsync(user);
         }
+
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+           return await _userManager.FindByNameAsync(username);
+        }
+
+        public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
+        {
+            return await _signInManager.CheckPasswordSignInAsync(
+                user,
+                password,
+                false);
+        }
     }
 }

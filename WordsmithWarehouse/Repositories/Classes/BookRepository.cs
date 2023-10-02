@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,11 @@ namespace WordsmithWarehouse.Repositories.Classes
         public BookRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public IQueryable GetAllWithUsers()
+        {
+            return _context.Books.Include(p => p.User);
         }
 
         public string GetBookIds(List<Book> books)

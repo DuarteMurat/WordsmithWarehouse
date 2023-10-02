@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,7 +91,10 @@ namespace WordsmithWarehouse.Controllers
                 var path = string.Empty;
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                }
+
                 else
                 {
                     path = "/images/Books/notfound.png";
@@ -142,7 +146,9 @@ namespace WordsmithWarehouse.Controllers
                     var path = model.ImageURL;
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                    }
 
                     var book = await _bookRepository.GetByIdAsync(model.Id);
                     book = _converterHelper.ConvertToBook(model, path, false);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,7 +115,9 @@ namespace WordsmithWarehouse.Controllers
                     var path = model.ImageURL;
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Authors");
+                    }
 
                     var author = await _authorRepository.GetByIdAsync(model.Id);
                     author = _converterHelper.ConvertToAuthor(model, path, false);

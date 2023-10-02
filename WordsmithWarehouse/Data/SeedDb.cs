@@ -36,7 +36,9 @@ namespace WordsmithWarehouse.Data
                     LastName = "WordsmithWarehouse",
                     Email = "bf0teste@gmail.com",
                     UserName = "Admin",
-                    PhoneNumber = "987654321"
+                    PhoneNumber = "987654321",
+                    Address = "Rua de Almada",
+                    ImageURL= "/images/Users/notfound.png",
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");

@@ -24,6 +24,10 @@ namespace WordsmithWarehouse.Data
                 .HasIndex(t => t.Name)
                 .IsUnique();
 
+            builder.Entity<User>()
+                .HasIndex(u=>u.UserName)
+                .IsUnique();
+
             base.OnModelCreating(builder); 
         }
     }
