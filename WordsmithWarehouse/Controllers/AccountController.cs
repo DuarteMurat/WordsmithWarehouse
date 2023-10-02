@@ -12,22 +12,26 @@ using System.Text;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Helpers.Classes;
 
 namespace WordsmithWarehouse.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IMailHelper _mailHelper;
         private readonly IConfiguration _configuration;
         private readonly IImageHelper _imageHelper;
 
         public AccountController(IUserHelper userHelper, 
             IImageHelper imageHelper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMailHelper mailHelper)
         {
             _userHelper = userHelper;
             _imageHelper = imageHelper;
             _configuration = configuration;
+            _mailHelper = mailHelper;
         }
 
         public IActionResult Login()
@@ -107,17 +111,21 @@ namespace WordsmithWarehouse.Controllers
                         return View(model);
                     }
 
-                    var loginViewModel = new LoginViewModel
+                    string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.Username, 
-                    };
+                        userid = user.Id,
+                        token = myToken
+                    }, protocol: HttpContext.Request.Scheme);
 
-                    var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    if (result2.Succeeded)
+                    Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                       $"To allow the user, " +
+                       $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+                    if (response.IsSuccess)
                     {
-                        return RedirectToAction("Index", "Home");
+                        ViewBag.Message = "The instructions to allow you user has been sent to email";
+                        return View(model);
                     }
 
 
@@ -211,7 +219,7 @@ namespace WordsmithWarehouse.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                var user = await _userHelper.GetUserByEmailAsync(model.Username);
+                var user = await _userHelper.GetUserByUsernameAsync(model.Username);
                 if (user != null)
                 {
                     var result = await _userHelper.ValidatePasswordAsync(
@@ -247,6 +255,29 @@ namespace WordsmithWarehouse.Controllers
             }
 
             return BadRequest();
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return NotFound();
+            }
+
+            var user = await _userHelper.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+
+            }
+
+            return View();
+
         }
 
         public IActionResult NotAuthorized()
