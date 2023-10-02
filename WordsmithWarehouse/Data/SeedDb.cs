@@ -54,6 +54,8 @@ namespace WordsmithWarehouse.Data
             if (!isInRole)
             {
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             if (!_context.Authors.Any())
