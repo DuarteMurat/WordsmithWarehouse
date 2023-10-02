@@ -1,13 +1,14 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MimeKit.Cryptography;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WordsmithWarehouse.Models
 {
-    public class BookViewModel : Book
+    public class BookViewModel : GlobalViewModel
     {
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
@@ -18,5 +19,37 @@ namespace WordsmithWarehouse.Models
         public List<Tag> Tags { get; set; }
 
         public Author ModelAuthor { get; set; }
+
+        // added after globalviewmodel
+
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Subtitle { get; set; }
+
+        public string ISBN { get; set; }
+
+        public Author Author { get; set; }
+
+        public int AuthorId { get; set; }
+        
+        public string tagIds { get; set; }
+
+        public User User { get; set; }
+
+        public string CoverType { get; set; }
+
+        public string Pages { get; set; }
+
+        public string Publisher { get; set; }   
+
+        public string Synopsis { get; set; } 
+
+        public bool IsAvailableOnline{ get; set; }
+
+        public bool IsAvailablePhysical { get; set; }
+
+        public string ImageURL { get; set; }
     }
 }

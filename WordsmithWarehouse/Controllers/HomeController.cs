@@ -15,6 +15,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly ITagRepository _tagRepository;
         private readonly IUserHelper _userHelper;
+        private User _user;
 
         public HomeController(ILogger<HomeController> logger,
             ITagRepository tagRepository,
@@ -37,7 +38,7 @@ namespace WordsmithWarehouse.Controllers
             if (this.User.Identity.IsAuthenticated)
             {
                 var user = _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-                model.ImageURL = user.Result.ImageURL;
+                model.UserImageURL = user.Result.ImageURL;
             }
 
             // separate best sellers
@@ -45,7 +46,7 @@ namespace WordsmithWarehouse.Controllers
 
             model.Books = await _bookRepository.GetBooksFromString(model.BestSellerBooks);
 
-            ViewData["ImageURL"] = model.ImageURL;
+            ViewData["ImageURL"] = model.UserImageURL;
 
             return View(model);
         }

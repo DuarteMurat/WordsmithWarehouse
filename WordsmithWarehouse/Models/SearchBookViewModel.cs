@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WordsmithWarehouse.Models
 {
-    public class SearchBookViewModel 
+    public class SearchBookViewModel : GlobalViewModel
     {
         public int BookId { get; set; }
 

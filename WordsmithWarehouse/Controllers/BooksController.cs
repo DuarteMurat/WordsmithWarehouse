@@ -18,30 +18,34 @@ namespace WordsmithWarehouse.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly ITagRepository _tagRepository;
         private readonly IAuthorRepository _authorRepository;
+        private readonly IUserHelper _userHelper;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper,
             ITagRepository tagRepository,
-            IAuthorRepository authorRepository)
+            IAuthorRepository authorRepository,
+            IUserHelper userHelper)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
             _tagRepository = tagRepository;
             _authorRepository = authorRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
+            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();            
 
             List<BookViewModel> books = new List<BookViewModel>();
             foreach (var item in list)
             {
                 var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
                 itemToAdd.Author = await _authorRepository.GetAuthorById(itemToAdd.AuthorId);
+
                 books.Add(itemToAdd);
             }
             return View(books);
@@ -67,13 +71,20 @@ namespace WordsmithWarehouse.Controllers
 
         // GET: Books/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new BookViewModel
             {
                 Authors = _authorRepository.GetComboAuthors(),
                 Tags = _tagRepository.GetTagsList(),
             };
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.UserImageURL = user.ImageURL;
+            }
+            ViewData["ImageURL"] = model.UserImageURL;
 
             return View(model);
         }

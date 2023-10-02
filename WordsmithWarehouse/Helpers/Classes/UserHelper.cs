@@ -85,7 +85,7 @@ namespace WordsmithWarehouse.Helpers.Classes
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-           return await _userManager.FindByNameAsync(username);
+            return await _userManager.FindByNameAsync(username);
         }
 
         public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
