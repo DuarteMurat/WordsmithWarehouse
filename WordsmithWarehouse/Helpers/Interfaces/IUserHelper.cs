@@ -1,5 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Models;
 
@@ -34,5 +36,7 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
         Task<User> GetUserByIdAsync(string userId);
+
+        Task<List<User>> GetAllAsync();
     }
 }

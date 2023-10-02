@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Helpers.Classes;
+using System.Collections.Generic;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -22,16 +23,19 @@ namespace WordsmithWarehouse.Controllers
         private readonly IMailHelper _mailHelper;
         private readonly IConfiguration _configuration;
         private readonly IImageHelper _imageHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public AccountController(IUserHelper userHelper, 
             IImageHelper imageHelper,
             IConfiguration configuration,
-            IMailHelper mailHelper)
+            IMailHelper mailHelper,
+            IConverterHelper converterHelper)
         {
             _userHelper = userHelper;
             _imageHelper = imageHelper;
             _configuration = configuration;
             _mailHelper = mailHelper;
+            _converterHelper = converterHelper;
         }
 
         public IActionResult Login()
@@ -81,7 +85,7 @@ namespace WordsmithWarehouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.GetUserByEmailAsync(model.Username);
+                var user = await _userHelper.GetUserByEmailAsync(model.Email);
                 if (user == null)
                 {
                     var path = string.Empty;
@@ -129,7 +133,7 @@ namespace WordsmithWarehouse.Controllers
                     }
 
 
-                    ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+                    ModelState.AddModelError(string.Empty, "The user couldn't be registered.");
                     return View(model);
                 }
             }
@@ -283,6 +287,85 @@ namespace WordsmithWarehouse.Controllers
         public IActionResult NotAuthorized()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ManageUsers()
+        {
+            var users = await _userHelper.GetAllAsync();
+
+            var usersConverted = _converterHelper.BulkConvertToManageUserViewModel(users);
+
+            return View(usersConverted);
+        }
+
+        public IActionResult CreateUsers()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUsers(RegisterNewUserViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
+                }
+
+                else
+                {
+                    path = "/images/Users/notfound.png";
+                };
+
+                var user = _converterHelper.ConvertToUser(model, path, false);
+
+                user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.Username,
+                    Email = model.Email,
+                    ImageURL = path,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                };
+
+                var result = await _userHelper.AddUserAsync(user, model.Password);
+                if (result != IdentityResult.Success)
+                {
+                    ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                    return View(model);
+                }
+
+                string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                string tokenLink = Url.Action("ConfirmEmail", "Account", new
+                {
+                    userid = user.Id,
+                    token = myToken
+                }, protocol: HttpContext.Request.Scheme);
+
+                Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                   $"Hi \"{model.FirstName}\", congrats on joining our team, here is your information to login in into our platform " +
+                   $"Username:\"{model.Username}\"" +
+                   $"Password:\"{model.Password}\"" +
+                   $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+                if (response.IsSuccess)
+                {
+                    ViewBag.Message = "The instructions to allow you user has been sent to email";
+                    return View(model);
+                }
+
+
+                ModelState.AddModelError(string.Empty, "The user couldn't be registered.");
+                return View(model);
+            }
+
+            return View(model);
         }
     }
 }

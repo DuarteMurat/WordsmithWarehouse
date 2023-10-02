@@ -156,10 +156,12 @@ namespace WordsmithWarehouse.Helpers.Classes
         public User ConvertToUser(RegisterNewUserViewModel model, string path, bool isNew)
         {
             return new User 
-            { 
+            {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                ImageURL = model.ImageURL,
+                ImageURL = path,
+                Email = model.Email,
+                UserName = model.Username,
             };
 
         }
@@ -173,6 +175,37 @@ namespace WordsmithWarehouse.Helpers.Classes
                  ImageURL = user.ImageURL,
             };
 
+        }
+
+        public ManageUserViewModel ConvertToManageUserViewModel(User user)
+        {
+            return new ManageUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ImageURL = user.ImageURL,
+                Email = user.Email,
+                UserName= user.UserName,
+            };
+        }
+
+        public IEnumerable<ManageUserViewModel> BulkConvertToManageUserViewModel(IEnumerable<User> users)
+        {
+            List<ManageUserViewModel> convertedUsers = new List<ManageUserViewModel>();
+            foreach(var user in users)
+            {
+                convertedUsers.Add(new ManageUserViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ImageURL = user.ImageURL,
+                    Email = user.Email,
+                    UserName = user.UserName,
+                });
+
+            }
+            
+            return convertedUsers;
         }
     }
 }

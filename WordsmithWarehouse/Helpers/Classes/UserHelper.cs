@@ -1,6 +1,10 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
 
@@ -105,6 +109,11 @@ namespace WordsmithWarehouse.Helpers.Classes
         public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _userManager.Users.ToListAsync();
         }
     }
 }
