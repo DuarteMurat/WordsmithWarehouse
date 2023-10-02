@@ -23,6 +23,10 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 
         Task AddUserToRoleAsync(User user, string roleName);
 
+        Task<User> GetUserByUsernameAsync(string username);
+
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> ValidatePasswordAsync(User user, string password);
     }
 }

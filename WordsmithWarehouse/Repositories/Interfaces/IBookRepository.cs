@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WordsmithWarehouse.Repositories.Interfaces
@@ -11,5 +12,7 @@ namespace WordsmithWarehouse.Repositories.Interfaces
         string GetBookIds(List<Book> books);
 
         Task<List<Book>> GetBooksFromString(string source);
+
+        public IQueryable GetAllWithUsers();
     }
 }

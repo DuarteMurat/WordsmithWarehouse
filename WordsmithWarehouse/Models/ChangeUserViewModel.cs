@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class ChangeUserViewModel
+    public class ChangeUserViewModel 
     {
         [Required]
         [Display(Name = "First Name")]
@@ -12,6 +12,15 @@ namespace WordsmithWarehouse.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Required]
+        public string Username { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string ImageURL { get; set; }

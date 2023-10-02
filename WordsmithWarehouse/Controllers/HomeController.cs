@@ -1,10 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
@@ -20,7 +17,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IUserHelper _userHelper;
 
         public HomeController(ILogger<HomeController> logger,
-            ITagRepository tagRepository, 
+            ITagRepository tagRepository,
             IBookRepository bookRepository,
             IUserHelper userHelper)
         {
@@ -32,16 +29,24 @@ namespace WordsmithWarehouse.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // get all books
             var model = new FrontPageViewModel
             {
                 Books = _bookRepository.GetBooksList(),
             };
 
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var user = _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.ImageURL = user.Result.ImageURL;
+            }
+
             // separate best sellers
             model.BestSellerBooks = await _tagRepository.GetBooksWithTags(model.Books, "Best Seller");
 
             model.Books = await _bookRepository.GetBooksFromString(model.BestSellerBooks);
+
+            ViewData["ImageURL"] = model.ImageURL;
+
             return View(model);
         }
 
