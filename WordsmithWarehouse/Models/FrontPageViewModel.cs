@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class FrontPageViewModel 
+    public class FrontPageViewModel : GlobalViewModel
     {
         public List<Book> Books { get; set; }
 

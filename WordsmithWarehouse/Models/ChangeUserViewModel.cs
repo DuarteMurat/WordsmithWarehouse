@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class ChangeUserViewModel 
+    public class ChangeUserViewModel : GlobalViewModel
     {
         [Required]
         [Display(Name = "First Name")]
