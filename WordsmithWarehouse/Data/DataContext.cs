@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Data
 {
@@ -30,5 +31,7 @@ namespace WordsmithWarehouse.Data
 
             base.OnModelCreating(builder); 
         }
+
+        public DbSet<WordsmithWarehouse.Models.ManageUserViewModel> ManageUserViewModel { get; set; }
     }
 }

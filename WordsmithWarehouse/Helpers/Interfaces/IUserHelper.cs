@@ -38,5 +38,7 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Task<User> GetUserByIdAsync(string userId);
 
         Task<List<User>> GetAllAsync();
+
+        Task DeactivateUserAsync(User user, string roleName);
     }
 }
