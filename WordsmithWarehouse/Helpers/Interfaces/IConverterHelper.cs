@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WordsmithWarehouse.Models;
 
 namespace WordsmithWarehouse.Helpers.Interfaces
@@ -30,6 +31,6 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 
         ManageUserViewModel ConvertToManageUserViewModel(User user);
 
-        IEnumerable<ManageUserViewModel> BulkConvertToManageUserViewModel(IEnumerable<User> users);
+        Task<IEnumerable<ManageUserViewModel>> BulkConvertToManageUserViewModel(IEnumerable<User> users);
     }
 }

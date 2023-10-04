@@ -32,6 +32,9 @@
                                 @Html.DisplayNameFor(model => model.ImageURL)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Role)
+                            </th>
+                            <th>
                                 Options
                             </th>
                         </tr>
@@ -55,6 +58,18 @@
                                         <img src="@Url.Content(item.ImageURL)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto">
                                     }
                                 </td>
+                                @if (item.Role == "Deactivated")
+                                {
+                                    <td style="color: red">
+                                        @Html.DisplayFor(modelItem => item.Role)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Role)
+                                    </td>
+                                }
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i> Edit</a> |
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i> Details</a> |
