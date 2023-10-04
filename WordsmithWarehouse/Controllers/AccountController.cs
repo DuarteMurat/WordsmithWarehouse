@@ -53,6 +53,12 @@ namespace WordsmithWarehouse.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userHelper.GetUserByUsernameAsync(model.Username);
+                if(await _userHelper.IsUserInRoleAsync(user, "Deactivated"))
+                {
+                    this.ModelState.AddModelError(string.Empty, "Failed to login!");
+                    return View(model);
+                }
                 var result = await _userHelper.LoginAsync(model);
                 if (result.Succeeded)
                 {
@@ -109,6 +115,7 @@ namespace WordsmithWarehouse.Controllers
                     };
                     
                     var result = await _userHelper.AddUserAsync(user, model.Password);
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
                     if (result != IdentityResult.Success)
                     {
                         ModelState.AddModelError(string.Empty, "The user couldn't be created.");
@@ -335,6 +342,7 @@ namespace WordsmithWarehouse.Controllers
                 };
 
                 var result = await _userHelper.AddUserAsync(user, model.Password);
+                await _userHelper.AddUserToRoleAsync(user, "Employee");
                 if (result != IdentityResult.Success)
                 {
                     ModelState.AddModelError(string.Empty, "The user couldn't be created.");
@@ -349,9 +357,9 @@ namespace WordsmithWarehouse.Controllers
                 }, protocol: HttpContext.Request.Scheme);
 
                 Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
-                   $"Hi \"{model.FirstName}\", congrats on joining our team, here is your information to login in into our platform " +
-                   $"Username:\"{model.Username}\"" +
-                   $"Password:\"{model.Password}\"" +
+                   $"Hi \"{model.FirstName}\", congrats on joining our team, here is your information to login in into our platform <br/><br/>" +
+                   $"Username:\"{model.Username}\" <br/><br/>" +
+                   $"Password:\"{model.Password}\" <br/><br/>" +
                    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
                 if (response.IsSuccess)
@@ -367,6 +375,37 @@ namespace WordsmithWarehouse.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Delete(string username)
+        {
+            if(username == null)
+            {
+                return View();
+            }
+            var user = await _userHelper.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                return new NotFoundViewResult("BookNotFound");
+            }
+
+            var convertedUser = _converterHelper.ConvertToManageUserViewModel(user);
+
+            return View(convertedUser);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string username, string roleName)
+        {
+            var user = await _userHelper.GetUserByUsernameAsync(username);
+
+            if (await _userHelper.IsUserInRoleAsync(user, "Customer"))
+            {
+                await _userHelper.DeactivateUserAsync(user, "Customer");
+                await _userHelper.AddUserToRoleAsync(user, "Deactivated");
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
     }
 }
-

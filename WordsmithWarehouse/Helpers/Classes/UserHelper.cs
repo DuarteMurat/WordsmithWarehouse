@@ -115,5 +115,10 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             return await _userManager.Users.ToListAsync();
         }
+
+        public async Task DeactivateUserAsync (User user, string roleremoved)
+        {
+            await _userManager.RemoveFromRoleAsync(user, roleremoved);
+        }
     }
 }

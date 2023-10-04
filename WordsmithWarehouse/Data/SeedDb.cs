@@ -26,6 +26,8 @@ namespace WordsmithWarehouse.Data
 
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Customer");
+            await _userHelper.CheckRoleAsync("Employee");
+            await _userHelper.CheckRoleAsync("Deactivated");
 
             var user = await _userHelper.GetUserByEmailAsync("bf0teste@gmail.com");
             if (user == null)
