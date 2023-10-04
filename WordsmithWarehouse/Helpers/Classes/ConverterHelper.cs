@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
 
@@ -9,6 +10,11 @@ namespace WordsmithWarehouse.Helpers.Classes
 {
     public class ConverterHelper : IConverterHelper
     {
+        private readonly IUserHelper _userHelper;
+        public ConverterHelper(IUserHelper userHelper)
+        {
+            _userHelper = userHelper;
+        }
         public Book ConvertToBook(BookViewModel model, string path, bool isNew)
         {
             return new Book
@@ -189,11 +195,27 @@ namespace WordsmithWarehouse.Helpers.Classes
             };
         }
 
-        public IEnumerable<ManageUserViewModel> BulkConvertToManageUserViewModel(IEnumerable<User> users)
+        public async Task<IEnumerable<ManageUserViewModel>> BulkConvertToManageUserViewModel(IEnumerable<User> users)
         {
+            string customer = "Customer";
+            string employee = "Employee";
+            string admin = "Admin";
+            string deactivated = "Deactivated";
+            string role = string.Empty;
+
             List<ManageUserViewModel> convertedUsers = new List<ManageUserViewModel>();
             foreach(var user in users)
             {
+                if (await _userHelper.IsUserInRoleAsync(user, customer))
+                    role = customer;
+                if (await _userHelper.IsUserInRoleAsync(user, employee))
+                    role = employee;
+                if (await _userHelper.IsUserInRoleAsync(user, admin))
+                    role = admin;
+                if (await _userHelper.IsUserInRoleAsync(user, deactivated))
+                    role = deactivated;
+
+
                 convertedUsers.Add(new ManageUserViewModel
                 {
                     FirstName = user.FirstName,
@@ -201,6 +223,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                     ImageURL = user.ImageURL,
                     Email = user.Email,
                     UserName = user.UserName,
+                    Role = role,
                 });
 
             }

@@ -299,8 +299,8 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> ManageUsers()
         {
             var users = await _userHelper.GetAllAsync();
-
-            var usersConverted = _converterHelper.BulkConvertToManageUserViewModel(users);
+            
+            var usersConverted = await _converterHelper.BulkConvertToManageUserViewModel(users);
 
             return View(usersConverted);
         }
