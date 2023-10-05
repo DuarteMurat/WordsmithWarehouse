@@ -217,7 +217,7 @@ namespace WordsmithWarehouse.Controllers
             foreach (var item in list)
             {
                 var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
-                itemToAdd.Tags = _tagRepository.GetTagsList();
+                itemToAdd.Tags = _tagRepository.MatchTagList(itemToAdd.tagIds);
                 books.Add(itemToAdd);
             }
 

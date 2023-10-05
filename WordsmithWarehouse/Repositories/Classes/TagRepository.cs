@@ -35,6 +35,7 @@ namespace WordsmithWarehouse.Repositories.Classes
                 Id = t.Id,
                 Name = t.Name,
                 isActive = t.isActive,
+                isAdmin = t.isAdmin,
             }).OrderBy(t => t.Name).ToList();
 
             return list;
