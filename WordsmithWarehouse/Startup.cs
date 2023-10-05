@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vereyon.Web;
 using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Helpers.Classes;
 using WordsmithWarehouse.Helpers.Interfaces;
@@ -66,7 +67,8 @@ namespace WordsmithWarehouse
             {
                 config.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
+            services.AddFlashMessage();
             services.AddTransient<SeedDb>();
 
             //Repositories
