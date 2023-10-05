@@ -40,5 +40,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Task<List<User>> GetAllAsync();
 
         Task DeactivateUserAsync(User user, string roleName);
+
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
     }
 }
