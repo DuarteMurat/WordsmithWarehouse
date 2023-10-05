@@ -8,37 +8,39 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <body>
-    <div class="row justify-content-center">
-        <div class="col-8">
-            <div style="padding-bottom: 70px; padding-top: 40px;">
-                <input id="myInput" class="form-control" type="text" placeholder="Search for a book..." style="width: 100%;">
+    <div id="bookSearch">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div style="padding-bottom: 70px; padding-top: 40px;">
+                    <input id="myInput" class="form-control" type="text" placeholder="Search for a book..." style="width: 100%;">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <h1 style="text-align: center">Filters</h1>
-            <table border="1" title="">
-                @{
-                    var book = Model[1];
+        <div class="row">
+            <div class="col-2">
+                <h1 style="text-align: center">Filters</h1>
 
-                    if (book.Tags != null)
-                    {
-                        for (int i = 0; i < book.Tags.Count; i++)
-                        {
-                            <label class="inputClassName row">
-                                @Html.DisplayName(book.Tags[i].Name)&thinsp;
-                                <input asp-for="@book.Tags[i].isActive" type="checkbox" data-tagtype="@book.Tags[i].Name" />
-                                <input asp-for="@book.Tags[i].Name" type="hidden" value="@book.Tags[i].Name" />
-                                <input asp-for="@book.Tags[i].Id" type="hidden" value="@book.Tags[i].Id" />
-                            </label>
-                        }
-                    }
-                }
-            </table>
-        </div>
-        <div class="col">
-            <partial name="_BookCard" />
+                <div v-for="i in userFilters">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group">
+                                <input type="checkbox" aria-label="Checkbox for following text input" v-on:change="onTagCheckboxClicked(i.id)">
+                            </div>
+                        </div>
+                        &thinsp;&thinsp; {{i.name}}
+                    </div>
+                </div>
+            </div>
+            <div class="col" v-for="i in filteredBooks">
+                <div class="item" v-on:click="onBookClick(i.id)">
+                    <div class="item-content">
+                        <a><img alt="Image" :src="i.imageURL" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage" v-model="i.id"></a>
+                        <div class="book-title">
+                            <a style="color:black" v-model="i.id">{{i.title}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -52,6 +54,15 @@
             });
         });
     });
+
+    
+    var TagsJson = @Html.Raw(Json.Serialize(Model[0].Tags));
+    var BooksJson = @Html.Raw(Json.Serialize(Model));
 </script>
 
+@section Scripts{
+    <script src="~/js/BookSearch.js"></script>
+
+        
+}
 
