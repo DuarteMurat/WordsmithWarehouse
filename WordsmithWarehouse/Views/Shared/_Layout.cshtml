@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="~/test1.png" rel="shortcut icon" type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
 </head>
@@ -24,51 +25,23 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
-                <div class="col-7">
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
-                        <ul class="navbar-nav flex-grow-0">
-                        </ul>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-1">
-                    <ul class="navbar-nav flex-grow-0">
-                        @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration</a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="ManageUsers">Manage users</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Books" asp-action="Index">Manage Books</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Tags" asp-action="Index">Manage Tags</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Authors" asp-action="Index">Manage Authors</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Libraries" asp-action="Index">Manage Libraries</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="BookReservations" asp-action="Index">Create Reservations</a>
-                                        <a class="nav-link text-dark " asp-area="" asp-controller="Books" asp-action="SearchBooks">Search Books</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                </div>
                 <div class="col-2">
                     <div class="navbar-collapse collapse justify-content-end">
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <ul class="navbar-nav list-group-horizontal">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@this.User.Identity.Name</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </li>
+                                </ul>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser">
                                         <img src="@Url.Content(ViewData["ImageURL"] as string)" alt="image" style="max-width:60px; max-height:60px; border-radius:100%">
                                     </a>
                                     @*<a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser"><img src="@url.content(model.imageurl)" alt="image" style="max-width:60px;max-height:60px;border-radius:100%"></a>*@
                                     @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>*@
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                                 </li>
                             </ul>
                         }
@@ -96,7 +69,40 @@
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div id="mySidenav" class="sidenav">
+                <div class="row">
+                    <div class="col" style="align-content:start">
+                        <i class="fas fa-user-cog fa-4x" style="color: #ffffff; padding-left:25px; margin-bottom:70px;"></i>
+                    </div>
+                    <div class="col" style="align-content: end">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    </div>
+                </div>
+                
+                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="ManageUsers">Users<i class="fas fa-users" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="Index"> Books<i class="fas fa-book" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="Tags" asp-action="Index"> Tags<i class="fas fa-tags" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="Authors" asp-action="Index"> Authors<i class="fas fa-feather-alt" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="Libraries" asp-action="Index"> Libraries<i class="fas fa-landmark" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="BookReservations" asp-action="Index">Reservations<i class="fas fa-exchange-alt" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <hr />
+                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="SearchBooks">Search Books<i class="fas fa-search" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+            </div>
+
+            <div id="main">
+                @RenderBody()
+                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+                {
+                    <button onclick="openNav()" class="menuButton" style="background-color:#96a2b2">
+                        <i class="fas fa-arrow-right fa-3x" style="color:white"></i>
+                    </button>
+                }
+            </div>
         </main>
     </div>
 
@@ -108,7 +114,7 @@
                     <p class="text-justify">
                     <p>Welcome to Wordsmith Warehouse &ndash; Your Online Literary Haven!</p>
                     <p>
-                    Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
+                        Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
                     </p>
                 </div>
 
@@ -140,7 +146,7 @@
                         <a href="#">Wordsmith Warehouse</a>.
                     </p>
                 </div>
-                
+
                 <div class="footer-buttons">
                     <a href="https://github.com/DuarteMurat" class="github-button" target="_blank">
                         <img src="/images./github-logo.png" alt="GitHub Logo">
@@ -159,5 +165,18 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+    </script>
 </body>
 </html>
