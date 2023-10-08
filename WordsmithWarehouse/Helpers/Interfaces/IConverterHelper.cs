@@ -9,7 +9,11 @@ namespace WordsmithWarehouse.Helpers.Interfaces
     {
         Book ConvertToBook(BookViewModel model, string path, bool isNew);
 
+        Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew);
+
         BookViewModel ConvertToBookViewModel(Book book);
+
+        DetailsBookViewModel ConvertToDetailsBookViewModel(Book book);
 
         Author ConvertToAuthor(AuthorViewModel model, string path, bool isNew);
 
@@ -32,5 +36,7 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         ManageUserViewModel ConvertToManageUserViewModel(User user);
 
         Task<IEnumerable<ManageUserViewModel>> BulkConvertToManageUserViewModel(IEnumerable<User> users);
+
+        
     }
 }

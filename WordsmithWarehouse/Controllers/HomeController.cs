@@ -35,11 +35,12 @@ namespace WordsmithWarehouse.Controllers
                 Books = _bookRepository.GetBooksList(),
             };
 
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var user = _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-                model.UserImageURL = user.Result.ImageURL;
-            }
+            //if (this.User.Identity.IsAuthenticated)
+            //{
+            //    var user = _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            //    model.UserImageURL = user.Result.ImageURL;
+            //}
+
 
             // separate best sellers
             model.BestSellerBooks = await _tagRepository.GetBooksWithTags(model.Books, "Best Seller");
