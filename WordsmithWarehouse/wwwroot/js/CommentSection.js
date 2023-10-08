@@ -61,6 +61,13 @@ new Vue({
         },
         getId(value) {
             $('#userId').val(value);
+        },
+        verifyButtons(commentId) {
+            if (this.userId === commentId) {
+                return true;
+            }
+
+            return false;
         }
     }
 
