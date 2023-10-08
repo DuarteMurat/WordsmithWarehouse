@@ -89,42 +89,29 @@
         </div>
     </dl>
 
-    <div class="row">
-        <div>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-            <h1>Placeholder</h1>
-        </div>
-    </div>
     <div id="commentSection">
         <div class="row">
             <post-template></post-template>
         </div>
         <hr />
-        <div class="row" v-for="i in comments">
+        <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
             <div class="row">
                 <div class="col">
                     @*image*@
                     <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
+                    <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
+                        <div class="row">
+                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
+                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col" style="text-align: right">
-                    @*name/date/rating*@    
+                <div  style="text-align: left; max-width:800px">
+                    @*name/date/rating*@ 
                     <h5>{{i.name}}</h5>
-                    <h5 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h5>
-                    <h5 style="width: 45px; max-height:10px" /> {{i.rating}}/10
-                    <h5> {{i.text}}</h5>
+                    <h6 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h6>
+                    <h6> Rating: {{i.rating}}/10</h6>
+                    <p><cite>"{{i.text}}"</cite></p>
                 </div>
             </div>
         </div>
@@ -152,24 +139,18 @@
             @*comment*@
             <form asp-action="Details" style="width:700px">
                 <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
-                <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
-                <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+                <div col-7>
+                    <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
+                    <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+                </div>
             </form>
 
         </div>
-        <div>
+        <div style="padding-left:15px; padding-top:30px">
             <h4>Rating</h4>
             <input type="text" asp-for="CurrentUserCommentRating" style="width: 45px; max-height:10px" /> /10
         </div>
-        <div v-if="">
-
-        </div>
-
     </div>
-</template>
-
-<template id="comment-template">
-
 </template>
 
 @section scripts{
