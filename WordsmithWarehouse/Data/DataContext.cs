@@ -11,8 +11,9 @@ namespace WordsmithWarehouse.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Library> Libraries { get; set; }
-
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<BookReservation> BookReservations { get; set; }
+        public DbSet<BookComments> BookComments { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -26,12 +27,10 @@ namespace WordsmithWarehouse.Data
                 .IsUnique();
 
             builder.Entity<User>()
-                .HasIndex(u=>u.UserName)
+                .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            base.OnModelCreating(builder); 
+            base.OnModelCreating(builder);
         }
-
-        public DbSet<WordsmithWarehouse.Models.ManageUserViewModel> ManageUserViewModel { get; set; }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using ClassLibrary.Entities;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
@@ -36,6 +34,27 @@ namespace WordsmithWarehouse.Helpers.Classes
             };
         }
 
+        public Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew)
+        {
+            return new Book
+            {
+                Id = isNew ? 0 : model.Id,
+                ImageURL = path,
+                IsAvailableOnline = model.IsAvailableOnline,
+                IsAvailablePhysical = model.IsAvailablePhysical,
+                Title = model.Title,
+                ISBN = model.ISBN,
+                Subtitle = model.Subtitle,
+                User = model.User,
+                AuthorId = model.AuthorId,
+                tagIds = model.tagIds,
+                CoverType = model.CoverType,
+                Pages = model.Pages,
+                Publisher = model.Publisher,
+                Synopsis = model.Synopsis,
+            };
+        }
+
         public BookViewModel ConvertToBookViewModel(Book book)
         {
             return new BookViewModel
@@ -49,11 +68,32 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Subtitle = book.Subtitle,
                 User = book.User,
                 AuthorId = book.AuthorId,
-                tagIds= book.tagIds,
-                CoverType= book.CoverType,
+                tagIds = book.tagIds,
+                CoverType = book.CoverType,
                 Pages = book.Pages,
                 Publisher = book.Publisher,
-                Synopsis= book.Synopsis,
+                Synopsis = book.Synopsis,
+            };
+        }
+
+        public DetailsBookViewModel ConvertToDetailsBookViewModel(Book book)
+        {
+            return new DetailsBookViewModel
+            {
+                Id = book.Id,
+                ImageURL = book.ImageURL,
+                IsAvailableOnline = book.IsAvailableOnline,
+                IsAvailablePhysical = book.IsAvailablePhysical,
+                Title = book.Title,
+                ISBN = book.ISBN,
+                Subtitle = book.Subtitle,
+                User = book.User,
+                AuthorId = book.AuthorId,
+                tagIds = book.tagIds,
+                CoverType = book.CoverType,
+                Pages = book.Pages,
+                Publisher = book.Publisher,
+                Synopsis = book.Synopsis,
             };
         }
 
@@ -144,7 +184,7 @@ namespace WordsmithWarehouse.Helpers.Classes
             };
         }
 
-        public BookReservationViewModel ConvertToBookReservationViewModel (BookReservation bookReservation)
+        public BookReservationViewModel ConvertToBookReservationViewModel(BookReservation bookReservation)
         {
             return new BookReservationViewModel
             {
@@ -161,7 +201,7 @@ namespace WordsmithWarehouse.Helpers.Classes
 
         public User ConvertToUser(RegisterNewUserViewModel model, string path, bool isNew)
         {
-            return new User 
+            return new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -174,11 +214,11 @@ namespace WordsmithWarehouse.Helpers.Classes
 
         public RegisterNewUserViewModel ConvertToRegisterNewUserViewModel(User user)
         {
-            return new RegisterNewUserViewModel 
-            { 
-                 FirstName = user.FirstName,
-                 LastName = user.LastName,
-                 ImageURL = user.ImageURL,
+            return new RegisterNewUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ImageURL = user.ImageURL,
             };
 
         }
@@ -191,7 +231,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 LastName = user.LastName,
                 ImageURL = user.ImageURL,
                 Email = user.Email,
-                UserName= user.UserName,
+                UserName = user.UserName,
             };
         }
 
@@ -204,7 +244,7 @@ namespace WordsmithWarehouse.Helpers.Classes
             string role = string.Empty;
 
             List<ManageUserViewModel> convertedUsers = new List<ManageUserViewModel>();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 if (await _userHelper.IsUserInRoleAsync(user, customer))
                     role = customer;
@@ -227,8 +267,9 @@ namespace WordsmithWarehouse.Helpers.Classes
                 });
 
             }
-            
+
             return convertedUsers;
         }
+
     }
 }

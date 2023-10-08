@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
@@ -19,13 +22,15 @@ namespace WordsmithWarehouse.Controllers
         private readonly ITagRepository _tagRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IUserHelper _userHelper;
+        private readonly ICommentRepository _commentRepository;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper,
             ITagRepository tagRepository,
             IAuthorRepository authorRepository,
-            IUserHelper userHelper)
+            IUserHelper userHelper,
+            ICommentRepository commentRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
@@ -33,6 +38,7 @@ namespace WordsmithWarehouse.Controllers
             _tagRepository = tagRepository;
             _authorRepository = authorRepository;
             _userHelper = userHelper;
+            _commentRepository = commentRepository;
         }
 
         // GET: Books
@@ -61,11 +67,12 @@ namespace WordsmithWarehouse.Controllers
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            var model = _converterHelper.ConvertToBookViewModel(book);
+            var model = _converterHelper.ConvertToDetailsBookViewModel(book);
 
             model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
             model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
-
+            model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
             return View(model);
         }
 
@@ -222,6 +229,35 @@ namespace WordsmithWarehouse.Controllers
             }
 
             return View(books);
+        }
+
+        [HttpPost, ActionName("Details")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(DetailsBookViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var book = await _bookRepository.GetByIdAsync(model.Id);
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+
+                var comment = new Comment
+                {
+                    BookId = book.Id,
+                    DateCreated = DateTime.Now,
+                    Name = user.UserName,
+                    Text = model.CurrentUserComment,
+                    Rating = model.CurrentUserCommentRating,
+                    UserImage = user.ImageURL,
+                    UserIdString = user.Id,
+                };
+
+                await _commentRepository.CreateAsync(comment);
+
+               return RedirectToAction(nameof(Details));
+            }
+
+            return View();
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public AccountController(IUserHelper userHelper, 
+        public AccountController(IUserHelper userHelper,
             IImageHelper imageHelper,
             IConfiguration configuration,
             IMailHelper mailHelper,
@@ -54,7 +54,7 @@ namespace WordsmithWarehouse.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUsernameAsync(model.Username);
-                if(await _userHelper.IsUserInRoleAsync(user, "Deactivated"))
+                if (await _userHelper.IsUserInRoleAsync(user, "Deactivated"))
                 {
                     this.ModelState.AddModelError(string.Empty, "Failed to login!");
                     return View(model);
@@ -81,7 +81,7 @@ namespace WordsmithWarehouse.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Register ()
+        public IActionResult Register()
         {
             return View();
         }
@@ -113,7 +113,7 @@ namespace WordsmithWarehouse.Controllers
                         PhoneNumber = model.PhoneNumber,
                         Email = model.Email,
                     };
-                    
+
                     var result = await _userHelper.AddUserAsync(user, model.Password);
                     await _userHelper.AddUserToRoleAsync(user, "Customer");
                     if (result != IdentityResult.Success)
@@ -150,16 +150,20 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-            var model = new ChangeUserViewModel();
-            if (user != null)
+            if (user == null)
             {
-                model.FirstName = user.FirstName;
-                model.LastName = user.LastName;
-                model.Username = user.UserName;
-                model.ImageURL = user.ImageURL;
-                model.Address = user.Address;
-                model.PhoneNumber = user.PhoneNumber;
+                return View();
             }
+            var model = new ChangeUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.UserName,
+                ImageURL = user.ImageURL,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+            };
+
 
             return View(model);
         }
@@ -169,13 +173,12 @@ namespace WordsmithWarehouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
                 if (user != null)
                 {
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.UserName = model.Username;
-                    user.ImageURL = model.ImageURL;
                     user.PhoneNumber = model.PhoneNumber;
                     user.Address = model.Address;
                     var response = await _userHelper.UpdateUserAsync(user);
@@ -299,7 +302,7 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> ManageUsers()
         {
             var users = await _userHelper.GetAllAsync();
-            
+
             var usersConverted = await _converterHelper.BulkConvertToManageUserViewModel(users);
 
             return View(usersConverted);
@@ -314,7 +317,7 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUsers(RegisterNewUserViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var path = string.Empty;
 
@@ -378,7 +381,7 @@ namespace WordsmithWarehouse.Controllers
 
         public async Task<IActionResult> Delete(string username)
         {
-            if(username == null)
+            if (username == null)
             {
                 return View();
             }

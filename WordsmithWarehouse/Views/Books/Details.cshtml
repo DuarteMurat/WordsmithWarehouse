@@ -1,4 +1,4 @@
-﻿@model WordsmithWarehouse.Models.BookViewModel
+﻿@model WordsmithWarehouse.Models.DetailsBookViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -9,6 +9,7 @@
 <div>
     <h4>Book</h4>
     <hr />
+    <input asp-for="User.ImageURL" type="hidden" />
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a> |
         <a asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a> |
@@ -66,7 +67,7 @@
                         {
                             tags += Model.Tags[i].Name + " | ";
                         }
-                        
+
                     }
                     <dd class="col-10">
                         @tags
@@ -81,24 +82,108 @@
             </div>
         </div>
         <div class="col-4">
-                @if (!string.IsNullOrEmpty(Model.ImageURL))
-                {
-                    <img src="@Url.Content(Model.ImageURL)" alt="Image" />
-                }
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Url.Content(Model.ImageURL)" alt="Image" />
+            }
         </div>
     </dl>
+
+    <div class="row">
+        <div>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+            <h1>Placeholder</h1>
+        </div>
+    </div>
+    <div id="commentSection">
+        <div class="row">
+            <post-template></post-template>
+        </div>
+        <hr />
+        <div class="row" v-for="i in comments">
+            <div class="row">
+                <div class="col">
+                    @*image*@
+                    <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
+                </div>
+                <div class="col" style="text-align: right">
+                    @*name/date/rating*@    
+                    <h5>{{i.name}}</h5>
+                    <h5 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h5>
+                    <h5 style="width: 45px; max-height:10px" /> {{i.rating}}/10
+                    <h5> {{i.text}}</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
 
+<template id="post-template">
+
+    <div class="row" style="align-content:start; padding-left:45px">
+        <div>
+            <div class="col" style="text-align: left">
+                @*name/date/rating*@
+                <h5 v-model="name">@this.User.Identity.Name</h5>
+            </div>
+            <div class="col-2">
+                @*image*@
+                <img src="@Url.Content(Model.User.ImageURL)" style="width:75px; max-height:75px; border-radius:100%" />
+            </div>
+        </div>
+
+        <div>
+            @*comment*@
+            <form asp-action="Details" style="width:700px">
+                <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
+                <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
+                <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+            </form>
+
+        </div>
+        <div>
+            <h4>Rating</h4>
+            <input type="text" asp-for="CurrentUserCommentRating" style="width: 45px; max-height:10px" /> /10
+        </div>
+        <div v-if="">
+
+        </div>
+
+    </div>
+</template>
+
+<template id="comment-template">
+
+</template>
+
 @section scripts{
+
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        @Html.Hidden("userId", Model.User.Id);
+    }
     <script>
-        var bookcount = 0;
-        var reserveButton = document.getElementById("reserveButton");
-
-        reserveButton.addEventListener("click", function () {
-            bookcount += 1;
-
-            document.getElementById("bookcountDisplay").innerHTML = bookcount;
-        });
+        var commentData = @Html.Raw(Json.Serialize(Model.Comments));
+        var userData = @Html.Raw(Json.Serialize(Model.Users));
+       
+        
     </script>
-};
+    <script src="~/js/CommentSection.js"> </script>
+}
 
