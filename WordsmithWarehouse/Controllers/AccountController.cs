@@ -477,5 +477,20 @@ namespace WordsmithWarehouse.Controllers
             this.ViewBag.Message = "User not found.";
             return View(model);
         }
+
+        public async Task<ActionResult> GetImage()
+        {
+            string path = string.Empty;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                if (user != null)
+                {
+                    path = user.ImageURL;
+                }
+                return base.File(path, "image/jpeg");
+            }
+            return Content(path);
+        }
     }
 }

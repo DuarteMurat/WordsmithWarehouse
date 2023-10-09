@@ -38,7 +38,7 @@
                                 </ul>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser">
-                                        <img src="@Url.Content(ViewData["ImageURL"] as string)" alt="image" style="max-width:60px; max-height:60px; border-radius:100%">
+                                        <img src="@Url.Action("GetImage", "Account")" alt="image" style="max-width:60px; max-height:60px; border-radius:100%">
                                     </a>
                                     @*<a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser"><img src="@url.content(model.imageurl)" alt="image" style="max-width:60px;max-height:60px;border-radius:100%"></a>*@
                                     @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>*@
