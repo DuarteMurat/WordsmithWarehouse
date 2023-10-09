@@ -14,11 +14,11 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white" style="padding-top:0px; padding-bottom:0px;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm " style="padding-top:0px; padding-bottom:0px; background-color:#96a2b2">
             <div class="container-fluid">
                 <div class="col-2">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="padding-top:30px">
-                        <img src="/images/logo.png" alt="Wordsmith Warehouse" width="150" height="50">
+                        <img src="/images/logogray.png" alt="Wordsmith Warehouse" width="150" height="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -57,22 +57,14 @@
                 </div>
             </div>
         </nav>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom" style="padding-top:0px">
-            <ul class="nav navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="/images/Title Logo 2.png" alt="Wordsmith Warehouse" height="60" width="650">
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
             <div id="mySidenav" class="sidenav">
                 <div class="row">
                     <div class="col" style="align-content:start">
-                        <i class="fas fa-user-cog fa-4x" style="color: #ffffff; padding-left:25px; margin-bottom:70px;"></i>
+                        @*<i class="fas fa-user-cog fa-4x" style="color: #ffffff; padding-left:25px; margin-bottom:70px;"></i>*@
+                        <img src="/images/logogray.png" alt="Wordsmith Warehouse" style=" padding-left:10px;margin-bottom:70px" width="150" height="50">
                     </div>
                     <div class="col" style="align-content: end">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
