@@ -373,3 +373,12 @@ input::-webkit-inner-spin-button {
 input[type=number]{
     -moz-appearance:textfield;
 }
+
+/*-------------------------------darkmode--------------------------*/
+.switch.teal-switch label input[type=checkbox]:checked + .lever {
+    background-color: #b2dfdb;
+}
+
+    .switch.teal-switch label input[type=checkbox]:checked + .lever:after {
+        background-color: #80cbc4;
+    }
