@@ -23,6 +23,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IUserHelper _userHelper;
         private readonly ICommentRepository _commentRepository;
+        Random r;
 
         public BooksController(IBookRepository bookRepository,
             IConverterHelper converterHelper,
@@ -44,7 +45,7 @@ namespace WordsmithWarehouse.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();            
+            var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
 
             List<BookViewModel> books = new List<BookViewModel>();
             foreach (var item in list)
@@ -253,11 +254,30 @@ namespace WordsmithWarehouse.Controllers
 
                 await _commentRepository.CreateAsync(comment);
 
-               return RedirectToAction(nameof(Details));
+                return RedirectToAction(nameof(Details));
             }
 
             return View();
 
+        }
+
+        [HttpGet, ActionName("RandomDetails")]
+        public async Task<IActionResult> RandomBook()
+        {
+            List<Book> books = await _bookRepository.GetAll().ToListAsync();
+
+            r = new Random();
+            
+            int id = r.Next(0, books.Count());
+
+            var model = _converterHelper.ConvertToDetailsBookViewModel(books[id]);
+
+            model.Tags = await _tagRepository.GetTagsFromString(books[id].tagIds);
+            model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
+            model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(books[id].Id));
+
+            return View("Details", model);
         }
     }
 }

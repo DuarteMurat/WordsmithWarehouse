@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,50 +8,58 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="~/test1.png" rel="shortcut icon" type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+          rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm " style="padding-top:0px; padding-bottom:0px; background-color:#96a2b2">
-            <div class="container-fluid">
-                <div class="col-2">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="padding-top:30px">
+    <header style="background-color: #96a2b2">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm " style="padding-bottom:0px">
+            <div class="container-fluid align-content-center" style="align-items:flex-end">
+                <div class="col-3">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="/images/logogray.png" alt="Wordsmith Warehouse" width="150" height="50">
                     </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
                 </div>
-                <div class="col-2">
-                    <div class="navbar-collapse collapse justify-content-end">
-                        @if (this.User.Identity.IsAuthenticated)
-                        { 
-                            <div class="dropdown" style="padding-right: 50px">
-                                <button style="border:0; background-color:transparent" data-toggle="dropdown">
-                                    <img src="@Url.Action("GetImage", "Account")" alt="image" style="max-width:60px; max-height:60px; border-radius:100%">
-                                </button>
-                                <div class="dropdown-menu align-content-md-center">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser">@this.User.Identity.Name</a>
-                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="nav-item navbar-right">
-                                    <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Login" style="padding-left:150px;"> Sign In | Register </a>
-                                </li>
-                            </ul>
-                        }
+                <div class="col">
+                    <div class="row justify-content-center justify-content-between">
+                        <a class="navbutton"> Locations </a>
+                        <a class="navbutton" asp-controller="Books" asp-action="RandomDetails"> Random Book </a>
+                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="About"> About us </a>
+                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="Contact"> Contact us </a>
+                        <a class="navbutton" asp-area="" asp-controller="Books" asp-action="SearchBooks"> <i class="fas fa-search" style="color: white;"></i> </a>
                     </div>
+                </div>
+                <div class="col-3 text-right">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown" style="padding-right: 50px">
+                            <button style="border:0; background-color:transparent" data-toggle="dropdown">
+                                <img src="@Url.Action("GetImage", "Account")" alt="image" style="max-width:50px; max-height:50px;border-radius:100%; margin-bottom:10px">
+                            </button>
+                            <div class="dropdown-menu align-content-md-center">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="account"
+                                   asp-action="changeuser">@this.User.Identity.Name</a>
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item navbar-right">
+                                <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Login"
+                                   style="padding-left:150px;"> Sign In | Register </a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>
@@ -60,27 +69,45 @@
             <div id="mySidenav" class="sidenav">
                 <div class="row">
                     <div class="col" style="align-content:start">
-                        @*<i class="fas fa-user-cog fa-4x" style="color: #ffffff; padding-left:25px; margin-bottom:70px;"></i>*@
-                        <img src="/images/logogray.png" alt="Wordsmith Warehouse" style=" padding-left:10px;margin-bottom:70px" width="150" height="50">
+                        @*<i class="fas fa-user-cog fa-4x" style="color: #ffffff; padding-left:25px;
+                        margin-bottom:70px;"></i>*@
+                        <img src="/images/logogray.png" alt="Wordsmith Warehouse"
+                             style=" padding-left:10px;margin-bottom:70px" width="150" height="50">
                     </div>
                     <div class="col" style="align-content: end">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     </div>
                 </div>
-                
-                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="ManageUsers">Users<i class="fas fa-users" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+
+                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="ManageUsers">
+                    Users<i class="fas fa-users" style="color: #ffffff; float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="Index"> Books<i class="fas fa-book" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="Index">
+                    Books<i class="fas fa-book"
+                            style="color: #ffffff; float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="Tags" asp-action="Index"> Tags<i class="fas fa-tags" style="color: #ffffff; float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="Tags" asp-action="Index">
+                    Tags<i class="fas fa-tags"
+                           style="color: #ffffff; float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="Authors" asp-action="Index"> Authors<i class="fas fa-feather-alt" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="Authors" asp-action="Index">
+                    Authors<i class="fas fa-feather-alt" style="color: #ffffff;float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="Libraries" asp-action="Index"> Libraries<i class="fas fa-landmark" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="Libraries" asp-action="Index">
+                    Libraries<i class="fas fa-landmark" style="color: #ffffff;float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="BookReservations" asp-action="Index">Reservations<i class="fas fa-exchange-alt" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="BookReservations" asp-action="Index">
+                    Reservations<i class="fas fa-exchange-alt" style="color: #ffffff;float:right; padding-top:6px"></i>
+                </a>
                 <hr />
-                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="SearchBooks">Search Books<i class="fas fa-search" style="color: #ffffff;float:right; padding-top:6px"></i></a>
+                <a class="nav-link " asp-area="" asp-controller="Books" asp-action="SearchBooks">
+                    Search Books<i class="fas fa-search" style="color: #ffffff;float:right; padding-top:6px"></i>
+                </a>
             </div>
 
             <div id="main">
@@ -95,7 +122,7 @@
         </main>
     </div>
 
-    <footer class="site-footer footer container-fluid">
+    @*<footer class="site-footer footer container-fluid">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-md-6">
@@ -103,7 +130,11 @@
                     <p class="text-justify">
                     <p>Welcome to Wordsmith Warehouse &ndash; Your Online Literary Haven!</p>
                     <p>
-                        Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
+                        Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive
+                        and stories never end. As an enchanting online library, we house a treasure trove of literary
+                        gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic
+                        poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays,
+                        our virtual shelves hold something special for every kind of reader.
                     </p>
                 </div>
 
@@ -148,7 +179,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -168,4 +199,5 @@
         }
     </script>
 </body>
+
 </html>
