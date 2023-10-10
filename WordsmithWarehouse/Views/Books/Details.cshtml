@@ -106,8 +106,8 @@
                         </div>
                     </div>
                 </div>
-                <div  style="text-align: left; max-width:800px">
-                    @*name/date/rating*@ 
+                <div style="text-align: left; max-width:800px">
+                    @*name/date/rating*@
                     <h5>{{i.name}}</h5>
                     <h6 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h6>
                     <h6> Rating: {{i.rating}}/10</h6>
@@ -122,11 +122,10 @@
 </div>
 
 <template id="post-template">
-
     <div class="row" style="align-content:start; padding-left:45px">
         <div>
             <div class="col" style="text-align: left">
-                @*name/date/rating*@
+                @*name/date*@
                 <h5 v-model="name">@this.User.Identity.Name</h5>
             </div>
             <div class="col-2">
@@ -135,22 +134,19 @@
             </div>
         </div>
         <form asp-action="Details" style="width:700px">
-        <div>
-            @*comment*@
-            
+            <div>
+                @*comment*@
                 <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
-                <div col-7>
+                <div>
                     <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
                     <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
                 </div>
-            
-
-        </div>
-        <div style="padding-left:15px; padding-top:30px">
-            <h4>Rating</h4>
-            <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
-            <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
-        </div>
+            </div>
+            <div style="padding-left:15px; padding-top:30px">
+                <h4>Rating</h4>
+                <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
+                <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
+            </div>
         </form>
     </div>
 </template>
@@ -159,7 +155,8 @@
 
     @if (this.User.Identity.IsAuthenticated)
     {
-        @Html.Hidden("userId", Model.User.Id);
+        @Html.Hidden("userId", Model.User.Id)
+        ;
     }
     <script>
         var commentData = @Html.Raw(Json.Serialize(Model.Comments));

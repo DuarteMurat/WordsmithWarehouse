@@ -43,6 +43,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books
+        [Authorize(Roles ="Admin,Employee")]
         public async Task<IActionResult> Index()
         {
             var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
@@ -78,7 +79,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Create()
         {
             var model = new BookViewModel
@@ -102,6 +103,7 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Create(BookViewModel model)
         {
 
@@ -130,7 +132,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Edit/5 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,6 +158,7 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(BookViewModel model)
         {
             if (ModelState.IsValid)
@@ -189,7 +192,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books/Delete/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -205,6 +208,7 @@ namespace WordsmithWarehouse.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _bookRepository.GetByIdAsync(id);

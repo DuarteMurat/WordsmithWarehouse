@@ -2,6 +2,8 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 
+/*---------------------------------------------------------Navbar-------------------------------------------------------------*/
+
 .navbutton{
     font-weight: bold;
     color: #ffffff !important;
@@ -11,219 +13,61 @@ for details on configuring this project to bundle and minify static web assets. 
     text-decoration: underline;
 }
 
-html{
+html {
     position: relative;
+    min-height: 100%; 
 }
 
+body{
+    padding-bottom: 225px
+}
 
 /*---------------------------------------------------------Footer-------------------------------------------------------------*/
 
-.site-footer {
+
+.footer {
     background-color: #96a2b2;
-    padding: 0px 0 0px;
-    font-size: 15px;
-    line-height: 24px;
-    color: #737373;
     bottom: 0;
     position: absolute;
 }
 
-    .site-footer hr {
-        border-top-color: #bbb;
-        opacity: 0.5
-    }
-
-        .site-footer hr.small {
-            margin: 20px 0
-        }
-
-    .site-footer h6 {
-        color: #fff;
-        font-size: 16px;
-        text-transform: uppercase;
-        margin-top: 5px;
-        letter-spacing: 2px
-    }
-
-    .site-footer a {
-        color: #737373;
-    }
-
-        .site-footer a:hover {
-            color: #3366cc;
-            text-decoration: none;
-        }
-
-.footer-links {
-    padding-left: 0;
-    list-style: none
+.footer a{
+    color: dimgray;
+    font-size: 16px
 }
 
-    .footer-links li {
-        display: block
-    }
-
-    .footer-links a {
-        color: #737373
-    }
-
-        .footer-links a:active, .footer-links a:focus, .footer-links a:hover {
-            color: #3366cc;
-            text-decoration: none;
-        }
-
-    .footer-links.inline li {
-        display: inline-block
-    }
-
-.site-footer .social-icons {
-    text-align: right
+.footer a:hover{
+    color: white;
 }
 
-    .site-footer .social-icons a {
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        margin-left: 6px;
-        margin-right: 0;
-        background-color: #33353d
+.footer p {
+        color: white;
+        font-size: 16px
     }
 
-.copyright-text {
-    margin: 0
+.footer h6{
+    color: dimgray;
+    font-size: 18px;
 }
 
-@media (max-width:991px) {
-    .site-footer [class^=col-] {
-        margin-bottom: 30px
-    }
+.footer-buttons{
+    margin-bottom: 10px;
 }
 
-@media (max-width:767px) {
-    .site-footer {
-        padding-bottom: 0
-    }
+/*---------------------------------------------------------Contact Us-------------------------------------------------------------*/
 
-        .site-footer .copyright-text, .site-footer .social-icons {
-            text-align: center
-        }
-}
-
-.social-icons {
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none
-}
-
-    .social-icons li {
-        display: inline-block;
-        margin-bottom: 4px
-    }
-
-        .social-icons li.title {
-            margin-right: 15px;
-            text-transform: uppercase;
-            color: #96a2b2;
-            font-weight: 700;
-            font-size: 13px
-        }
-
-    .social-icons a {
-        background-color: #eceeef;
-        color: #818a91;
-        font-size: 16px;
-        display: inline-block;
-        line-height: 44px;
-        width: 44px;
-        height: 44px;
-        text-align: center;
-        margin-right: 8px;
-        -webkit-transition: all .2s linear;
-        -o-transition: all .2s linear;
-        transition: all .2s linear
-    }
-
-        .social-icons a:active, .social-icons a:focus, .social-icons a:hover {
-            color: #fff;
-            background-color: #29aafe 
-        }
-
-    .social-icons.size-sm a {
-        line-height: 34px;
-        height: 34px;
-        width: 34px;
-        font-size: 14px
-    }
-
-    .social-icons a.facebook:hover {
-        background-color: #3b5998
-    }
-
-    .social-icons a.twitter:hover {
-        background-color: #00aced
-    }
-
-    .social-icons a.linkedin:hover {
-        background-color: #007bb6
-    }
-
-    .social-icons a.dribbble:hover {
-        background-color: #ea4c89
-    }
-
-@media (max-width:767px) {
-    .social-icons li.title {
-        display: block;
-        margin-right: 0;
-        font-weight: 600
-    }
-}
-
-.footer-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.github-button {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    margin: 0 10px;
-    color: #fff;
-    font-size: 20px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-    .github-button img {
-        width: 40px;
-        height: 40px;
-        transition: background-color 0.3s;
-    }
-
-    .github-button:hover img {
-        filter: brightness(1.2); /* Adjust the brightness to change color on hover */
-    }
-
-
-/*-------------------------------------------------------Contact Us------------------------------------------------------*/
-
-/* Style inputs with type="text", select elements and textareas */
 input[type=text], select, textarea {
-    width: 100%; /* Full width */
-    padding: 12px; /* Some padding */
-    border: 1px solid #ccc; /* Gray border */
-    border-radius: 4px; /* Rounded borders */
-    box-sizing: border-box; /* Make sure that padding and width stays in place */
-    margin-top: 6px; /* Add a top margin */
-    margin-bottom: 16px; /* Bottom margin */
-    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    box-sizing: border-box; 
+    margin-top: 6px; 
+    margin-bottom: 16px; 
+    resize: vertical 
 }
 
-/* Style the submit button with a specific background color etc */
+
 input[type=submit] {
     background-color: #04AA6D;
     color: white;
@@ -233,19 +77,19 @@ input[type=submit] {
     cursor: pointer;
 }
 
-/* When moving the mouse over the submit button, add a darker green color */
+
 input[type=submit]:hover {
     background-color: #45a049;
 }
 
-/* Add a background color and some padding around the form */
+
 .containercontact {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
 }
 
-/*----------------------------------------------SearchBooks page-----------------------------------------*/
+/*---------------------------------------------------------Searchbooks page-------------------------------------------------------------*/
 
 .grid-container {
     display: grid;
@@ -257,7 +101,7 @@ input[type=submit]:hover {
 
 .item {
     text-align: center;
-    width: calc(100%); /* Adjust the width */
+    width: calc(100%); 
     padding-bottom: 40px;
 }
 
@@ -270,14 +114,13 @@ input[type=submit]:hover {
 
 .book-title{
     margin-top: 10px;
-    text-align: center; /* Center the book title horizontally */
+    text-align: center; 
     padding-right: 15px;
 }
 
 
-/*-----------------------------------------------Side menu---------------------------------------------------*/
+/*---------------------------------------------------------Side menu-------------------------------------------------------------*/
 
-/* The side navigation menu */
 .sidenav {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
@@ -344,6 +187,8 @@ input[type=submit]:hover {
     border-style:solid;
 }
 
+/*---------------------------------------------------------Comments-------------------------------------------------------------*/
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -354,11 +199,3 @@ input[type=number]{
     -moz-appearance:textfield;
 }
 
-/*-------------------------------darkmode--------------------------*/
-.switch.teal-switch label input[type=checkbox]:checked + .lever {
-    background-color: #b2dfdb;
-}
-
-    .switch.teal-switch label input[type=checkbox]:checked + .lever:after {
-        background-color: #80cbc4;
-    }
