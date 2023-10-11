@@ -128,15 +128,25 @@
         <post-template></post-template>
     </div>
     <hr />
-    <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
-        <div class="row">
-            <div class="col">
-                @*image*@
-                <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
-                <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
-                    <div class="row">
-                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
-                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
+    <div id="commentSection">
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <div class="row">
+                <post-template></post-template>
+            </div>
+            <hr />
+
+        }
+        <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
+            <div class="row">
+                <div class="col">
+                    @*image*@
+                    <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
+                    <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
+                        <div class="row">
+                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
+                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -151,8 +161,9 @@
     </div>
 
 </div>
-
-<template id="post-template">
+@if (this.User.Identity.IsAuthenticated)
+{
+    <template id="post-template">
     <div class="row" style="align-content:start; padding-left:45px">
         <div>
             <div class="col" style="text-align: left">
@@ -183,6 +194,7 @@
         </form>
     </div>
 </template>
+}
 
 @section scripts{
 

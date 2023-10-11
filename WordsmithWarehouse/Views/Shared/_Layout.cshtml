@@ -53,6 +53,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right ">
                                 <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
+                                <a class="nav-link text-dark" asp-controller="Shelves" asp-action="Index">Shelves</a>
                                 <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                             </div>
                         </div>
@@ -61,6 +62,8 @@
                     {
                         <ul class="nav navbar-nav navbar-right">
                             <li class="nav-item navbar-right">
+                                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Login"
+                                   style="padding-left:150px;color:white"> Sign In | Register </a>
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login" style="padding-left: 150px;">Sign In | Register</a>
                             </li>
                         </ul>
@@ -125,7 +128,6 @@
             </div>
         </main>
     </div>
-
     <footer class="footer">
         <div style="padding-left: 15px">
             <div class="row" style="max-width:100%">
@@ -182,9 +184,10 @@
             </div>
         </div>
     </footer>
-
+  
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
