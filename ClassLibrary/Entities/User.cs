@@ -23,6 +23,8 @@ namespace ClassLibrary.Entities
         [Display(Name = "Full Name")]
         public string FullName => $"{FirstName} {LastName}";
 
+        public string ShelfIds { get; set; }
+
         public string ImageURL { get; set; }
     }
 }

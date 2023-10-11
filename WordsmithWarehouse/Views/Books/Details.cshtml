@@ -90,10 +90,14 @@
     </dl>
     <hr />
     <div id="commentSection">
-        <div class="row">
-            <post-template></post-template>
-        </div>
-        <hr />
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <div class="row">
+                <post-template></post-template>
+            </div>
+            <hr />
+
+        }
         <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
             <div class="row">
                 <div class="col">
@@ -120,40 +124,43 @@
 
 
 </div>
+@if (this.User.Identity.IsAuthenticated)
+{
+    <template id="post-template">
 
-<template id="post-template">
-
-    <div class="row" style="align-content:start; padding-left:45px">
-        <div>
-            <div class="col" style="text-align: left">
-                @*name/date/rating*@
-                <h5 v-model="name">@this.User.Identity.Name</h5>
-            </div>
-            <div class="col-2">
-                @*image*@
-                <img src="@Url.Content(Model.User.ImageURL)" style="width:75px; max-height:75px; border-radius:100%" />
-            </div>
-        </div>
-        <form asp-action="Details" style="width:700px">
-        <div>
-            @*comment*@
-            
-                <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
-                <div col-7>
-                    <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
-                    <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+        <div class="row" style="align-content:start; padding-left:45px">
+            <div>
+                <div class="col" style="text-align: left">
+                    @*name/date/rating*@
+                    <h5 v-model="name">@this.User.Identity.Name</h5>
                 </div>
-            
+                <div class="col-2">
+                    @*image*@
+                    <img src="@Url.Content(Model.User.ImageURL)" style="width:75px; max-height:75px; border-radius:100%" />
+                </div>
+            </div>
+            <form asp-action="Details" style="width:700px">
+                <div>
+                    @*comment*@
 
+                    <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
+                    <div col-7>
+                        <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
+                        <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+                    </div>
+
+
+                </div>
+                <div style="padding-left:15px; padding-top:30px">
+                    <h4>Rating</h4>
+                    <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
+                    <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
+                </div>
+            </form>
         </div>
-        <div style="padding-left:15px; padding-top:30px">
-            <h4>Rating</h4>
-            <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
-            <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
-        </div>
-        </form>
-    </div>
-</template>
+    </template>
+}
+
 
 @section scripts{
 

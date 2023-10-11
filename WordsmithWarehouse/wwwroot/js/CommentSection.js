@@ -9,17 +9,6 @@
     },
 })
 
-Vue.component('commentTemplate', {
-    template: '#comment-template',
-    data() {
-        return {
-            name: 'teste',
-            date: 'teste',
-        }
-    },
-    props: ['src'],
-})
-
 new Vue({
     el: '#commentSection',
 

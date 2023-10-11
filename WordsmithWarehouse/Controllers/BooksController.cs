@@ -72,7 +72,10 @@ namespace WordsmithWarehouse.Controllers
 
             model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
             model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
-            model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            if (this.User.Identity.IsAuthenticated)
+            {
+                model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            }
             model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
             return View(model);
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordsmithWarehouse.Data;
 
 namespace WordsmithWarehouse.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231010105702_addShelfEntity")]
+    partial class addShelfEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,9 +76,6 @@ namespace WordsmithWarehouse.Migrations
                     b.Property<string>("Publisher")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShelfId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Subtitle")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -98,8 +97,6 @@ namespace WordsmithWarehouse.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("ShelfId");
 
                     b.HasIndex("UserId");
 
@@ -527,10 +524,6 @@ namespace WordsmithWarehouse.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassLibrary.Entities.Shelf", null)
-                        .WithMany("Books")
-                        .HasForeignKey("ShelfId");
-
                     b.HasOne("ClassLibrary.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -604,11 +597,6 @@ namespace WordsmithWarehouse.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ClassLibrary.Entities.Shelf", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

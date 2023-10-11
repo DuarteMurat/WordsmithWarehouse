@@ -14,6 +14,7 @@ namespace WordsmithWarehouse.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<BookReservation> BookReservations { get; set; }
         public DbSet<BookComments> BookComments { get; set; }
+        public DbSet<Shelf> Shelves { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
