@@ -4,60 +4,86 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<input asp-for="User.ImageURL" type="hidden" />
 
-<div>
-    <h4>Book</h4>
-    <hr />
-    <input asp-for="User.ImageURL" type="hidden" />
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a> |
-        <a asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a> |
-        <a id="reserveButton" class="btn btn-dark" style="color:azure"><i class="fas fa-plus"></i> Reserve</a>
-    </div>
-    <hr />
-    <dl class="row">
-        <div class="col">
+<div id="bookInfo" class="showBookInformation">
+    <div class="row">
+        <div class="col-md-5 col-sm-12">
+            <div class="detailsImage">
+                <img src="@Url.Content(Model.ImageURL)" class="detailsImage" alt="Image" />
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="row">
+                    <h4>
+                        @Html.DisplayNameFor(model => model.IsAvailableOnline)
+                    </h4>
+                    <h4>
+                        @Html.DisplayFor(model => model.IsAvailableOnline)
+                    </h4>
+                </div>
+                <div class="row">
+                    <h4>
+                        @Html.DisplayNameFor(model => model.IsAvailablePhysical)
+                    </h4>
+                    <h4>
+                        @Html.DisplayFor(model => model.IsAvailablePhysical)
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <h1 class="col-12">
+                @Html.DisplayFor(model => model.Title)
+            </h1>
+            <hr />
             <div class="row">
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.Title)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.Title)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.Subtitle)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.Subtitle)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.ISBN)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.ISBN)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.Author)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.Author.Name)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.IsAvailableOnline)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.IsAvailableOnline)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.IsAvailablePhysical)
-                </dt>
-                <dd class="col-10">
-                    @Html.DisplayFor(model => model.IsAvailablePhysical)
-                </dd>
-                <dt class="col-2">
-                    @Html.DisplayNameFor(model => model.Tags)
-                </dt>
+                <div class="col-3">
+                    <a href="#" v-on:click="onAuthorClick(@Model.AuthorId)">
+                        <h4 class="col-10">
+                            @Html.DisplayFor(model => model.Author.Name)
+                        </h4>
+                    </a>
+                </div>
+                <div class="col-3">
+                    <dd>
+                        @Html.DisplayFor(model => model.Publisher)
+                    </dd>
+                </div>
+                <div class="col-3">
+                    <dd>
+                        @Html.DisplayFor(model => model.ReleaseYear)
+                    </dd>
+                </div>
+                <div class="col-3">
+                    <dd>
+                        @Html.DisplayFor(model => model.Pages)
+                    </dd>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <h4 class="col-10">
+                        @Html.DisplayFor(model => model.ISBN)
+                    </h4>
+                </div>
+                <div class="col-3">
+                    <dd>
+                        90 reviews
+                    </dd>
+                </div>
+                <div class="col-3">
+                    <dd>
+                        average rating
+                    </dd>
+                </div>
+                <div class="col-3">
+                    <h4 class="col-10">
+                        @Html.DisplayFor(model => model.CoverType)
+                    </h4>
+                </div>
+            </div>
+            <div class="col-12">
                 @if (Model.Tags.Count > 0)
                 {
                     string tags = "";
@@ -80,44 +106,49 @@
                     </dd>
                 }
             </div>
-        </div>
-        <div class="col-4">
-            @if (!string.IsNullOrEmpty(Model.ImageURL))
-            {
-                <img src="@Url.Content(Model.ImageURL)" alt="Image" />
-            }
-        </div>
-    </dl>
-    <hr />
-    <div id="commentSection">
-        <div class="row">
-            <post-template></post-template>
-        </div>
-        <hr />
-        <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
-            <div class="row">
-                <div class="col">
-                    @*image*@
-                    <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
-                    <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
-                        <div class="row">
-                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
-                            <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div style="text-align: left; max-width:800px">
-                    @*name/date/rating*@
-                    <h5>{{i.name}}</h5>
-                    <h6 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h6>
-                    <h6> Rating: {{i.rating}}/10</h6>
-                    <p><cite>"{{i.text}}"</cite></p>
-                </div>
+            <div class="col-10">
+                <dd>
+                    @Html.DisplayFor(model => model.Synopsis)
+                </dd>
             </div>
         </div>
-
     </div>
 
+</div>
+
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a> |
+<a asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a> |
+<a id="reserveButton" class="btn btn-dark" style="color:azure"><i class="fas fa-plus"></i> Reserve</a>
+
+@*----------------------------------------------------------CommentSection------------------------------------------------*@
+<hr />
+<div id="commentSection">
+    <div class="row">
+        <post-template></post-template>
+    </div>
+    <hr />
+    <div class="row" v-for="i in comments" style="margin-bottom:70px; margin-left:25px">
+        <div class="row">
+            <div class="col">
+                @*image*@
+                <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
+                <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
+                    <div class="row">
+                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
+                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: left; max-width:800px">
+                @*name/date/rating*@
+                <h5>{{i.name}}</h5>
+                <h6 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h6>
+                <h6> Rating: {{i.rating}}/10</h6>
+                <p><cite>"{{i.text}}"</cite></p>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -134,18 +165,20 @@
             </div>
         </div>
         <form asp-action="Details" style="width:700px">
-            <div>
-                @*comment*@
-                <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
-                <div>
-                    <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
-                    <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+            <div class="row">
+                <div class="col-10">
+                    @*comment*@
+                    <textarea asp-for="CurrentUserComment" class="form-control" rows="5" id="comment"></textarea>
+                    <div>
+                        <button class="btn btn-outline-warning" type="button" v-on:click="clearComment()" style="border-radius:15px">Cancel</button>
+                        <button class="btn btn-light" style="border-radius:15px" type="submit">Post</button>
+                    </div>
                 </div>
-            </div>
-            <div style="padding-left:15px; padding-top:30px">
-                <h4>Rating</h4>
-                <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
-                <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
+                <div class="col-2" style="padding-left:15px; padding-top:30px">
+                    <h4>Rating</h4>
+                    <input type="number" asp-for="CurrentUserCommentRating" class="noArrowNumInput" min="0" max="10" style="width: 30px; max-height:20px;" /> /10
+                    <span asp-validation-for="CurrentUserComment" class="text-danger"></span>
+                </div>
             </div>
         </form>
     </div>
@@ -158,10 +191,11 @@
         @Html.Hidden("userId", Model.User.Id)
         ;
     }
+    @Html.Hidden("authorId", Model.AuthorId);
     <script>
         var commentData = @Html.Raw(Json.Serialize(Model.Comments));
         var userData = @Html.Raw(Json.Serialize(Model.Users));
     </script>
-    <script src="~/js/CommentSection.js"> </script>
+    <script src="~/js/CommentSection.js"></script>
 }
 

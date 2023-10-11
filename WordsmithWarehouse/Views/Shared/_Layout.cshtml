@@ -14,39 +14,46 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
-    
+
 </head>
 
 <body>
     <header style="background-color: #96a2b2">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding-bottom: 0px">
-            <div class="container-fluid align-content-center" style="align-items: flex-end">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
+            <div class="container-fluid align-content-center">
                 <div class="col-3">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="/images/logogray.png" alt="Wordsmith Warehouse" width="150" height="50">
                     </a>
                 </div>
-                <div class="col">
-                    <div class="row justify-content-center justify-content-between">
-                        <a class="navbutton">Locations</a>
-                        <a class="navbutton" asp-controller="Books" asp-action="RandomDetails">Random Book</a>
-                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="About">About us</a>
-                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="Contact">Contact us</a>
-                        <a class="navbutton" asp-area="" asp-controller="Books" asp-action="SearchBooks">
-                            <i class="fas fa-search" style="color: white;"></i>
-                        </a>
+                <div class="col-6">
+                    <div class="row justify-content-between">
+                        <a class="navbutton"><i class="fas fa-map-marker-alt" style="color: #ffffff;"></i> Locations</a>
+                        <a class="navbutton" asp-controller="Books" asp-action="RandomDetails"><i class="fas fa-random" style="color: #ffffff;"></i> Random Book</a>
+                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="Contact"><i class="fas fa-headset" style="color: #ffffff;"></i> Contact us</a>
+                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="About"><i class="fas fa-info" style="color: #ffffff;"></i> About us</a>
+                        <div class="dropdown">
+                            <button class="socialButton" data-toggle="dropdown"><i class="fas fa-share-alt" style="color:#ffffff"></i> Socials</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item"><i class="fab fa-facebook-f" style="color:#96a2b2"></i> Facebook</a>
+                                <a href="#" class="dropdown-item"><i class="fab fa-instagram" style="color:#96a2b2"></i> Instragram</a>
+                                <a href="#" class="dropdown-item"><i class="fab fa-tiktok" style="color:#96a2b2"></i> TikTok</a>
+                                <a href="#" class="dropdown-item"><i class="fab fa-youtube" style="color:#96a2b2"></i> Youtube</a>
+                            </div>
+                        </div>
+                        <a class="navbutton" asp-area="" asp-controller="Books" asp-action="SearchBooks"><i class="fas fa-search" style="color: white;"></i></a>
                     </div>
                 </div>
-                <div class="col-3 text-right">
+                <div class="col-3">
                     @if (this.User.Identity.IsAuthenticated)
                     {
-                        <div class="dropdown" style="padding-right: 50px">
-                            <button style="border: 0; background-color: transparent" data-toggle="dropdown">
-                                <img src="@Url.Action("GetImage", "Account")" alt="image" style="max-width: 50px; max-height: 50px; border-radius: 100%; margin-bottom: 10px">
+                        <div class="dropdown nav-item float-right">
+                            <button style="border: 0; background-color: transparent; outline:0;" data-toggle="dropdown">
+                                <img src="@Url.Action("GetImage", "Account")" alt="image" class="rounded-circle" style="max-width: 50px; max-height: 50px; margin-bottom: 10px">
                             </button>
-                            <div class="dropdown-menu align-content-md-center">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="changeuser">@this.User.Identity.Name</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            <div class="dropdown-menu dropdown-menu-right ">
+                                <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
+                                <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                             </div>
                         </div>
                     }
@@ -111,7 +118,7 @@
                 @RenderBody()
                 @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                 {
-                    <button onclick="openNav()" class="menuButton" style="background-color: #96a2b2">
+                    <button onclick="openNav()" class="menuButton" style="background-color: #96a2b2; outline:0;">
                         <i class="fas fa-arrow-right fa-3x" style="color: white"></i>
                     </button>
                 }
@@ -158,13 +165,13 @@
                 </div>
                 <div class="col row justify-content-center">
                     <p style="padding-top:9px">Developers:</p>
-                    <div class="footer-buttons">                       
-                        <div> 
+                    <div class="footer-buttons">
+                        <div>
                             <a href="https://github.com/DuarteMurat" class="github-button" target="_blank">
                                 &thinsp; Duarte Marques
                                 <i class="fab fa-github fa-2x" style="color: #ffffff;"></i>
                             </a>
-                            
+
                             <a href="https://github.com/brunoferreira03" class="github-button" target="_blank">
                                 Bruno Ferreira
                                 <i class="fab fa-github fa-2x" style="color: #ffffff;"></i>
@@ -173,7 +180,7 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -192,8 +199,7 @@
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft = "0";
         }
-    </script>
-    <script>
+
         function updateDateTime() {
 
             const now = new Date();
