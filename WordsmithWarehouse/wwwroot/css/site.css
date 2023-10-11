@@ -2,29 +2,43 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-bottom: 300px
+}
+
 /*---------------------------------------------------------Navbar-------------------------------------------------------------*/
 
-.navbutton{
+.navbutton {
     font-weight: bold;
     color: #ffffff !important;
+    font-size: 18px;
 }
 
 .navbutton:hover{
     text-decoration: underline;
 }
 
-html {
-    position: relative;
-    min-height: 100%; 
+.socialButton {
+    background-color: transparent;
+    border:0;
+    font-weight: bold;
+    color: #ffffff !important;
+    font-size: 18px;
 }
 
-body{
-    padding-bottom: 225px
-}
+    .socialButton:hover {
+        text-decoration: underline;
+    }
 
+    .socialButton:focus{
+        outline: 0;
+    }
 /*---------------------------------------------------------Footer-------------------------------------------------------------*/
-
-
 .footer {
     background-color: #96a2b2;
     bottom: 0;
@@ -187,8 +201,18 @@ input[type=submit]:hover {
     border-style:solid;
 }
 
-/*---------------------------------------------------------Comments-------------------------------------------------------------*/
 
+/*---------------------------------------------------------Book Details Page-------------------------------------------------------------*/
+.showBookInformation {
+
+}
+
+.detailsImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*---------------------------------------------------------Comments-------------------------------------------------------------*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

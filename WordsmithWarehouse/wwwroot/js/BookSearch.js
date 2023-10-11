@@ -43,5 +43,11 @@
             console.log(id)
             window.location.assign(`/books/details/${id}`);
         },
+        getBookImage(imagePath) {
+            if (imagePath.charAt(0) === '~') {
+                return imagePath.substring(1);
+            }
+            return imagePath
+        },
     }
 })

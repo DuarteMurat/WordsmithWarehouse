@@ -51,5 +51,7 @@ namespace WordsmithWarehouse.Models
         public bool IsAvailablePhysical { get; set; }
 
         public string ImageURL { get; set; }
+
+        public int ReleaseYear { get; set; }
     }
 }

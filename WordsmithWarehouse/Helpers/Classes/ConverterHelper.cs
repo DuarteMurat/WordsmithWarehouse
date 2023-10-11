@@ -31,6 +31,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Pages = model.Pages,
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
+                ReleaseYear = model.ReleaseYear,
             };
         }
 
@@ -52,6 +53,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Pages = model.Pages,
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
+                ReleaseYear = model.ReleaseYear,
             };
         }
 
@@ -73,6 +75,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Pages = book.Pages,
                 Publisher = book.Publisher,
                 Synopsis = book.Synopsis,
+                ReleaseYear = book.ReleaseYear,
             };
         }
 
@@ -94,6 +97,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Pages = book.Pages,
                 Publisher = book.Publisher,
                 Synopsis = book.Synopsis,
+                ReleaseYear = book.ReleaseYear,
             };
         }
 
