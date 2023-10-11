@@ -75,9 +75,9 @@ namespace WordsmithWarehouse.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ShelfId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReleaseYear")
-
                         .HasColumnType("int");
 
                     b.Property<string>("Subtitle")
