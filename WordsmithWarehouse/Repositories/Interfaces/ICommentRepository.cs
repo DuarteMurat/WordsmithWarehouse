@@ -10,5 +10,9 @@ namespace WordsmithWarehouse.Repositories.Interfaces
 
         Task<IEnumerable<Comment>> GetCommentsByBookId(int bookId);
 
+        bool CheckForComment(List<Comment> comments, string userId);
+
+        float GetAverageRatings(List<Comment> comments);
+
     }
 }

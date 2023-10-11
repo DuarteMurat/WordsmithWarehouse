@@ -22,5 +22,28 @@ namespace WordsmithWarehouse.Repositories.Classes
         {
             return await _context.Comments.Where(c => c.BookId == bookId).ToListAsync();
         } 
+
+        public bool CheckForComment(List<Comment> comments, string userId)
+        {
+            foreach (var comment in comments)
+            {
+                if (comment.UserIdString == userId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public float GetAverageRatings(List<Comment> comments)
+        {
+            float averageRatings = 0;
+
+            foreach (var comment in comments)
+            {
+                averageRatings += comment.Rating;
+            }
+            return averageRatings/comments.Count();
+        }
     }
 }
