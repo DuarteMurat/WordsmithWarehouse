@@ -76,6 +76,13 @@ namespace WordsmithWarehouse.Data
 
                 await _context.SaveChangesAsync();
             }
+
+            if (!_context.Tags.Any())
+            {
+                AddTag("New Release");
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         private void AddBook(string title)
@@ -96,6 +103,16 @@ namespace WordsmithWarehouse.Data
                 Name = Name,
                 Description = "Olá",
                 ImageURL = "/images/Authors/unknown.png",
+            });
+        }
+
+        private void AddTag(string Name)
+        {
+            _context.Tags.Add(new Tag 
+            { 
+                Name = Name,
+                isActive = false,
+                isAdmin = true,
             });
         }
     }
