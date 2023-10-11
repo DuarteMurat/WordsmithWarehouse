@@ -15,5 +15,11 @@ namespace WordsmithWarehouse.Models
 
         public float CurrentUserCommentRating { get; set; }
 
+        public bool hasComment { get; set; }
+
+        public float AverageRatings { get; set; }
+
+        public string TotalReviews { get; set; }
+
     }
 }
