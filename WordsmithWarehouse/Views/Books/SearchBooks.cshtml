@@ -34,7 +34,7 @@
             <div class="col" v-for="i in filteredBooks">
                 <div class="item" v-on:click="onBookClick(i.id)">
                     <div class="item-content">
-                        <a><img alt="Image" :src="i.imageURL" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage" v-model="i.id"></a>
+                        <a><img alt="Image" :src="getBookImage(i.imageURL)" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage" v-model="i.id"></a>
                         <div class="book-title">
                             <a style="color:black" v-model="i.id">{{i.title}}</a>
                         </div>

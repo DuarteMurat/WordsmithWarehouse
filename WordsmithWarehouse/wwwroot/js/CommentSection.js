@@ -16,19 +16,20 @@ new Vue({
         return {
             comments: [],
             user: [],
+            authorId: 0,
         }
     },
     created() {
         this.comments = commentData;
         this.users = userData;
         this.userId = userId.value;
-        
+
         console.log(this.comments);
         console.log(this.users);
         console.log(this.userId);
     },
     computed: {
-        
+
     },
     methods: {
         getSimplifiedTime(dateCreated) {
@@ -51,13 +52,34 @@ new Vue({
         getId(value) {
             $('#userId').val(value);
         },
+        getAuthorId(value) {
+            $('#authorId').val(value);
+        },
         verifyButtons(commentId) {
             if (this.userId === commentId) {
                 return true;
             }
 
             return false;
-        }
+        },
     }
 
+});
+
+new Vue({
+    el: '#bookInfo',
+    data() {
+        return {
+
+        }
+    },
+    created() {
+        console.log("heloooooo")
+    },
+    methods: {
+        onAuthorClick(id) {
+            console.log(id)
+            window.location.assign(`/authors/details/${id}`);
+        },
+    }
 })

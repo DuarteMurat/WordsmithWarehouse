@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordsmithWarehouse.Data;
 
 namespace WordsmithWarehouse.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231010214004_AddReleaseYearToBooks")]
+    partial class AddReleaseYearToBooks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,10 +76,7 @@ namespace WordsmithWarehouse.Migrations
                     b.Property<string>("Publisher")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShelfId")
-
                     b.Property<int>("ReleaseYear")
-
                         .HasColumnType("int");
 
                     b.Property<string>("Subtitle")
@@ -101,8 +100,6 @@ namespace WordsmithWarehouse.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("ShelfId");
 
                     b.HasIndex("UserId");
 
@@ -243,27 +240,6 @@ namespace WordsmithWarehouse.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Libraries");
-                });
-
-            modelBuilder.Entity("ClassLibrary.Entities.Shelf", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BookIds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Shelves");
                 });
 
             modelBuilder.Entity("ClassLibrary.Entities.Tag", b =>
@@ -512,9 +488,6 @@ namespace WordsmithWarehouse.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("ShelfIds")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasIndex("UserName")
                         .IsUnique()
                         .HasFilter("[UserName] IS NOT NULL");
@@ -529,10 +502,6 @@ namespace WordsmithWarehouse.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ClassLibrary.Entities.Shelf", null)
-                        .WithMany("Books")
-                        .HasForeignKey("ShelfId");
 
                     b.HasOne("ClassLibrary.Entities.User", "User")
                         .WithMany()
@@ -607,11 +576,6 @@ namespace WordsmithWarehouse.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ClassLibrary.Entities.Shelf", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }
