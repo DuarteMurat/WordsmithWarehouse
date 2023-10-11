@@ -44,10 +44,12 @@ namespace WordsmithWarehouse.Models
 
         public string Publisher { get; set; }   
 
-        public string Synopsis { get; set; } 
+        public string Synopsis { get; set; }
 
+        [Display(Name ="Online")]
         public bool IsAvailableOnline{ get; set; }
 
+        [Display(Name = "In Storage")]
         public bool IsAvailablePhysical { get; set; }
 
         public string ImageURL { get; set; }

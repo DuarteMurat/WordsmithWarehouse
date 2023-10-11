@@ -203,8 +203,8 @@ input[type=submit]:hover {
 
 
 /*---------------------------------------------------------Book Details Page-------------------------------------------------------------*/
-.showBookInformation {
-
+.showBookInformation p{
+    font-size: 22px;
 }
 
 .detailsImage {
