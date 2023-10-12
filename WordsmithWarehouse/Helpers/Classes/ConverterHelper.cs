@@ -270,6 +270,28 @@ namespace WordsmithWarehouse.Helpers.Classes
             return convertedUsers;
         }
 
+
+        public Shelf ConvertToShelf(ShelfViewModel model, bool isNew)
+        {
+            return new Shelf
+            {
+                Id = isNew ? 0 : model.Id,
+                Name = model.Name,
+                Description = model.Description,
+            };
+        }
+
+        public ShelfViewModel ConvertToShelfViewModel(Shelf shelf)
+        {
+            return new ShelfViewModel
+            {
+                Id = shelf.Id,
+                Name = shelf.Name,
+                Description = shelf.Description,
+                BookIds = shelf.BookIds,
+            };
+        }
+
         public Lease ConvertToLease(LeaseViewModel model, bool isNew)
         {
             return new Lease 
@@ -291,5 +313,6 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

@@ -7,6 +7,8 @@ namespace WordsmithWarehouse.Models
     {
         public List<Comment> Comments { get; set; }
 
+        public List<Shelf> Shelves { get; set; }
+
         public List<User> Users { get; set; }
 
         public string CommentIds { get; set; }

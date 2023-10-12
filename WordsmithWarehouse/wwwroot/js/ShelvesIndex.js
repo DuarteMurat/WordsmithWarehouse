@@ -15,7 +15,12 @@
     },
     methods: {
         getShelvesCount(bookAmount) {
-            return bookAmount.length;
+            if (bookAmount != null) {
+                return bookAmount.length;
+            } else {
+                return '0';
+            }
+            
         },
         onBookClick(id) {
             console.log(id)

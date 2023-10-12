@@ -97,17 +97,15 @@
             <br />
             <br>
             <div class="col-12">
-                @if (Model.Tags.Count > 0)
+                @if (Model.Tags.Count > 0){
+              string tags = "";
+                for (int i = 0; i < Model.Tags.Count; i++)
                 {
-                    string tags = "";
-                    for (int i = 0; i < Model.Tags.Count; i++)
+                    if (!Model.Tags[i].isAdmin)
                     {
-                        if (!Model.Tags[i].isAdmin)
-                        {
-                            tags += Model.Tags[i].Name + " | ";
-                        }
-
+                        tags += Model.Tags[i].Name + " | ";
                     }
+                }
                     <p>
                         <b>
                             Categories:
@@ -128,17 +126,61 @@
             <br />
             <br />
             <div class="col-10">
+
                 <p>
-                    <b>Synopsis:</b>
-                    <br />
-                    <br />
-                    <cite>
-                        <i class="fas fa-quote-left fa-xs"></i> @Html.DisplayFor(model => model.Synopsis) <i class="fas fa-quote-right fa-xs"></i>
-                    </cite>
+                    <b>
+                        Categories:
+                    </b>
                 </p>
+                <hr class="col-12" />
+                <p>
+                    @tags
+                </p>
+            }
+            else
+            {
+                <p>
+                    n/a
+                </p>
+            }
+        </div>
+        <br />
+        <br />
+        <div class="col-10">
+            <p>
+                <b>Synopsis:</b>
+                <br />
+                <br />
+                <cite>
+                    <i class="fas fa-quote-left fa-xs"></i> @Html.DisplayFor(model => model.Synopsis) <i class="fas fa-quote-right fa-xs"></i>
+                </cite>
+            </p>
+
+        </div>
+    </div>
+    @*Div for the Add to Shelves Button -- You should be able to move this wherever you want.*@
+    <div>
+
+        <button type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
+
+        <div id="shelfModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4> Add to Shelf </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div v-for="i in shelves">
+                            <input type="checkbox" v-on:checked="" /> {{i.name}}
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    @*Div for the Add to Shelves Button -- You should be able to move this wherever you want.*@
 </div>
 
 
@@ -171,7 +213,7 @@
         <div style="text-align: left; max-width:800px">
             @*name/date/rating*@
             <h5>{{i.name}}</h5>
-            <h6 title="{{getHours(i.dateCreated)}}">{{getSimplifiedTime(i.dateCreated)}}</h6>
+            <h6 :title="getHours(i.dateCreated)">{{getSimplifiedTime(i.dateCreated)}}</h6>
             <h6> Rating: {{i.rating}}/10</h6>
             <p><cite>"{{i.text}}"</cite></p>
         </div>
@@ -192,6 +234,7 @@
                 </div>
             </div>
             <form asp-action="Details" style="width:700px">
+                <input type="hidden" asp-for="Id" />
                 <div class="row">
                     <div class="col-10">
                         @*comment*@
@@ -216,13 +259,14 @@
 
     @if (this.User.Identity.IsAuthenticated)
     {
-        @Html.Hidden("userId", Model.User.Id)
-        ;
+        @Html.Hidden("userId", Model.User.Id);
+        @Html.Hidden("bookId", Model.Id);
     }
     @Html.Hidden("authorId", Model.AuthorId);
     <script>
         var commentData = @Html.Raw(Json.Serialize(Model.Comments));
         var userData = @Html.Raw(Json.Serialize(Model.Users));
+        var shelfData = @Html.Raw(Json.Serialize(Model.Shelves));
     </script>
     <script src="~/js/CommentSection.js"></script>
 }
