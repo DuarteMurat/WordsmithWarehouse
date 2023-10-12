@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Helpers.Classes
 {
     public class ConverterHelper : IConverterHelper
     {
         private readonly IUserHelper _userHelper;
+        private readonly IBookRepository _bookRepository;
         public ConverterHelper(IUserHelper userHelper)
         {
             _userHelper = userHelper;
@@ -177,14 +179,10 @@ namespace WordsmithWarehouse.Helpers.Classes
             return new BookReservation
             {
                 Id = model.Id,
-                User = model.User,
-                Library = model.Library,
+                UserId = model.Id,
+                BookId = model.Id,
+                LibraryId = model.Id,
                 ReservationDate = model.ReservationDate,
-                PickupDate = model.PickupDate,
-                ReturnDate = model.ReturnDate,
-                IsCancelled = model.IsCancelled,
-                IsCompleted = model.IsCompleted,
-                BookIds = model.BookIds,
             };
         }
 
@@ -193,13 +191,10 @@ namespace WordsmithWarehouse.Helpers.Classes
             return new BookReservationViewModel
             {
                 Id = bookReservation.Id,
-                User = bookReservation.User,
-                Library = bookReservation.Library,
+                UserId= bookReservation.UserId,
+                LibraryId= bookReservation.LibraryId,
                 ReservationDate = bookReservation.ReservationDate,
-                PickupDate = bookReservation.PickupDate,
-                ReturnDate = bookReservation.ReturnDate,
-                IsCancelled = bookReservation.IsCancelled,
-                IsCompleted = bookReservation.IsCompleted,
+                BoookId = bookReservation.BookId,
             };
         }
 
@@ -275,5 +270,26 @@ namespace WordsmithWarehouse.Helpers.Classes
             return convertedUsers;
         }
 
+        public Lease ConvertToLease(LeaseViewModel model, bool isNew)
+        {
+            return new Lease 
+            {
+                Id = isNew ? 0 : model.Id,
+                BookId = model.Book.Id,
+                User = model.User,
+                LibraryId = model.Library.Id,
+                ReturnDate = model.ReturnDate,
+                IsCompleted = model.IsCompleted,
+                OnGoing = model.OnGoing,
+                LeaseTime = model.LeaseTime,
+                PickUpDate = model.PickUpDate
+            };
+
+        }
+
+        public LeaseViewModel ConvertToLeaseViewModel(Lease lease)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

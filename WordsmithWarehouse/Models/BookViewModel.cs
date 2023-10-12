@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WordsmithWarehouse.Models
 {
-    public class BookViewModel : GlobalViewModel
+    public class BookViewModel
     {
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }

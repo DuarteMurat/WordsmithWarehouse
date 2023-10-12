@@ -43,5 +43,7 @@ namespace ClassLibrary.Entities
         public TimeSpan OpenDuration => ClosingHour - OpeningHour;
 
         public bool IsOpened { get; set; }
+
+        public List<BookReservation> BookReservations { get; set; }
     }
 }

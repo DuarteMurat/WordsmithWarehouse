@@ -4,11 +4,11 @@ using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Repositories.Classes
 {
-    public class BookReservationRepository : GenericRepository<BookReservation> , IBookReservationRepository
+    public class LeaseRepository : GenericRepository<Lease>, ILeaseRepository
     {
         private readonly DataContext _context;
 
-        public BookReservationRepository(DataContext context) : base(context)
+        public LeaseRepository(DataContext context) : base(context)
         {
             _context = context;
         }

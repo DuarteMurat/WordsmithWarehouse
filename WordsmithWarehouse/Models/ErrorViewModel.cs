@@ -2,7 +2,7 @@ using System;
 
 namespace WordsmithWarehouse.Models
 {
-    public class ErrorViewModel : GlobalViewModel
+    public class ErrorViewModel
     {
         public string RequestId { get; set; }
 

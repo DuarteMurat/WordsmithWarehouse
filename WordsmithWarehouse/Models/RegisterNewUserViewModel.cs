@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class RegisterNewUserViewModel : GlobalViewModel
+    public class RegisterNewUserViewModel
     {
         [Required]
         [Display(Name = "First Name")]

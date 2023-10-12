@@ -75,7 +75,7 @@ namespace WordsmithWarehouse.Controllers
             model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
             model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
             model.AverageRatings = _commentRepository.GetAverageRatings(model.Comments);
-            model.TotalReviews = model.Comments.Count().ToString() + "Reviews";
+            model.TotalReviews = model.Comments.Count().ToString();
             if (this.User.Identity.IsAuthenticated)
             {
                 model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
@@ -95,13 +95,6 @@ namespace WordsmithWarehouse.Controllers
                 Authors = _authorRepository.GetComboAuthors(),
                 Tags = _tagRepository.GetTagsList(),
             };
-
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-                model.UserImageURL = user.ImageURL;
-            }
-            ViewData["ImageURL"] = model.UserImageURL;
 
             return View(model);
         }
