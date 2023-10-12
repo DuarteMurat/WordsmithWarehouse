@@ -1,4 +1,4 @@
-﻿@model ClassLibrary.Entities.Shelf
+﻿@model ShelfViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -18,12 +18,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BookIds" class="control-label"></label>
-                <input asp-for="BookIds" class="form-control" />
-                <span asp-validation-for="BookIds" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label"></label> *Optional
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>

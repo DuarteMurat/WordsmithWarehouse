@@ -23,6 +23,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IUserHelper _userHelper;
         private readonly ICommentRepository _commentRepository;
+        private readonly IShelfRepository _shelfRepository;
         Random r;
 
         public BooksController(IBookRepository bookRepository,
@@ -31,7 +32,8 @@ namespace WordsmithWarehouse.Controllers
             ITagRepository tagRepository,
             IAuthorRepository authorRepository,
             IUserHelper userHelper,
-            ICommentRepository commentRepository)
+            ICommentRepository commentRepository,
+            IShelfRepository shelfRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
@@ -40,6 +42,7 @@ namespace WordsmithWarehouse.Controllers
             _authorRepository = authorRepository;
             _userHelper = userHelper;
             _commentRepository = commentRepository;
+            _shelfRepository = shelfRepository;
         }
 
         // GET: Books
@@ -62,27 +65,23 @@ namespace WordsmithWarehouse.Controllers
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-                return new NotFoundViewResult("BookNotFound");
+            List<Book> books = await _bookRepository.GetAll().ToListAsync();
+            Book book;
 
-            var book = await _bookRepository.GetByIdAsync(id.Value);
+            if (id == null)
+            {
+                r = new Random();
+                id = r.Next(0, books.Count());
+                book = books[id.Value];
+            }
+            else
+                book = await _bookRepository.GetByIdAsync(id.Value);
+
             if (book == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            var model = _converterHelper.ConvertToDetailsBookViewModel(book);
+            var model = await CreateDetailsModel(book);
 
-            model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
-            model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
-            model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
-            model.AverageRatings = _commentRepository.GetAverageRatings(model.Comments);
-            model.TotalReviews = model.Comments.Count().ToString() + "Reviews";
-            if (this.User.Identity.IsAuthenticated)
-            {
-                model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-                model.hasComment = _commentRepository.CheckForComment(model.Comments, model.User.Id);
-            }
-
-            
             return View(model);
         }
 
@@ -95,13 +94,6 @@ namespace WordsmithWarehouse.Controllers
                 Authors = _authorRepository.GetComboAuthors(),
                 Tags = _tagRepository.GetTagsList(),
             };
-
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-                model.UserImageURL = user.ImageURL;
-            }
-            ViewData["ImageURL"] = model.UserImageURL;
 
             return View(model);
         }
@@ -273,23 +265,22 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
-        [HttpGet, ActionName("RandomDetails")]
-        public async Task<IActionResult> RandomBook()
+        private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)
         {
-            List<Book> books = await _bookRepository.GetAll().ToListAsync();
-
-            r = new Random();
-            
-            int id = r.Next(0, books.Count());
-
-            var model = _converterHelper.ConvertToDetailsBookViewModel(books[id]);
-
-            model.Tags = await _tagRepository.GetTagsFromString(books[id].tagIds);
+            var model = _converterHelper.ConvertToDetailsBookViewModel(book);
+            model.Tags = await _tagRepository.GetTagsFromString(book.tagIds);
             model.Author = await _authorRepository.GetAuthorById(model.AuthorId);
-            model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-            model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(books[id].Id));
+            model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
+            model.AverageRatings = _commentRepository.GetAverageRatings(model.Comments);
+            model.TotalReviews = model.Comments.Count().ToString();
+            if (this.User.Identity.IsAuthenticated)
+            {
+                model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.hasComment = _commentRepository.CheckForComment(model.Comments, model.User.Id);
+                model.Shelves = await _shelfRepository.GetShelvesByUserAsync(model.User.ShelfIds);
+            }
 
-            return View("Details", model);
+            return model;
         }
     }
 }

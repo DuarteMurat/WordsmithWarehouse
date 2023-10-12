@@ -16,15 +16,18 @@ namespace WordsmithWarehouse.Controllers
         private readonly IShelfRepository _shelfRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IUserHelper _userHelper;
+        IConverterHelper _converterHelper;
 
         public ShelvesController(DataContext context,
             IUserHelper userHelper, IShelfRepository shelfRepository,
-            IBookRepository bookRepository)
+            IBookRepository bookRepository,
+            IConverterHelper converterHelper)
         {
             _context = context;
             _shelfRepository = shelfRepository;
             _bookRepository = bookRepository;
             _userHelper = userHelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Shelves
@@ -36,24 +39,16 @@ namespace WordsmithWarehouse.Controllers
             {
                 shelves = await _shelfRepository.GetShelvesByUserAsync(user.ShelfIds),
             };
-            model.shelves.Add(new Shelf
-            {
-                Name = "Test Shelf",
-                BookIds = "1, 2, 3",
-                Description = "Just a test shelf",
-            });
 
-            model.shelves.Add(new Shelf
-            {
-                Name = "Test Shelf 2",
-                BookIds = "1, 3",
-                Description = "Just a test shelf 2",
-            });
             foreach (var shelf in model.shelves)
             {
-                shelf.Books = await _bookRepository.GetBooksFromString(shelf.BookIds);
+                if (shelf.BookIds != null)
+                {
+                    shelf.Books = await _bookRepository.GetBooksFromString(shelf.BookIds);
+                }   
             }
             return View(model);
+
         }
 
         // GET: Shelves/Details/5
@@ -77,7 +72,9 @@ namespace WordsmithWarehouse.Controllers
         // GET: Shelves/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new ShelfViewModel();
+
+            return View(model);
         }
 
         // POST: Shelves/Create
@@ -85,15 +82,22 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,BookIds,Description")] Shelf shelf)
+        public async Task<IActionResult> Create(ShelfViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(shelf);
-                await _context.SaveChangesAsync();
+                var shelf = _converterHelper.ConvertToShelf(model, true);
+                await _shelfRepository.CreateAsync(shelf);
+
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+
+                user.ShelfIds = updateShelfIds(user.ShelfIds, shelf.Id);
+
+                await _userHelper.UpdateUserAsync(user);
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(shelf);
+            return View(model);
         }
 
         // GET: Shelves/Edit/5
@@ -179,6 +183,44 @@ namespace WordsmithWarehouse.Controllers
         private bool ShelfExists(int id)
         {
             return _context.Shelves.Any(e => e.Id == id);
+        }
+
+        private string updateShelfIds(string source, int idToAdd)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                source += idToAdd.ToString();
+            }
+            else
+            {
+                if (!source.EndsWith(','))
+                {
+                    source += ',' + idToAdd.ToString();
+                }
+                else
+                {
+                    source = source.Substring(source.Length - 1);
+                }
+            }
+
+            return source;
+        }
+
+        [HttpPost]
+        public object AddToShelf()
+        {
+            object obj = null;
+            try
+            {
+                
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+            return obj;
         }
     }
 }

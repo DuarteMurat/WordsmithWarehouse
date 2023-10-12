@@ -22,15 +22,21 @@ namespace WordsmithWarehouse.Repositories.Classes
             if (string.IsNullOrEmpty(source))
                 return shelves;
 
-            string[] ids = source.Split(',');
-
-            if (ids.Length <= 0) return shelves;
-
-            foreach (string id in ids)
+            if (source.Contains(','))
             {
-                shelves.Add(await GetByIdAsync(int.Parse(id)));
-            }
+                string[] ids = source.Split(',');
 
+                if (ids.Length <= 0) return shelves;
+
+                foreach (string id in ids)
+                {
+                    shelves.Add(await GetByIdAsync(int.Parse(id)));
+                }
+
+                return shelves;
+            }
+            else
+                shelves.Add(await GetByIdAsync(int.Parse(source)));
             return shelves;
         }
     }

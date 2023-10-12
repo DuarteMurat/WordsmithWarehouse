@@ -53,6 +53,13 @@ namespace WordsmithWarehouse.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUsernameAsync(model.Username);
+
+                if (user == null)
+                {
+                    this.ModelState.AddModelError(string.Empty, "Failed to login!");
+                    return View(model);
+                }
+
                 if (await _userHelper.IsUserInRoleAsync(user, "Deactivated"))
                 {
                     this.ModelState.AddModelError(string.Empty, "Failed to login!");
