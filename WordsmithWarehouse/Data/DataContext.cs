@@ -33,5 +33,7 @@ namespace WordsmithWarehouse.Data
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<ClassLibrary.Entities.Lease> Lease { get; set; }
     }
 }

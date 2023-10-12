@@ -2,7 +2,7 @@
 
 namespace WordsmithWarehouse.Models
 {
-    public class LoginViewModel : GlobalViewModel
+    public class LoginViewModel
     {
         [Required]
         public string Username { get; set; }

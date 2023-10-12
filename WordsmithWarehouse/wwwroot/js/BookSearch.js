@@ -21,6 +21,7 @@
             if (this.selectedTagsArray.length === 0) return this.books
 
             return this.books.filter((book) => {
+                console.log(book);
                 const selectedTagsForBookArray = book.tagIds.split(',');
                 return selectedTagsForBookArray.some(i => this.selectedTagsArray.includes(Number(i)))
             })

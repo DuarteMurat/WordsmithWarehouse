@@ -1,14 +1,13 @@
 ﻿using ClassLibrary.Data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassLibrary.Entities
 {
-    public class BookReservation : IEntity
+    public class Lease : IEntity
     {
         public int Id { get; set; }
 
@@ -16,8 +15,16 @@ namespace ClassLibrary.Entities
 
         public int LibraryId { get; set; }
 
-        public int UserId { get; set; }
+        public User User { get; set; }
 
-        public DateTime ReservationDate { get; set; }
+        public DateTime PickUpDate { get; set; }
+
+        public DateTime ReturnDate { get; set; }
+
+        public DateTime LeaseTime { get; set; }
+
+        public bool OnGoing { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

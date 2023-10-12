@@ -82,6 +82,7 @@ namespace WordsmithWarehouse.Controllers
 
             var model = await CreateDetailsModel(book);
 
+
             return View(model);
         }
 

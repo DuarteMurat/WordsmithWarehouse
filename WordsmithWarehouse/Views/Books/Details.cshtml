@@ -12,9 +12,8 @@
             <div class="detailsImage">
                 <img src="@Url.Content(Model.ImageURL)" class="detailsImage" alt="Image" />
             </div>
-
             <div class="row justify-content-center">
-                <div class="col-4">
+                <div class="col-5">
                     <div class="row">
                         <p>
                             @Html.DisplayNameFor(model => model.IsAvailableOnline) @Html.DisplayFor(model => model.IsAvailableOnline)
@@ -25,6 +24,20 @@
                             @Html.DisplayNameFor(model => model.IsAvailablePhysical) @Html.DisplayFor(model => model.IsAvailablePhysical)
                         </p>
                     </div>
+                    <div class="row justify-content-center">
+                        <form enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id"/>
+                            <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="color:azure;display:block;width:100%;font-size:20px">Reserve</button>
+                        </form>
+                    </div>
+                    <br />
+                    @if (this.User.IsInRole("Admin") || this.User.IsInRole("Employee"))
+                    {
+                        <div class="row justify-content-between">
+                            <a asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a>
+                            <a asp-controller="Books" asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -67,35 +80,53 @@
                 </div>
                 <div class="col-3">
                     <p>
-                        @Html.DisplayFor(mdeol => Model.TotalReviews)
+                        <i class="fas fa-comments"></i> @Html.DisplayFor(mdeol => Model.TotalReviews)
                     </p>
                 </div>
                 <div class="col-3">
                     <p>
-                        @Html.DisplayFor(model => model.AverageRatings)
+                        @Html.DisplayFor(model => model.AverageRatings) <i class="fas fa-star" style="color: #ffe642;"></i>
+                    </p>
+                </div>
+                <div class="col-3">
+                    <p>
+                        <b>Cover type:</b> @Html.DisplayFor(model => model.CoverType)
                     </p>
                 </div>
             </div>
-            <div class="col-3">
-                <p>
-                    <b>Cover type:</b> @Html.DisplayFor(model => model.CoverType)
-                </p>
-            </div>
-        </div>
-        <br />
-        <br>
-        <div class="col-12">
-            @if (Model.Tags.Count > 0)
-            {
-                string tags = "";
+            <br />
+            <br>
+            <div class="col-12">
+                @if (Model.Tags.Count > 0){
+              string tags = "";
                 for (int i = 0; i < Model.Tags.Count; i++)
                 {
                     if (!Model.Tags[i].isAdmin)
                     {
                         tags += Model.Tags[i].Name + " | ";
                     }
-
                 }
+                    <p>
+                        <b>
+                            Categories:
+                        </b>
+                    </p>
+                    <hr class="col-12" />
+                    <p>
+                        @tags
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        n/a
+                    </p>
+                }
+            </div>
+            <br />
+            <br />
+            <div class="col-10">
+
                 <p>
                     <b>
                         Categories:
@@ -152,10 +183,6 @@
     @*Div for the Add to Shelves Button -- You should be able to move this wherever you want.*@
 </div>
 
-
-<a asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a> |
-<a asp-controller="Books" asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a> |
-<a id="reserveButton" class="btn btn-dark" style="color:azure"><i class="fas fa-plus"></i> Reserve</a>
 
 @*----------------------------------------------------------CommentSection------------------------------------------------*@
 <hr />

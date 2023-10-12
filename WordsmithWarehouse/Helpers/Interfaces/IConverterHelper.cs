@@ -40,5 +40,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Shelf ConvertToShelf(ShelfViewModel model, bool isNew);
 
         ShelfViewModel ConvertToShelfViewModel(Shelf shelf);
+
+        Lease ConvertToLease(LeaseViewModel model, bool isNew);
+
+        LeaseViewModel ConvertToLeaseViewModel(Lease lease);    
     }
 }

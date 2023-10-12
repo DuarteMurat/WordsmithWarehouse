@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class ChangePasswordViewModel : GlobalViewModel
+    public class ChangePasswordViewModel
     {
         [Required]
         [Display(Name = "Current password")]

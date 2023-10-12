@@ -54,7 +54,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right ">
                                 <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
-                                <a class="nav-link text-dark" asp-controller="Shelves" asp-action="Index">Shelves</a>
+                                <a class="nav-link text-dark" asp-controller="Shelves" asp-action="Index"><i class="fas fa-bookmark" style="color:#96a2b2"></i> Shelves</a>
                                 <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                             </div>
                         </div>
@@ -110,6 +110,10 @@
                 <hr />
                 <a class="nav-link" asp-area="" asp-controller="Books" asp-action="SearchBooks">
                     Search Books<i class="fas fa-search" style="color: #ffffff; float: right; padding-top: 6px"></i>
+                </a>
+                <hr />
+                <a class="nav-link" asp-area="" asp-controller="Leases" asp-action="Index">
+                    Leases<i class="fas fa-book-reader" style="color: #ffffff; float: right; padding-top: 6px"></i>
                 </a>
                 <div class="row" style="bottom:0; position:absolute; margin:auto">
                     <span class="align-text-bottom" style="color: white;" id="datetime"></span>
