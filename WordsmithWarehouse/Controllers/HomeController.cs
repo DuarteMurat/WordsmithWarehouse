@@ -14,18 +14,14 @@ namespace WordsmithWarehouse.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBookRepository _bookRepository;
         private readonly ITagRepository _tagRepository;
-        private readonly IUserHelper _userHelper;
-        private User _user;
 
         public HomeController(ILogger<HomeController> logger,
             ITagRepository tagRepository,
-            IBookRepository bookRepository,
-            IUserHelper userHelper)
+            IBookRepository bookRepository)
         {
             _logger = logger;
             _tagRepository = tagRepository;
             _bookRepository = bookRepository;
-            _userHelper = userHelper;
         }
 
         public async Task<IActionResult> Index()
@@ -35,19 +31,10 @@ namespace WordsmithWarehouse.Controllers
                 Books = _bookRepository.GetBooksList(),
             };
 
-            //if (this.User.Identity.IsAuthenticated)
-            //{
-            //    var user = _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-            //    model.UserImageURL = user.Result.ImageURL;
-            //}
-
-
-            // separate best sellers
             model.BestSellerBooks = await _tagRepository.GetBooksWithTags(model.Books, "Best Seller");
 
             model.Books = await _bookRepository.GetBooksFromString(model.BestSellerBooks);
 
-            ViewData["ImageURL"] = model.UserImageURL;
 
             return View(model);
         }

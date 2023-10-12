@@ -37,6 +37,10 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 
         Task<IEnumerable<ManageUserViewModel>> BulkConvertToManageUserViewModel(IEnumerable<User> users);
 
+        Lease ConvertToLease(LeaseViewModel model, bool isNew);
+
+        LeaseViewModel ConvertToLeaseViewModel(Lease lease);    
+
         
     }
 }

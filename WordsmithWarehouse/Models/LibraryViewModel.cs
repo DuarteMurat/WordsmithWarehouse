@@ -4,7 +4,7 @@ using System;
 
 namespace WordsmithWarehouse.Models
 {
-    public class LibraryViewModel : GlobalViewModel
+    public class LibraryViewModel
     {
 
         public int Id { get; set; }

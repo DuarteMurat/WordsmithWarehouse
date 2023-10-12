@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace WordsmithWarehouse.Models
 {
-    public class AuthorViewModel : GlobalViewModel
+    public class AuthorViewModel
     {
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }

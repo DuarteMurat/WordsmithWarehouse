@@ -2,7 +2,7 @@
 
 namespace WordsmithWarehouse.Repositories.Interfaces
 {
-    public interface IBookReservationRepository : IGenericRepository<BookReservation>
+    public interface ILeaseRepository : IGenericRepository<Lease>
     {
     }
 }
