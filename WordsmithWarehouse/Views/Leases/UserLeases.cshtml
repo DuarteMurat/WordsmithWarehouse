@@ -1,8 +1,5 @@
-﻿@model IEnumerable<LeaseViewModel>
+﻿@model UserLeasesViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
@@ -10,46 +7,44 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h1 class="panel-title">Leases</h1>
+                <h1 class="panel-title">My Leases</h1>
                 <br />
             </div>
             <div class="panel-body">
-                <table class="table"  id="MyTable">
+                <table class="table table-hover" id="MyTable">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.User.UserName)
+                                Book
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Book.Title)
+                                Library
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.PickUpDate)
+                                PickUp Date
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ReturnDate)
+                                Return Date
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LeaseTime)
+                                OnGoing
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OnGoing)
+                                IsCompleted
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.IsCompleted)
-                            </th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Leases)
                         {
+                            var book = Model.Books.Where(b => b.Id == item.BookId).FirstOrDefault();
+                            var library  = Model.Libraries.Where(b => b.Id == item.LibraryId).FirstOrDefault();
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.User.UserName)
+                                    <img src="@Url.Content(book.ImageURL)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto">
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Book.Title)
+                                    @Html.DisplayFor(modelItem => library.Name)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.PickUpDate)
@@ -58,18 +53,10 @@
                                     @Html.DisplayFor(modelItem => item.ReturnDate)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.LeaseTime)
-                                </td>
-                                <td>
                                     @Html.DisplayFor(modelItem => item.OnGoing)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsCompleted)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i>  Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i>  Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                         }
@@ -79,7 +66,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts{
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>

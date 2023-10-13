@@ -11,6 +11,8 @@ using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Repositories.Classes;
 using WordsmithWarehouse.Repositories.Interfaces;
 using WordsmithWarehouse.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -24,7 +26,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IConverterHelper _converterHelper;
 
-        public LeasesController(DataContext context, 
+        public LeasesController(DataContext context,
             IUserHelper userHelper,
             ILeaseRepository leaseRepository,
             IBookRepository bookRepository,
@@ -42,9 +44,23 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Leases
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Lease.ToListAsync());
+            var list = await _leaseRepository.GetAll().OrderBy(l => l.Id).ToListAsync();
+
+            List<LeaseViewModel> leases = new List<LeaseViewModel>();
+            foreach (var item in list)
+            {
+                var itemToAdd = _converterHelper.ConvertToLeaseViewModel(item);
+                itemToAdd.Book = await _bookRepository.GetByIdAsync(item.BookId);
+                var user = await _userHelper.GetUserByIdAsync(item.UserId);
+                itemToAdd.User = user;
+
+                leases.Add(itemToAdd);
+            }
+
+            return View(leases);
         }
 
         // GET: Leases/Details/5
@@ -73,7 +89,10 @@ namespace WordsmithWarehouse.Controllers
             model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
             model.LibraryList = _libraryRepository.GetComboLibraries();
             model.Book.Author = await _authorRepository.GetByIdAsync(model.Book.AuthorId);
-            //model.Libraries =  await _libraryRepository.GetByIdAsync(model);
+            model.Libraries = await _libraryRepository.GetAll().ToListAsync();
+            model.PickUpDate = null;
+            model.ReturnDate = null;
+            model.LeaseTime = null;
 
             return View(model);
         }
@@ -88,13 +107,14 @@ namespace WordsmithWarehouse.Controllers
             if (ModelState.IsValid)
             {
                 model.Book = await _bookRepository.GetByIdAsync(model.Book.Id);
-                model.Library = await _libraryRepository.GetByIdAsync(model.Library.Id);
-                model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.Library = await _libraryRepository.GetByIdAsync(model.LibraryId);
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.UserId = user.Id;
                 var lease = _converterHelper.ConvertToLease(model, true);
-                
+
                 await _leaseRepository.CreateAsync(lease);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(UserLeases));
             }
             return View(model);
         }
@@ -107,12 +127,19 @@ namespace WordsmithWarehouse.Controllers
                 return NotFound();
             }
 
-            var lease = await _context.Lease.FindAsync(id);
+            var lease = await _leaseRepository.GetByIdAsync(id.Value);
             if (lease == null)
             {
                 return NotFound();
             }
-            return View(lease);
+
+            var model = _converterHelper.ConvertToLeaseViewModel(lease);
+            model.User = await _userHelper.GetUserByIdAsync(model.UserId);
+            model.Book = await _bookRepository.GetByIdAsync(lease.BookId);
+            model.Library = await _libraryRepository.GetByIdAsync(lease.LibraryId);
+
+
+            return View(model);
         }
 
         // POST: Leases/Edit/5
@@ -120,23 +147,21 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,LibraryId,UserId,PickUpDate,ReturnDate,LeaseTime,OnGoing,IsCompleted")] Lease lease)
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> Edit(LeaseViewModel model)
         {
-            if (id != lease.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(lease);
-                    await _context.SaveChangesAsync();
+                    var lease = await _leaseRepository.GetByIdAsync(model.Id);
+                    lease = _converterHelper.ConvertToLease(model, false);
+
+                    await _leaseRepository.UpdateAsync(lease);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LeaseExists(lease.Id))
+                    if (!await _leaseRepository.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -147,7 +172,7 @@ namespace WordsmithWarehouse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(lease);
+            return View(model);
         }
 
         // GET: Leases/Delete/5
@@ -179,9 +204,29 @@ namespace WordsmithWarehouse.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LeaseExists(int id)
+        public async Task<IActionResult> UserLeases()
         {
-            return _context.Lease.Any(e => e.Id == id);
+            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            var model = new UserLeasesViewModel
+            {
+                User = user,
+                Leases = await _leaseRepository.GetAll().Where(x => x.UserId == user.Id).ToListAsync(),
+                ExampleLease = new Lease(),
+                Books = await _bookRepository.GetAll().ToListAsync(),
+                Libraries = await _libraryRepository.GetAll().ToListAsync(),
+            };
+
+            return View(model);
+
+        }
+        
+        public async Task<IActionResult> GetLeaseAmount()
+        {
+            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            var leases = await _leaseRepository.GetAll().Where(x => x.UserId == user.Id).ToListAsync();
+
+            string LeasesAmount = leases.Count().ToString();
+            return Content(LeasesAmount);
         }
     }
 }

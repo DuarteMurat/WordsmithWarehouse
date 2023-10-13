@@ -11,18 +11,7 @@
     <input type="hidden" asp-for="Book.Id" />
     <input type="hidden" asp-for="Book.ISBN" />
     <input type="hidden" asp-for="Book.Title" />
-    <input type="hidden" asp-for="Library"/>
     <!-- One "tab" for each step in the form: -->
-    @if (!this.User.Identity.IsAuthenticated)   
-    {
-        <h1>Login:</h1>
-
-        <div class="tab">
-            User:
-            <p><input placeholder="Username" oninput="this.className = ''"></p>
-            <p><input placeholder="Password" oninput="this.className = ''"></p>
-        </div>
-    }
 
     <div class="tab">
         <div class="row justify-content-between justify-content-center" >
@@ -56,7 +45,7 @@
         <div class="row justify-content-between">
             <h3>Choose a library:</h3>
             <div>
-                <select asp-for="Library.Id" asp-items="Model.LibraryList" class="form-control"></select>
+                <select asp-for="LibraryId" asp-items="Model.LibraryList" class="form-control"></select>
                 <span asp-validation-for="LibraryList" class="text-danger"></span>
             </div>
             <div class="col" style="padding-top:40px">
