@@ -11,7 +11,13 @@ namespace WordsmithWarehouse.Models
 
         public Book Book { get; set; }
 
+        public string UserId { get; set; }
+
+        public string UserName { get; set; }
+
         public User User { get; set; }
+
+        public int LibraryId { get; set; }
 
         public Library Library { get; set; }
 
@@ -19,11 +25,11 @@ namespace WordsmithWarehouse.Models
 
         public List<Library> Libraries { get; set; }
 
-        public DateTime PickUpDate { get; set; }
+        public DateTime? PickUpDate { get; set; }
 
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
 
-        public DateTime LeaseTime { get; set; }
+        public DateTime? LeaseTime { get; set; }
 
         public bool OnGoing { get; set; }
 
