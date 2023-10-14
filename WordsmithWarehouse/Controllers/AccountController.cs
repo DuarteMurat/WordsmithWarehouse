@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Classes;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
-using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {

@@ -23,13 +23,11 @@ namespace WordsmithWarehouse.Repositories.Classes
                 Text = a.Name,
                 Value = a.Id.ToString(),
             }).OrderBy(l => l.Text).ToList();
-
             list.Insert(0, new SelectListItem
             {
                 Text = "Select a library",
                 Value = "0",
             });
-
             return list;
         }
     }

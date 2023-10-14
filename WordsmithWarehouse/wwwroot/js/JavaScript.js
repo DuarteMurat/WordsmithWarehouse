@@ -41,9 +41,11 @@ function nextPrev(n) {
 
 function validateForm() {
     // This function deals with validation of the form fields
-    var x, y, i, valid = true;
+    var x, y, i, w, valid  = true;
     x = document.getElementsByClassName("tab");
     y = x[currentTab].getElementsByTagName("input");
+    w = x[currentTab].getElementsByTagName("select");
+    console.log('collection ' + w);
     // A loop that checks every input field in the current tab:
     for (i = 0; i < y.length; i++) {
         // If a field is empty...
@@ -54,6 +56,17 @@ function validateForm() {
             valid = false;
         }
     }
+    if (w.length !== 0) {
+        for (var j = 0; j < w.length; j++) {
+            console.log(w[j].value)
+            if (w[j].value === undefined || w[j].value === 0) {
+                w.className += " invalid";
+                valid = false;
+            }
+        }
+    }
+    console.log(valid);
+    console.log('w length ' +  w.length);
     // If the valid status is true, mark the step as finished and valid:
     if (valid) {
         document.getElementsByClassName("step")[currentTab].className += " finish";

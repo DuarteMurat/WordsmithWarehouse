@@ -94,6 +94,7 @@ namespace WordsmithWarehouse.Controllers
             model.ReturnDate = null;
             model.LeaseTime = null;
 
+
             return View(model);
         }
 

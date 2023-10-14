@@ -3,103 +3,110 @@
 @{
     ViewData["Title"] = "Create";
 }
-<br/>
-<br/>
+<br />
+<br />
 <h1 class="text-center">Create Lease</h1>
 <hr />
+<div id="library">
+    <form id="regForm" asp-action="Create" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Book.Id" />
+        <input type="hidden" asp-for="Book.ISBN" />
+        <input type="hidden" asp-for="Book.Title" />
+        <input type="hidden" asp-for="Library" />
+
 <form id="regForm" asp-action="Create" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Book.Id" />
-    <input type="hidden" asp-for="Book.ISBN" />
-    <input type="hidden" asp-for="Book.Title" />
-    <!-- One "tab" for each step in the form: -->
 
-    <div class="tab">
-        <div class="row justify-content-between justify-content-center" >
-            <div class="col-2">
-                <img style="width:60%;height:100%;padding-top: 60px" src="@Url.Content(Model.Book.ImageURL)" />
-            </div>
-            <div class="col-2">
-                <h5 style="padding-top: 120px">Title</h5>
-                <p>@Url.Content(Model.Book.Title)</p>
-            </div>
-            <div class="col-2">
-                <h5 style="padding-top: 120px">Author</h5>
-                @*<p>@Url.Content(Model.Book.Author.Name)</p>*@
-            </div>
-            <div class="col-2">
-                <h5 style="padding-top: 120px">Release Year</h5>
-                <p>@Url.Content(Model.Book.ReleaseYear.ToString())</p>
-            </div>
-            <div class="col-2">
-                <h5 style="padding-top: 120px">ISBN</h5>
-                <p>@Url.Content(Model.Book.ISBN)</p>
-            </div>
-            <div class="col-2">
-                <h5 style="padding-top: 120px">Publisher</h5>
-                <p>@Url.Content(Model.Book.Publisher)</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="tab">
-        <div class="row justify-content-between">
-            <h3>Choose a library:</h3>
-            <div>
-                <select asp-for="LibraryId" asp-items="Model.LibraryList" class="form-control"></select>
-                <span asp-validation-for="LibraryList" class="text-danger"></span>
-            </div>
-            <div class="col" style="padding-top:40px">
-                @*<h5>Name</h5>
-                <p>@Url.Content(Model.Library.Name)</p>
-                <h5>Country</h5>
-                <p>@Url.Content(Model.Library.Country)</p>
-                <h5>Region</h5>
-                <p>@Url.Content(Model.Library.Region)</p>
-                <h5>Address</h5>
-                <p>@Url.Content(Model.Library.Adress)</p>
-                <h5>Opening Hour</h5>
-                <p>@Url.Content(Model.Library.OpeningHour.ToString())</p>
-                <h5>Closing Hour</h5>
-                <p>@Url.Content(Model.Library.ClosingHour.ToString())</p>*@
-            </div>
-        </div>
-    </div>
-
-    <div class="tab">
-        <div class="row justify-content-between justify-content-center">
-            <div class="col-2" style="padding-top:50px">
-                <div class="row text-center">
-                    <h3 class="col-12">Book</h3>
-                    <p class="col-12">@Url.Content(Model.Book.Title)</p>
+        <div class="tab">
+            <div class="row justify-content-between justify-content-center">
+                <div class="col-2">
+                    <img style="width:60%;height:100%;padding-top: 60px" src="@Url.Content(Model.Book.ImageURL)" />
                 </div>
-                <div class="row">
-                    <img class="" style="width:60%;height:100%;margin:auto" src="@Url.Content(Model.Book.ImageURL)" />
+                <div class="col-2">
+                    <h5 style="padding-top: 120px">Title</h5>
+                    <p>@Url.Content(Model.Book.Title)</p>
+                </div>
+                <div class="col-2">
+                    <h5 style="padding-top: 120px">Author</h5>
+                    <p>@Url.Content(Model.Book.Author.Name)</p>
+                </div>
+                <div class="col-2">
+                    <h5 style="padding-top: 120px">Release Year</h5>
+                    <p>@Url.Content(Model.Book.ReleaseYear.ToString())</p>
+                </div>
+                <div class="col-2">
+                    <h5 style="padding-top: 120px">ISBN</h5>
+                    <p>@Url.Content(Model.Book.ISBN)</p>
+                </div>
+                <div class="col-2">
+                    <h5 style="padding-top: 120px">Publisher</h5>
+                    <p>@Url.Content(Model.Book.Publisher)</p>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="tab">
+            <div class="row justify-content-between">
+                <h3>Choose a library:</h3>
+                <div>
+                    <select asp-for="Library.Id" asp-items="Model.LibraryList" class="form-control" v-model="selectedValue"></select>
+                    <span asp-validation-for="LibraryList" class="text-danger"></span>
+                </div>
+                <div class="col" style="padding-top:40px">
 
-    <div style="overflow:auto;">
-        <div style="float:right;">
-            <button type="button"  class="btn btn-warning" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="button"  class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                    {{ getLibrary(selectedValue, 'name') }}
+                    {{ getLibrary(selectedValue, 'country') }}
+                    {{ getLibrary(selectedValue, 'region') }}
+                    {{ getLibrary(selectedValue, 'adress') }}
+                    {{ getLibrary(selectedValue, 'openingHour') }}
+                    {{ getLibrary(selectedValue, 'closingHour') }}
+                </div>
+
+            </div>
         </div>
-    </div>
 
-    <!-- Circles which indicates the steps of the form: -->
-    <div style="text-align:center;margin-top:40px;">
-        @if (!this.User.Identity.IsAuthenticated)
-        {
+        <div class="tab">
+            <div class="row justify-content-between justify-content-center">
+                <div class="col-2" style="padding-top:50px">
+                    <div class="row text-center">
+                        <h3 class="col-12">Book</h3>
+                        <p class="col-12">@Url.Content(Model.Book.Title)</p>
+                    </div>
+                    <div class="row">
+                        <img class="" style="width:60%;height:100%;margin:auto" src="@Url.Content(Model.Book.ImageURL)" />
+                    </div>
+
+                    {{ getLibrary(selectedValue, 'name') }}
+                    {{ getLibrary(selectedValue, 'country') }}
+                    {{ getLibrary(selectedValue, 'region') }}
+                    {{ getLibrary(selectedValue, 'adress') }}
+                    {{ getLibrary(selectedValue, 'openingHour') }}
+                    {{ getLibrary(selectedValue, 'closingHour') }}
+                </div>
+            </div>
+        </div>
+
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" class="btn btn-warning" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+            @if (!this.User.Identity.IsAuthenticated)
+            {
+                <span class="step"></span>
+            }
             <span class="step"></span>
-        }
-        <span class="step"></span>
-        <span class="step"></span>
-        <span class="step"></span>
-    </div>
-    <script src="~/js/JavaScript.js"></script>
-</form>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+    </form>
+</div>
 
+    <script>
+        var libraryData = @Html.Raw(Json.Serialize(Model.Libraries));
+    </script>
 
-
-
-
+<script src="~/js/leaselibrary.js"></script>
+<script src="~/js/JavaScript.js"></script>
