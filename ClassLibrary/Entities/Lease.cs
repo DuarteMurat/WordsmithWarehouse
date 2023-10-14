@@ -15,13 +15,13 @@ namespace ClassLibrary.Entities
 
         public int LibraryId { get; set; }
 
-        public User User { get; set; }
+        public string UserId { get; set; }
 
-        public DateTime PickUpDate { get; set; }
+        public DateTime? PickUpDate { get; set; }
 
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
 
-        public DateTime LeaseTime { get; set; }
+        public DateTime? LeaseTime { get; set; }
 
         public bool OnGoing { get; set; }
 

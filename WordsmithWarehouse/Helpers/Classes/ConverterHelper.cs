@@ -15,7 +15,7 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             _userHelper = userHelper;
         }
-        public Book ConvertToBook(BookViewModel model, string path, bool isNew)
+        public Book ConvertToBook(BookViewModel model, string path, bool isNew, string bookpath)
         {
             return new Book
             {
@@ -34,10 +34,11 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
                 ReleaseYear = model.ReleaseYear,
+                BookFileURL = bookpath,
             };
         }
 
-        public Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew)
+        public Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew, string bookpath)
         {
             return new Book
             {
@@ -56,6 +57,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
                 ReleaseYear = model.ReleaseYear,
+                BookFileURL = bookpath,
             };
         }
 
@@ -298,20 +300,32 @@ namespace WordsmithWarehouse.Helpers.Classes
             {
                 Id = isNew ? 0 : model.Id,
                 BookId = model.Book.Id,
-                User = model.User,
-                LibraryId = model.Library.Id,
+                UserId = model.UserId,
+                LibraryId = model.LibraryId,
                 ReturnDate = model.ReturnDate,
                 IsCompleted = model.IsCompleted,
                 OnGoing = model.OnGoing,
                 LeaseTime = model.LeaseTime,
-                PickUpDate = model.PickUpDate
+                PickUpDate = model.PickUpDate,
             };
 
         }
 
         public LeaseViewModel ConvertToLeaseViewModel(Lease lease)
         {
-            throw new System.NotImplementedException();
+            return new LeaseViewModel
+            {
+                Id = lease.Id,
+                IsCompleted = lease.IsCompleted,
+                OnGoing = lease.OnGoing,
+                LeaseTime = lease.LeaseTime,
+                PickUpDate = lease.PickUpDate,
+                ReturnDate = lease.ReturnDate,
+                UserId = lease.UserId,
+                LibraryId = lease.LibraryId,
+                
+            };
+
         }
 
     }

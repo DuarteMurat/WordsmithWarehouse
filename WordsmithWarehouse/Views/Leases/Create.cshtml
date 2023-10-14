@@ -13,17 +13,8 @@
         <input type="hidden" asp-for="Book.ISBN" />
         <input type="hidden" asp-for="Book.Title" />
         <input type="hidden" asp-for="Library" />
-        <!-- One "tab" for each step in the form: -->
-        @if (!this.User.Identity.IsAuthenticated)
-        {
-            <h1>Login:</h1>
 
-            <div class="tab">
-                User:
-                <p><input placeholder="Username" oninput="this.className = ''"></p>
-                <p><input placeholder="Password" oninput="this.className = ''"></p>
-            </div>
-        }
+<form id="regForm" asp-action="Create" enctype="multipart/form-data">
 
         <div class="tab">
             <div class="row justify-content-between justify-content-center">
@@ -52,7 +43,6 @@
                 </div>
             </div>
         </div>
-
         <div class="tab">
             <div class="row justify-content-between">
                 <h3>Choose a library:</h3>
@@ -68,22 +58,8 @@
                     {{ getLibrary(selectedValue, 'adress') }}
                     {{ getLibrary(selectedValue, 'openingHour') }}
                     {{ getLibrary(selectedValue, 'closingHour') }}
-
-
-
-                    @*<h5>Name</h5>
-                    <p>@Url.Content(Model.Library.Name)</p>
-                    <h5>Country</h5>
-                    <p>@Url.Content(Model.Library.Country)</p>
-                    <h5>Region</h5>
-                    <p>@Url.Content(Model.Library.Region)</p>
-                    <h5>Address</h5>
-                    <p>@Url.Content(Model.Library.Adress)</p>
-                    <h5>Opening Hour</h5>
-                    <p>@Url.Content(Model.Library.OpeningHour.ToString())</p>
-                    <h5>Closing Hour</h5>
-                    <p>@Url.Content(Model.Library.ClosingHour.ToString())</p>*@
                 </div>
+
             </div>
         </div>
 

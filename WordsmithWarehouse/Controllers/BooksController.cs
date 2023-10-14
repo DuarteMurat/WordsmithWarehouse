@@ -111,20 +111,29 @@ namespace WordsmithWarehouse.Controllers
             if (ModelState.IsValid)
             {
                 var path = string.Empty;
+                var bookFile = string.Empty;
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
                 }
-
                 else
                 {
                     path = "/images/Books/notfound.png";
                 };
 
+                if (model.BookFile != null && model.BookFile.Length > 0)
+                {
+                    bookFile = await _bookRepository.UploadBookFileAsync(model.BookFile, "Books");
+                }
+                else
+                {
+                    return View(model);
+                };
+
                 model.tagIds = _tagRepository.GetTagIds(model.Tags);
 
-                var book = _converterHelper.ConvertToBook(model, path, true);
+                var book = _converterHelper.ConvertToBook(model, path, true, bookFile);
                 await _bookRepository.CreateAsync(book);
 
                 return RedirectToAction(nameof(Index));
@@ -167,14 +176,20 @@ namespace WordsmithWarehouse.Controllers
                 try
                 {
                     var path = model.ImageURL;
+                    var bookFile = string.Empty;
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Books");
                     }
 
+                    if (model.BookFile != null && model.BookFile.Length > 0)
+                    {
+                        bookFile = await _bookRepository.UploadBookFileAsync(model.BookFile, "Books");
+                    }
+
                     var book = await _bookRepository.GetByIdAsync(model.Id);
-                    book = _converterHelper.ConvertToBook(model, path, false);
+                    book = _converterHelper.ConvertToBook(model, path, false, bookFile);
 
                     book.tagIds = _tagRepository.GetTagIds(model.Tags);
 
@@ -274,6 +289,7 @@ namespace WordsmithWarehouse.Controllers
             model.Comments = new List<Comment>(await _commentRepository.GetCommentsByBookId(book.Id));
             model.AverageRatings = _commentRepository.GetAverageRatings(model.Comments);
             model.TotalReviews = model.Comments.Count().ToString();
+            model.BookFileUrl = book.BookFileURL;
             if (this.User.Identity.IsAuthenticated)
             {
                 model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);

@@ -24,12 +24,26 @@
                             @Html.DisplayNameFor(model => model.IsAvailablePhysical) @Html.DisplayFor(model => model.IsAvailablePhysical)
                         </p>
                     </div>
-                    <div class="row justify-content-center">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+
                         <form enctype="multipart/form-data">
                             <input type="hidden" asp-for="Id" />
-                            <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="color:azure;display:block;width:100%;font-size:20px">Reserve</button>
+
+                            <div class="row justify-content-center">
+                                <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="width:100%">
+                                    Reserve
+                                </button>
+                            </div>
                         </form>
-                    </div>
+
+                        <div class="row justify-content-center">
+                            <button style="width:100%" class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Read Book</a></button>
+                        </div>
+                        <div class="row justify-content-center">
+                            <button style="width:100%" class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
+                        </div>
+                    }
                     <br />
                     @if (this.User.IsInRole("Admin") || this.User.IsInRole("Employee"))
                     {
@@ -126,6 +140,7 @@
             </div>
             <br />
             <br />
+      
         </div>
         <br />
         <br />
@@ -138,19 +153,19 @@
                     <i class="fas fa-quote-left fa-xs"></i> @Html.DisplayFor(model => model.Synopsis) <i class="fas fa-quote-right fa-xs"></i>
                 </cite>
             </p>
-
+            </div>
         </div>
     </div>
-    @*Div for the Add to Shelves Button -- You should be able to move this wherever you want.*@
-    <div>
-
-        <button type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
-
-        <div id="shelfModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4> Add to Shelf </h4>
+    @*--------------------Modal for Shelves----------------------*@
+    <div id="shelfModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4> Add to Shelf </h4>
+                </div>
+                <div class="modal-body">
+                    <div v-for="i in shelves">
+                        <input type="checkbox" v-on:checked="" /> {{i.name}}
                     </div>
                     <div class="modal-body">
                         @foreach (var shelf in Model.Shelves)
@@ -175,11 +190,11 @@
                             }
                         }
                     </div>
+                    <hr />
                 </div>
             </div>
         </div>
     </div>
-    @*Div for the Add to Shelves Button -- You should be able to move this wherever you want.*@
 </div>
 
 

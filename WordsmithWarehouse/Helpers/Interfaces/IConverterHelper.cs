@@ -7,9 +7,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 {
     public interface IConverterHelper
     {
-        Book ConvertToBook(BookViewModel model, string path, bool isNew);
+        Book ConvertToBook(BookViewModel model, string path, bool isNew, string bookpath);
 
-        Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew);
+        Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew, string bookpath);
 
         BookViewModel ConvertToBookViewModel(Book book);
 
