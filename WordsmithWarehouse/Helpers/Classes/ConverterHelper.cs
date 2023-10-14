@@ -15,7 +15,7 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             _userHelper = userHelper;
         }
-        public Book ConvertToBook(BookViewModel model, string path, bool isNew)
+        public Book ConvertToBook(BookViewModel model, string path, bool isNew, string bookpath)
         {
             return new Book
             {
@@ -34,10 +34,11 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
                 ReleaseYear = model.ReleaseYear,
+                BookFileURL = bookpath,
             };
         }
 
-        public Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew)
+        public Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew, string bookpath)
         {
             return new Book
             {
@@ -56,6 +57,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Publisher = model.Publisher,
                 Synopsis = model.Synopsis,
                 ReleaseYear = model.ReleaseYear,
+                BookFileURL = bookpath,
             };
         }
 

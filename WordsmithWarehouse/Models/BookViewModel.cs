@@ -55,5 +55,10 @@ namespace WordsmithWarehouse.Models
         public string ImageURL { get; set; }
 
         public int ReleaseYear { get; set; }
+
+        [Display(Name = "Book File")]
+        public IFormFile BookFile { get; set; }
+
+        public string BookFileUrl { get; set; }
     }
 }

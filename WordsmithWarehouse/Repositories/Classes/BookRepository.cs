@@ -1,7 +1,10 @@
 ﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
@@ -77,6 +80,24 @@ namespace WordsmithWarehouse.Repositories.Classes
             }).OrderBy(t => t.Title).ToList();
 
             return list;
+        }
+
+        public async Task<string> UploadBookFileAsync(IFormFile bookFile, string folder)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string file = $"{guid}.pdf";
+
+            string path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                $"wwwroot\\bookfiles\\{folder}",
+                file);
+
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                await bookFile.CopyToAsync(stream);
+            }
+
+            return $"~/bookfiles/{folder}/{file}";
         }
     }
 }
