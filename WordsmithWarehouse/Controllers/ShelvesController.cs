@@ -1,6 +1,8 @@
-﻿using ClassLibrary.Entities;
+﻿using ClassLibrary.Data;
+using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
@@ -45,7 +47,7 @@ namespace WordsmithWarehouse.Controllers
                 if (shelf.BookIds != null)
                 {
                     shelf.Books = await _bookRepository.GetBooksFromString(shelf.BookIds);
-                }   
+                }
             }
             return View(model);
 
@@ -199,7 +201,7 @@ namespace WordsmithWarehouse.Controllers
                 }
                 else
                 {
-                    source = source.Substring(source.Length - 1);
+                    source = source.Substring(0, source.Length - 1);
                 }
             }
 
@@ -207,20 +209,51 @@ namespace WordsmithWarehouse.Controllers
         }
 
         [HttpPost]
-        public object AddToShelf()
+        public async Task<object> AddToShelf(AddBookShelf info)
         {
-            object obj = null;
-            try
+            var shelf = await _shelfRepository.GetByIdAsync(info.shelfId);
+            if (string.IsNullOrEmpty(shelf.BookIds))
             {
-                
-            }
-            catch (System.Exception)
-            {
-
-                throw;
+                shelf.BookIds = "";
             }
 
-            return obj;
+            if (shelf.BookIds.Length >= 1)
+            {
+                shelf.BookIds += ',' + info.bookId.ToString();
+            }
+            else
+            {
+                shelf.BookIds += info.bookId.ToString();
+            }
+
+            await _shelfRepository.UpdateAsync(shelf);
+
+            return Json("success");
+        }
+
+        [HttpPost]
+        public async Task<object> RemoveFromShelf(AddBookShelf info)
+        {
+            var shelf = await _shelfRepository.GetByIdAsync(info.shelfId);
+            List<string> stringSplit = shelf.BookIds.Split(',').ToList();
+
+            if (stringSplit.Contains(info.bookId.ToString()))
+            {
+                stringSplit.Remove(info.bookId.ToString());
+            }
+
+            shelf.BookIds = string.Empty;
+
+            foreach (var item in stringSplit)
+            {
+                shelf.BookIds += item + ',';
+            }
+
+            shelf.BookIds = shelf.BookIds.Substring(0, shelf.BookIds.Length - 1);
+
+            await _shelfRepository.UpdateAsync(shelf);
+
+            return Json("success");
         }
     }
 }

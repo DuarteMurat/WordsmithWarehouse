@@ -26,7 +26,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <form enctype="multipart/form-data">
-                            <input type="hidden" asp-for="Id"/>
+                            <input type="hidden" asp-for="Id" />
                             <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="color:azure;display:block;width:100%;font-size:20px">Reserve</button>
                         </form>
                     </div>
@@ -97,15 +97,16 @@
             <br />
             <br>
             <div class="col-12">
-                @if (Model.Tags.Count > 0){
-              string tags = "";
-                for (int i = 0; i < Model.Tags.Count; i++)
+                @if (Model.Tags.Count > 0)
                 {
-                    if (!Model.Tags[i].isAdmin)
+                    string tags = "";
+                    for (int i = 0; i < Model.Tags.Count; i++)
                     {
-                        tags += Model.Tags[i].Name + " | ";
+                        if (!Model.Tags[i].isAdmin)
+                        {
+                            tags += Model.Tags[i].Name + " | ";
+                        }
                     }
-                }
                     <p>
                         <b>
                             Categories:
@@ -125,24 +126,6 @@
             </div>
             <br />
             <br />
-            <div class="col-10">
-
-                <p>
-                    <b>
-                        Categories:
-                    </b>
-                </p>
-                <hr class="col-12" />
-                <p>
-                    @tags
-                </p>
-            }
-            else
-            {
-                <p>
-                    n/a
-                </p>
-            }
         </div>
         <br />
         <br />
@@ -170,11 +153,27 @@
                         <h4> Add to Shelf </h4>
                     </div>
                     <div class="modal-body">
-                        <div v-for="i in shelves">
-                            <input type="checkbox" v-on:checked="" /> {{i.name}}
-                        </div>
-                        <hr />
+                        @foreach (var shelf in Model.Shelves)
+                        {
+                            if (string.IsNullOrEmpty(shelf.BookIds))
+                            {
+                                shelf.BookIds = "";
+                            }
+                            string[] stringSplit = shelf.BookIds.Split(',');
 
+                            if (stringSplit.Contains(Model.Id.ToString()))
+                            {
+                                <div>
+                                    <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" checked /> @shelf.Name
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" /> @shelf.Name
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -253,14 +252,20 @@
             </form>
         </div>
     </template>
+
+    <template id="shelf-checkmark">
+        <input type="checkbox" v-model="ticked" />
+    </template>
 }
 
 @section scripts{
 
     @if (this.User.Identity.IsAuthenticated)
     {
-        @Html.Hidden("userId", Model.User.Id);
-        @Html.Hidden("bookId", Model.Id);
+        @Html.Hidden("userId", Model.User.Id)
+        ;
+        @Html.Hidden("bookId", Model.Id)
+        ;
     }
     @Html.Hidden("authorId", Model.AuthorId);
     <script>
@@ -268,6 +273,50 @@
         var userData = @Html.Raw(Json.Serialize(Model.Users));
         var shelfData = @Html.Raw(Json.Serialize(Model.Shelves));
     </script>
+    <script>
+        function addToShelf(el) {
+            console.log(el);
+
+            if (el.checked) {
+                let item = {
+                    shelfId: $(el).val(),
+                    bookId: @Model.Id
+                }
+                console.log(item);
+                $.ajax({
+                    url: "/Shelves/AddToShelf",
+                    type: "POST",
+                    data: item,
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request.responseText);
+                    }
+                });
+            }else {
+                let item = {
+                    shelfId: $(el).val(),
+                    bookId: @Model.Id
+                }
+
+                console.log(item);
+                $.ajax({
+                    url: "/Shelves/RemoveFromShelf",
+                    type: "POST",
+                    data: item,
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request.responseText);
+                    }
+                });
+            }
+
+        }
+    </script>
     <script src="~/js/CommentSection.js"></script>
+    <script src="~/js/bookinfo.js"></script>
 }
 

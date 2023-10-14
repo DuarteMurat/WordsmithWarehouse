@@ -73,7 +73,7 @@ namespace WordsmithWarehouse.Controllers
             model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
             model.LibraryList = _libraryRepository.GetComboLibraries();
             model.Book.Author = await _authorRepository.GetByIdAsync(model.Book.AuthorId);
-            //model.Libraries =  await _libraryRepository.GetByIdAsync(model);
+            model.Libraries = await _libraryRepository.GetAll().ToListAsync();
 
             return View(model);
         }

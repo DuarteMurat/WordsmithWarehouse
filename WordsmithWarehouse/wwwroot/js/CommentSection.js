@@ -65,35 +65,3 @@ new Vue({
     }
 
 });
-
-new Vue({
-    el: '#bookInfo',
-    data() {
-        return {
-            shelves: [],
-            bookId: bookId.value,
-        }
-    },
-    created() {
-        this.shelves = shelfData;
-    },
-    methods: {
-        onAuthorClick(id) {
-            console.log(id)
-            window.location.assign(`/authors/details/${id}`);
-        },
-        getBookId(value) {
-            $('#bookId').val(value);
-        },
-
-        sendToShelf(bId) {
-
-            var url = 'Shelves/AddToShelf';
-
-            this.$http.post(url),
-            {
-                id: bId
-            };
-        }
-    }
-})
