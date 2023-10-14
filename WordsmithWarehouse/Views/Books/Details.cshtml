@@ -26,14 +26,21 @@
                     </div>
                     @if (this.User.Identity.IsAuthenticated)
                     {
+
+                        <form enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="row justify-content-center">
+                                <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="width:100%">
+                                    Reserve
+                                </button>
+                            </div>
+                        </form>
+
                         <div class="row justify-content-center">
-                            <form enctype="multipart/form-data">
-                                <input type="hidden" asp-for="Id" />
-                                <button type="submit" asp-controller="Leases" asp-action="Create" id="reserveButton" class="btn btn-dark" style="color:azure;display:block;width:100%;font-size:20px">Reserve</button>
-                            </form>
+                            <button style="width:100%" class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Read Book</a></button>
                         </div>
-                        <div>
-                            <button type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
+                        <div class="row justify-content-center">
+                            <button style="width:100%" class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
                         </div>
                     }
                     <br />
@@ -103,15 +110,16 @@
             <br />
             <br>
             <div class="col-12">
-                @if (Model.Tags.Count > 0){
-              string tags = "";
-                for (int i = 0; i < Model.Tags.Count; i++)
+                @if (Model.Tags.Count > 0)
                 {
-                    if (!Model.Tags[i].isAdmin)
+                    string tags = "";
+                    for (int i = 0; i < Model.Tags.Count; i++)
                     {
-                        tags += Model.Tags[i].Name + " | ";
+                        if (!Model.Tags[i].isAdmin)
+                        {
+                            tags += Model.Tags[i].Name + " | ";
+                        }
                     }
-                }
                     <p>
                         <b>
                             Categories:
@@ -239,8 +247,10 @@
 
     @if (this.User.Identity.IsAuthenticated)
     {
-        @Html.Hidden("userId", Model.User.Id);
-        @Html.Hidden("bookId", Model.Id);
+        @Html.Hidden("userId", Model.User.Id)
+        ;
+        @Html.Hidden("bookId", Model.Id)
+        ;
     }
     @Html.Hidden("authorId", Model.AuthorId);
     <script>

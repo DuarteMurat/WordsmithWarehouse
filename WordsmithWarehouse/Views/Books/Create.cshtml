@@ -67,6 +67,14 @@
         <input asp-for="Synopsis" class="form-control" />
         <span asp-validation-for="Synopsis" class="text-danger"></span>
     </div>
+
+    <div class="col">
+        <div class="form-group">
+            <label asp-for="BookFile" class="control-label"></label>
+            <input asp-for="BookFile" class="form-control" type="file" />
+            <span asp-validation-for="BookFile" class="text-danger"></span>
+        </div>
+    </div>
     <hr />
 
     <div class="row" id="imageCoverPages">

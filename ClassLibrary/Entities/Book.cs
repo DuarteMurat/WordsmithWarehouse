@@ -46,6 +46,10 @@ namespace ClassLibrary.Entities
         public string Synopsis { get; set; }
 
         public int ReleaseYear { get; set; }
+
+        public string BookFile { get; set; }
+
+        public string BookFileURL { get; set; }
         #endregion
 
         #region Book Avaialability
