@@ -11,14 +11,16 @@ namespace WordsmithWarehouse.Models
 
         public string LastName { get; set; }
 
+        [Display(Name = "Name")]
         public string FullName => $"{FirstName} {LastName}";
 
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         public string Email { get; set; }
 
         public string Role { get; set; }
-
+        [Display(Name = "Profile Picture")]
         public string ImageURL { get; set; }
     }
 }

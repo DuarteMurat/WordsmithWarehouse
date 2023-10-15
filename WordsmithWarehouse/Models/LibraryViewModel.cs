@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.CodeAnalysis;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WordsmithWarehouse.Models
 {

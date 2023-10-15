@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace WordsmithWarehouse.Models
 {
@@ -22,7 +22,10 @@ namespace WordsmithWarehouse.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Display(Name = "Profile Picture")]
         public string ImageURL { get; set; }
+
+        [Display(Name = "Profile Picture")]
+        public IFormFile ImageFile { get; set; }
     }
 }

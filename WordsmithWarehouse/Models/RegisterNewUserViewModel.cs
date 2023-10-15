@@ -26,6 +26,7 @@ namespace WordsmithWarehouse.Models
         public string Address { get; set; }
 
         [MaxLength(15, ErrorMessage = "The field {0} only can contain {1} characters.")]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -34,11 +35,12 @@ namespace WordsmithWarehouse.Models
 
         [Required]
         [Compare("Password")]
+        [Display(Name = "Confirm Password")]
         public string Confirm { get; set; }
 
         public string ImageURL { get; set; }
 
-        [Display(Name = "Image")]
+        [Display(Name = "Profile Picture")]
         public IFormFile ImageFile { get; set; }
     }
 }

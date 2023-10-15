@@ -140,23 +140,22 @@
             </div>
             <br />
             <br />
-      
-        </div>
-        <br />
-        <br />
-        <div class="col-10">
-            <p>
-                <b>Synopsis:</b>
-                <br />
-                <br />
-                <cite>
-                    <i class="fas fa-quote-left fa-xs"></i> @Html.DisplayFor(model => model.Synopsis) <i class="fas fa-quote-right fa-xs"></i>
-                </cite>
-            </p>
+            <div class="col-10">
+                <p>
+                    <b>Synopsis:</b>
+                    <br />
+                    <br />
+                    <cite>
+                        <i class="fas fa-quote-left fa-xs"></i> @Html.DisplayFor(model => model.Synopsis) <i class="fas fa-quote-right fa-xs"></i>
+                    </cite>
+                </p>
             </div>
         </div>
     </div>
-    @*--------------------Modal for Shelves----------------------*@
+</div>
+@*--------------------Modal for Shelves----------------------*@
+@if (this.User.Identity.IsAuthenticated)
+{
     <div id="shelfModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -164,38 +163,33 @@
                     <h4> Add to Shelf </h4>
                 </div>
                 <div class="modal-body">
-                    <div v-for="i in shelves">
-                        <input type="checkbox" v-on:checked="" /> {{i.name}}
-                    </div>
-                    <div class="modal-body">
-                        @foreach (var shelf in Model.Shelves)
+                    @foreach (var shelf in Model.Shelves)
+                    {
+                        if (string.IsNullOrEmpty(shelf.BookIds))
                         {
-                            if (string.IsNullOrEmpty(shelf.BookIds))
-                            {
-                                shelf.BookIds = "";
-                            }
-                            string[] stringSplit = shelf.BookIds.Split(',');
-
-                            if (stringSplit.Contains(Model.Id.ToString()))
-                            {
-                                <div>
-                                    <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" checked /> @shelf.Name
-                                </div>
-                            }
-                            else
-                            {
-                                <div>
-                                    <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" /> @shelf.Name
-                                </div>
-                            }
+                            shelf.BookIds = "";
                         }
-                    </div>
-                    <hr />
+                        string[] stringSplit = shelf.BookIds.Split(',');
+
+                        if (stringSplit.Contains(Model.Id.ToString()))
+                        {
+                            <div>
+                                <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" checked /> @shelf.Name
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <input type="checkbox" value="@shelf.Id" id="@shelf.Name" onchange="addToShelf(this)" /> @shelf.Name
+                            </div>
+                        }
+                    }
                 </div>
+                <hr />
             </div>
         </div>
     </div>
-</div>
+}
 
 
 @*----------------------------------------------------------CommentSection------------------------------------------------*@
@@ -296,7 +290,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                }
+                                        }
                 console.log(item);
                 $.ajax({
                     url: "/Shelves/AddToShelf",
@@ -309,11 +303,11 @@
                         console.log(request.responseText);
                     }
                 });
-            }else {
+            } else {
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                }
+                                        }
 
                 console.log(item);
                 $.ajax({
