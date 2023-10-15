@@ -17,7 +17,7 @@ namespace ClassLibrary.Entities
 
         public string Description { get; set; }
 
-        [Display (Name ="Image")]
+        [Display (Name ="Photo")]
         public string ImageURL { get; set; }
     }
 }

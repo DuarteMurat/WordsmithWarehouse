@@ -1,8 +1,6 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MimeKit.Cryptography;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,7 +31,7 @@ namespace WordsmithWarehouse.Models
         public Author Author { get; set; }
 
         public int AuthorId { get; set; }
-        
+
         public string tagIds { get; set; }
 
         public User User { get; set; }
@@ -42,16 +40,17 @@ namespace WordsmithWarehouse.Models
 
         public string Pages { get; set; }
 
-        public string Publisher { get; set; }   
+        public string Publisher { get; set; }
 
         public string Synopsis { get; set; }
 
-        [Display(Name ="Online")]
-        public bool IsAvailableOnline{ get; set; }
+        [Display(Name = "Online")]
+        public bool IsAvailableOnline { get; set; }
 
         [Display(Name = "In Storage")]
         public bool IsAvailablePhysical { get; set; }
 
+        [Display(Name = "Book Cover")]
         public string ImageURL { get; set; }
 
         public int ReleaseYear { get; set; }

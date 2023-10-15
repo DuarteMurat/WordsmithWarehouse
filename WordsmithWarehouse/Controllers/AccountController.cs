@@ -169,13 +169,13 @@ namespace WordsmithWarehouse.Controllers
                 PhoneNumber = user.PhoneNumber,
             };
 
-
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
+            var path = string.Empty;
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
@@ -186,6 +186,14 @@ namespace WordsmithWarehouse.Controllers
                     user.UserName = model.Username;
                     user.PhoneNumber = model.PhoneNumber;
                     user.Address = model.Address;
+                    
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Users");
+                        user.ImageURL = path;
+                    }
+                    
+
                     var response = await _userHelper.UpdateUserAsync(user);
                     if (response.Succeeded)
                     {
@@ -198,7 +206,7 @@ namespace WordsmithWarehouse.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult ChangePassword()

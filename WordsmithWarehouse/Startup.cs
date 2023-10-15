@@ -45,7 +45,6 @@ namespace WordsmithWarehouse
                 cfg.Password.RequireLowercase = false;
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireNonAlphanumeric = false;
-                cfg.Password.RequiredLength = 6;
             })
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<DataContext>();
