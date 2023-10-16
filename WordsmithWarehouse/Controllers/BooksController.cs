@@ -93,7 +93,7 @@ namespace WordsmithWarehouse.Controllers
             var model = new BookViewModel
             {
                 Authors = _authorRepository.GetComboAuthors(),
-                Tags = _tagRepository.GetTagsList(),
+                Tags = await _tagRepository.GetTagsList(),
             };
 
             return View(model);
@@ -126,10 +126,6 @@ namespace WordsmithWarehouse.Controllers
                 {
                     bookFile = await _bookRepository.UploadBookFileAsync(model.BookFile, "Books");
                 }
-                else
-                {
-                    return View(model);
-                };
 
                 model.tagIds = _tagRepository.GetTagIds(model.Tags);
 
@@ -158,7 +154,7 @@ namespace WordsmithWarehouse.Controllers
             model.ModelAuthor = await _authorRepository.GetAuthorById(book.AuthorId);
 
             model.Authors = _authorRepository.GetComboAuthors();
-            model.Tags = _tagRepository.MatchTagList(book.tagIds);
+            model.Tags = await _tagRepository.MatchTagList(book.tagIds);
 
             return View(model);
         }
@@ -245,7 +241,7 @@ namespace WordsmithWarehouse.Controllers
             foreach (var item in list)
             {
                 var itemToAdd = _converterHelper.ConvertToBookViewModel(item);
-                itemToAdd.Tags = _tagRepository.MatchTagList(itemToAdd.tagIds);
+                itemToAdd.Tags = await _tagRepository.MatchTagList(itemToAdd.tagIds);
                 books.Add(itemToAdd);
             }
 

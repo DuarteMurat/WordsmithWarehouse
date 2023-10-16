@@ -105,10 +105,11 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LeaseViewModel model)
         {
+            model.Book = await _bookRepository.GetByIdAsync(model.Book.Id);
+            model.Library = await _libraryRepository.GetByIdAsync(model.LibraryId);
+
             if (ModelState.IsValid)
             {
-                model.Book = await _bookRepository.GetByIdAsync(model.Book.Id);
-                model.Library = await _libraryRepository.GetByIdAsync(model.LibraryId);
                 var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
                 model.UserId = user.Id;
                 var lease = _converterHelper.ConvertToLease(model, true);
