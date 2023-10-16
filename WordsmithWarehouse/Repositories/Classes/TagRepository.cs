@@ -26,17 +26,17 @@ namespace WordsmithWarehouse.Repositories.Classes
         /// Populates a list with all tags present in the database
         /// </summary>
         /// <returns></returns>
-        public List<Tag> GetTagsList()
+        public async Task<List<Tag>> GetTagsList()
         {
             var list = new List<Tag>();
 
-            list = _context.Tags.Select(t => new Tag
+            list = await _context.Tags.Select(t => new Tag
             {
                 Id = t.Id,
                 Name = t.Name,
                 isActive = t.isActive,
                 isAdmin = t.isAdmin,
-            }).OrderBy(t => t.Name).ToList();
+            }).OrderBy(t => t.Name).ToListAsync();
 
             return list;
         }
@@ -93,9 +93,9 @@ namespace WordsmithWarehouse.Repositories.Classes
         }
 
 
-        public List<Tag> MatchTagList(string source)
+        public async Task<List<Tag>> MatchTagList(string source)
         {
-            var tags = GetTagsList();
+            var tags = await GetTagsList();
             if (string.IsNullOrEmpty(source))
                 return tags;
 

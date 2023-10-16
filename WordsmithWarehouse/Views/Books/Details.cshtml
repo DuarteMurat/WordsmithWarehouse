@@ -36,10 +36,18 @@
                                 </button>
                             </div>
                         </form>
-
-                        <div class="row justify-content-center">
-                            <button style="width:100%" class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Read Book</a></button>
-                        </div>
+                        if (string.IsNullOrEmpty(Model.BookFileUrl))
+                        {
+                            <div class="row justify-content-center">
+                                <button style="width:100%" disabled class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Book is not Available Online </a></button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row justify-content-center">
+                                <button style="width:100%" class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Read Book</a></button>
+                            </div>
+                        }
                         <div class="row justify-content-center">
                             <button style="width:100%" class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
                         </div>
@@ -290,7 +298,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                                        }
+                                                }
                 console.log(item);
                 $.ajax({
                     url: "/Shelves/AddToShelf",
@@ -307,7 +315,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                                        }
+                                                }
 
                 console.log(item);
                 $.ajax({

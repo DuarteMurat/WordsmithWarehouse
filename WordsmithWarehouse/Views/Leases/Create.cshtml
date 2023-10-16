@@ -12,7 +12,6 @@
         <input type="hidden" asp-for="Book.Id" />
         <input type="hidden" asp-for="Book.ISBN" />
         <input type="hidden" asp-for="Book.Title" />
-        <input type="hidden" asp-for="Library" />
 
         <div class="tab">
             <div class="row justify-content-center">
@@ -48,7 +47,7 @@
             <div class="row justify-content-center">
                 <h3>Choose a library:</h3>
                 <div>
-                    <select asp-for="Library.Id" asp-items="Model.LibraryList" class="form-control" v-model="selectedValue"></select>
+                    <select asp-for="LibraryId" asp-items="Model.LibraryList" class="form-control" v-model="selectedValue"></select>
                     <span asp-validation-for="LibraryList" class="text-danger"></span>
                 </div>
             </div>

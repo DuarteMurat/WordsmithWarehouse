@@ -3,7 +3,7 @@
     data() {
         return{
             libraries: [],
-            selectedValue : 1,
+            selectedValue : '0',
         }
     },
     created() {

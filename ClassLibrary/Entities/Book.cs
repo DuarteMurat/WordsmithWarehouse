@@ -24,7 +24,7 @@ namespace ClassLibrary.Entities
         public string? Subtitle { get; set; }
 
         [Required]
-        [MaxLength(10, ErrorMessage = "The field {0} can only contain up to {1} character")]
+        [MaxLength(13, ErrorMessage = "The field {0} can only contain up to {1} character")]
         public string ISBN { get; set; }
 
         public Author? Author { get; set; }
