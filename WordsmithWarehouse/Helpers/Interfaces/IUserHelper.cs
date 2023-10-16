@@ -9,6 +9,8 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 {
     public interface IUserHelper
     {
+        Task<bool> CheckPasswordAsync(User user, string password);
+
         Task<User> GetUserByEmailAsync(string email);
 
         Task<IdentityResult> AddUserAsync(User user, string password);
@@ -44,5 +46,9 @@ namespace WordsmithWarehouse.Helpers.Interfaces
         Task<string> GeneratePasswordResetTokenAsync(User user);
 
         Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
+        Task UpdateUserTwofa(User user, string twofa);
+
+        Task<string> GetUserRole(User user);
     }
 }

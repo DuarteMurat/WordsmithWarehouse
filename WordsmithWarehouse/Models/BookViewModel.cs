@@ -57,7 +57,6 @@ namespace WordsmithWarehouse.Models
         public string ImageURL { get; set; }
 
         [Display(Name = "Release Year")]
-        [MaxLength(4)]
         public int ReleaseYear { get; set; }
 
         [Display(Name = "Book File")]

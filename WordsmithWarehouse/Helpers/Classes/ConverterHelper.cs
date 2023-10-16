@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Entities;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
@@ -228,6 +229,7 @@ namespace WordsmithWarehouse.Helpers.Classes
         {
             return new ManageUserViewModel
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ImageURL = user.ImageURL,

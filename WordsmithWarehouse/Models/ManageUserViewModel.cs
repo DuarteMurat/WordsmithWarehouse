@@ -5,7 +5,7 @@ namespace WordsmithWarehouse.Models
 {
     public class ManageUserViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string FirstName { get; set; }
 
@@ -20,6 +20,7 @@ namespace WordsmithWarehouse.Models
         public string Email { get; set; }
 
         public string Role { get; set; }
+
         [Display(Name = "Profile Picture")]
         public string ImageURL { get; set; }
     }

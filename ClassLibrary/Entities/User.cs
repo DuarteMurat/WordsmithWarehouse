@@ -26,5 +26,7 @@ namespace ClassLibrary.Entities
         public string ShelfIds { get; set; }
 
         public string ImageURL { get; set; }
+
+        public string Twofa { get; set; }
     }
 }

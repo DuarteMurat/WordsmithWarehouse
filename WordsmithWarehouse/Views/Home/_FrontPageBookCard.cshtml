@@ -2,13 +2,11 @@
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
 
 <div class="grid-container" style="border-width:3px; border-style:solid; border-color:lightgray">
     @foreach (var item in Model.Books)
     {
-        <div class="item" @*data-tags="@string.Join(",", item.Tags.Select(tag => tag.Name))"*@>
+        <div class="item">
             @if (!string.IsNullOrEmpty(item.ImageURL))
             {
                 <div class="item-content" style="margin:10px 25px 0px 25px">
