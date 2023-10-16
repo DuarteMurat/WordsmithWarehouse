@@ -1,23 +1,29 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "About";
 }
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col" style="border-right:inset">
-            <h1 class="text-justify text-center">About us</h1>
-            <div class="text-center" style="width:80%; align-self:center; margin-right:0">
-                <p>
-                    "Welcome to Wordsmith Warehouse – Your Online Literary Haven!
-                </p>
-                <p>
+        <div class="col-6 text-center" style="border-right:inset">
+            <br />
+            <br />
+            <h1>About us</h1>
+            <br />
+            <br />
+            <br />
+            <div>
+                <b>
+                    Welcome to Wordsmith Warehouse – Your Online Literary Haven!
+                </b>
+                <br />
+                <br />
+                <p class="text-justify">
                     Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end.
                     As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations.
                     Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
                     At Wordsmith Warehouse, we believe in the power of words to inspire, educate, and transport.
                 </p>
-                <p>
+                <p class="text-justify">
                     Our curated collection is meticulously assembled to cater to both voracious readers and those embarking on a literary journey.
                     Lose yourself in captivating narratives, broaden your horizons with thought-provoking essays, and savor the mellifluous verses that have shaped cultures and touched hearts throughout history.
                     Our mission is to provide you with easy access to literary excellence.
@@ -26,31 +32,23 @@
 
                 </p>
                 <p>
-                    Happy reading!"
+                    Happy reading!
                 </p>
             </div>
         </div>
-        <div class="col">
-            <div class="row text-center" style="padding-bottom:30px; padding-top:40px; padding-left:60px">
-                <h1>Developers</h1>
+        <div class="col-6 d-flex justify-content-center">
+            <div>
+                <h1 class="text-center">Developers</h1>
+                <br />
+                <br />
+                <div class="github-card row" data-github="DuarteMurat" data-width="400" data-height="" data-theme="default"></div>
+                <br />
+                <br />
+                <br />
+                <div class="github-card row" data-github="brunoferreira03" data-width="400" data-height="" data-theme="default"></div>
             </div>
-            <div class="row" style="padding-bottom:30px; padding-left:90px">
-                <div class="github-card" data-github="DuarteMurat" data-width="400" data-height="" data-theme="default"></div>
-                <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
-            </div>
-            <div class="row" style="padding-bottom:30px; padding-left:90px">
-                <div class="github-card" data-github="brunoferreira03" data-width="400" data-height="" data-theme="default"></div>
-                <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
-            </div>
-            <div class="row" style="padding-bottom:30px; padding-left:60px">
-                <h1>Project Repository</h1>
-            </div>
-            <div class="row" style="padding-bottom:30px; padding-left:90px">
-                <div class="github-card" data-github="DuarteMurat/WordsmithWarehouse" data-width="400" data-height="" data-theme="default"></div>
-                <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
-            </div>
-
         </div>
     </div>
 </div>
 
+<script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>

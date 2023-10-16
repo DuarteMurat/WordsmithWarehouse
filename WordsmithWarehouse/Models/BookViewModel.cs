@@ -8,7 +8,7 @@ namespace WordsmithWarehouse.Models
 {
     public class BookViewModel
     {
-        [Display(Name = "Image")]
+        [Display(Name = "Cover")]
         public IFormFile ImageFile { get; set; }
 
         public IEnumerable<SelectListItem> Authors { get; set; }
@@ -26,16 +26,19 @@ namespace WordsmithWarehouse.Models
 
         public string Subtitle { get; set; }
 
+        [StringLength(13)]
         public string ISBN { get; set; }
 
         public Author Author { get; set; }
 
+        [Display(Name = "Author")]
         public int AuthorId { get; set; }
 
         public string tagIds { get; set; }
 
         public User User { get; set; }
 
+        [Display(Name = "Cover type")]
         public string CoverType { get; set; }
 
         public string Pages { get; set; }
@@ -53,6 +56,8 @@ namespace WordsmithWarehouse.Models
         [Display(Name = "Book Cover")]
         public string ImageURL { get; set; }
 
+        [Display(Name = "Release Year")]
+        [MaxLength(4)]
         public int ReleaseYear { get; set; }
 
         [Display(Name = "Book File")]
