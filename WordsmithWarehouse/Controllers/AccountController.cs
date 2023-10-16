@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -52,7 +53,6 @@ namespace WordsmithWarehouse.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUsernameAsync(model.Username);
-
                 if (user == null)
                 {
                     this.ModelState.AddModelError(string.Empty, "Failed to login!");
@@ -64,19 +64,63 @@ namespace WordsmithWarehouse.Controllers
                     this.ModelState.AddModelError(string.Empty, "Failed to login!");
                     return View(model);
                 }
-                var result = await _userHelper.LoginAsync(model);
-                if (result.Succeeded)
+                var result = await _userHelper.CheckPasswordAsync(user,model.Password);
+                if (result)
                 {
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                    if (model.Username == "Admin")
                     {
-                        return Redirect(this.Request.Query["ReturnUrl"].First());
-                    }
+                        var loginstatus = await _userHelper.LoginAsync(model);
 
-                    return this.RedirectToAction("Index", "Home");
+                        if (loginstatus.Succeeded)
+                        {
+                            if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                            {
+                                return Redirect(this.Request.Query["ReturnUrl"].First());
+                            }
+
+                            return this.RedirectToAction("Index", "Home");
+                        }
+                    }
+                    if (string.IsNullOrEmpty(model.Twofa))
+                    {
+                        var random = new Random();
+
+                        var twofa = random.Next(10000, 99999);
+
+                        _mailHelper.SendEmail(user.Email, "Authenticate yourself",
+                            twofa.ToString());
+
+                        await _userHelper.UpdateUserTwofa(user, twofa.ToString());
+                        model.IsTwofa = true;
+
+                        return View(model);
+                    }
+                    else
+                    {
+                        if (model.Twofa != user.Twofa)
+                        {
+                            this.ModelState.AddModelError(string.Empty, "Incorrect 2fa code!");
+                            
+                            model.Twofa = string.Empty;
+                            model.IsTwofa = true;
+                            return View(model);
+                        }
+                        var loginstatus = await _userHelper.LoginAsync(model);
+
+                        if (loginstatus.Succeeded)
+                        {
+                            if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                            {
+                                return Redirect(this.Request.Query["ReturnUrl"].First());
+                            }
+
+                            return this.RedirectToAction("Index", "Home");
+                        }
+                    }
                 }
             }
-
             this.ModelState.AddModelError(string.Empty, "Failed to login!");
+
             return View(model);
         }
 
@@ -462,6 +506,23 @@ namespace WordsmithWarehouse.Controllers
             }
 
             return this.View(model);
+        }
+
+        public async Task<IActionResult> UserDetails(string Username)
+        {
+            if (Username == null)
+            {
+                return new NotFoundViewResult("BookNotFound");
+            }
+            
+            var user = await _userHelper.GetUserByUsernameAsync(Username);
+            
+            var model = _converterHelper.ConvertToManageUserViewModel(user);
+            model.Role = await _userHelper.GetUserRole(user);
+
+
+            return View(model);
+
         }
 
         public IActionResult ResetPassword(string token)

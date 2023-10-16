@@ -19,6 +19,14 @@
                 <input asp-for="Password" type="password" class="form-control" />
                 <span asp-validation-for="Password" class="text-warning"></span>
             </div>
+            @if (Model!=null && Model.IsTwofa)
+            {
+                <div class="form-group">
+                    <label asp-for="Twofa"></label>
+                    <input asp-for="Twofa" type="text" class="form-control" />
+                    <span asp-validation-for="Twofa" class="text-warning"></span>
+                </div>
+            }
             <div class="form-group">
                 <div class="form-check">
                     <input asp-for="RememberMe" type="checkbox" class="form-check-input" />

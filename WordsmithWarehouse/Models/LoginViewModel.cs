@@ -13,5 +13,9 @@ namespace WordsmithWarehouse.Models
 
         [Display(Name = "Remember Me?")]
         public bool RememberMe { get; set; }
+
+        public string Twofa { get; set; }
+
+        public bool IsTwofa { get; set; }
     }
 }

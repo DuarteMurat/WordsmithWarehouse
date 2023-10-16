@@ -24,6 +24,17 @@ namespace WordsmithWarehouse.Helpers.Classes
             _signInManager = signInManager;
             _roleManager = roleManager;
         }
+        public async Task<bool> CheckPasswordAsync(User user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task UpdateUserTwofa(User user, string twofa)
+        {
+            user.Twofa = twofa;
+            
+            await _userManager.UpdateAsync(user);
+        }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
@@ -134,6 +145,20 @@ namespace WordsmithWarehouse.Helpers.Classes
         public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
         {
             return await _userManager.ResetPasswordAsync(user, token, password);
+        }
+
+        public async Task<string> GetUserRole(User user)
+        {
+            if (await IsUserInRoleAsync(user, "customer"))
+                return "Customer";
+            if (await IsUserInRoleAsync(user, "employee"))
+                return "Employee";
+            if (await IsUserInRoleAsync(user, "admin"))
+                return "Admin";
+            if (await IsUserInRoleAsync(user, "deactivated"))
+                return "Deactivated";
+
+            return "No Role";
         }
     }
 }
