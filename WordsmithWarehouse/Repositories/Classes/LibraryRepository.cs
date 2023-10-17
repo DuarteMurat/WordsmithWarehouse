@@ -1,7 +1,9 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Repositories.Interfaces;
 
@@ -16,18 +18,13 @@ namespace WordsmithWarehouse.Repositories.Classes
             _context = context;
         }
 
-        public IEnumerable<SelectListItem> GetComboLibraries()
+        public async Task<IEnumerable<SelectListItem>> GetComboLibraries()
         {
-            var list = _context.Libraries.Select(a => new SelectListItem
+            var list = await _context.Libraries.Select(a => new SelectListItem
             {
                 Text = a.Name,
                 Value = a.Id.ToString(),
-            }).OrderBy(l => l.Text).ToList();
-            list.Insert(0, new SelectListItem
-            {
-                Text = "Select a library",
-                Value = "0",
-            });
+            }).OrderBy(l => l.Text).ToListAsync();
             return list;
         }
     }

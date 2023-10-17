@@ -4,6 +4,7 @@ showTab(currentTab); // Display the current tab
 function showTab(n) {
     // This function will display the specified tab of the form ...
     var x = document.getElementsByClassName("tab");
+    console.log(x);
     x[n].style.display = "block";
     // ... and fix the Previous/Next buttons:
     if (n == 0) {
@@ -58,15 +59,15 @@ function validateForm() {
     }
     if (w.length !== 0) {
         for (var j = 0; j < w.length; j++) {
-            console.log(w[j].value)
+            /*console.log(w[j].value)*/
             if (w[j].value === undefined || w[j].value === 0) {
                 w.className += " invalid";
                 valid = false;
             }
         }
     }
-    console.log(valid);
-    console.log('w length ' +  w.length);
+    //console.log(valid);
+    //console.log('w length ' +  w.length);
     // If the valid status is true, mark the step as finished and valid:
     if (valid) {
         document.getElementsByClassName("step")[currentTab].className += " finish";

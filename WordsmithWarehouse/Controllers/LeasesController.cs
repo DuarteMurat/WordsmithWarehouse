@@ -87,7 +87,7 @@ namespace WordsmithWarehouse.Controllers
             var model = new LeaseViewModel();
             model.Book = await _bookRepository.GetByIdAsync(dets.Id);
             model.User = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-            model.LibraryList = _libraryRepository.GetComboLibraries();
+            model.LibraryList = await _libraryRepository.GetComboLibraries();
             model.Book.Author = await _authorRepository.GetByIdAsync(model.Book.AuthorId);
             model.Libraries = await _libraryRepository.GetAll().ToListAsync();
             model.PickUpDate = null;

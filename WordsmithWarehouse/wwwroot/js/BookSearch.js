@@ -4,7 +4,8 @@
         return {
             tags: [],
             books: [],
-            selectedTagsArray: []
+            selectedTagsArray: [],
+            filter: '',
         }
     },
     created() {
@@ -18,13 +19,24 @@
             return this.tags.filter(t => !t.isAdmin)
         },
         filteredBooks() {
-            if (this.selectedTagsArray.length === 0) return this.books
+            if (this.filter === '' && this.selectedTagsArray.length === 0) {
+                // If no filter and no selected tags, return all books
+                return this.books;
+            }
 
-            return this.books.filter((book) => {
-                console.log(book);
-                const selectedTagsForBookArray = book.tagIds.split(',');
-                return selectedTagsForBookArray.some(i => this.selectedTagsArray.includes(Number(i)))
-            })
+            // Apply search filter
+            const searchFilteredBooks = this.books.filter(book => {
+                return book.title.toLowerCase().includes(this.filter.toLowerCase());
+            });
+
+            // Apply tag filter
+            return searchFilteredBooks.filter(book => {
+                if (this.selectedTagsArray.length === 0) {
+                    return true; // No tags selected, so all books pass
+                }
+                const selectedTagsForBookArray = book.tagIds.split(',').map(Number);
+                return selectedTagsForBookArray.some(tagId => this.selectedTagsArray.includes(tagId));
+            });
         },
         
     },
@@ -39,7 +51,6 @@
                 this.selectedTagsArray.splice(indexOfTagId, 1)
             }
         },
-
         onBookClick(id) {
             console.log(id)
             window.location.assign(`/books/details/${id}`);

@@ -23,7 +23,7 @@
             <div v-for="j in i.books">
                 <div class="item" v-on:click="onBookClick(j.id)">
                     <div class="item-content">
-                        <a><img alt="Image" :src="j.imageURL" id="bookImage" style="width:200px;height:150px;max-width:100%;height:auto"></a>
+                        <a><img alt="Image" :src="getBookImage(j.imageURL)" id="bookImage" style="width:200px;height:150px;max-width:100%;height:auto"></a>
                         <div class="book-title">
                             <a>{{j.title}}</a>
                         </div>
