@@ -70,7 +70,7 @@ namespace WordsmithWarehouse.Controllers
                 var result = await _userHelper.CheckPasswordAsync(user,model.Password);
                 if (result)
                 {
-                    if (model.Username == "Admin")
+                    if (model.Username == "Admin" || model.Username == "admin")
                     {
                         var loginstatus = await _userHelper.LoginAsync(model);
 

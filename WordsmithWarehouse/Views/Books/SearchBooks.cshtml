@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="col-8">
                 <div style="padding-bottom: 70px; padding-top: 40px;">
-                    <input id="myInput" class="form-control" type="text" placeholder="Search for a book..." style="width: 100%;">
+                    <input id="myInput" class="form-control" type="text" placeholder="Search for a book..." style="width: 100%;" v-model="filter">
                 </div>
             </div>
         </div>
@@ -36,9 +36,9 @@
             <div class="col" v-for="i in filteredBooks">
                 <div class="item" v-on:click="onBookClick(i.id)">
                     <div class="item-content">
-                        <a><img alt="Image" :src="getBookImage(i.imageURL)" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage" v-model="i.id"></a>
+                        <a><img alt="Image" :src="getBookImage(i.imageURL)" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage"></a>
                         <div class="book-title">
-                            <a style="color:black" v-model="i.id">{{i.title}}</a>
+                            <a style="color:black">{{i.title}}</a>
                         </div>
                     </div>
                 </div>
@@ -48,14 +48,14 @@
 </body>
 
 <script>
-    $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $(".item").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
-    });
+    //$(document).ready(function () {
+    //    $("#myInput").on("keyup", function () {
+    //        var value = $(this).val().toLowerCase();
+    //        $(".item").filter(function () {
+    //            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    //        });
+    //    });
+    //});
 
     var TagsJson = @Html.Raw(Json.Serialize(Model[0].Tags));
     var BooksJson = @Html.Raw(Json.Serialize(Model));
