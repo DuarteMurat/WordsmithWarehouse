@@ -117,14 +117,15 @@ namespace WordsmithWarehouse.Repositories.Classes
             return await _context.Tags.FirstOrDefaultAsync(t => t.Name == name);
         }
 
-        public async Task<string> GetBooksWithTags(List<Book> source, string tagName)
+        public async Task<List<Book>> GetBooksWithTags(List<Book> source, string tagName)
         {
-            string ids = string.Empty;
+            List<Book> books = new List<Book>();
+            
             if (source.Count == 0)
-                return ids;
+                return books;
 
             var tag = await GetTagByName(tagName);
-            if (tag == null) return ids;
+            if (tag == null) return books;
 
             foreach (var book in source)
             {
@@ -136,15 +137,13 @@ namespace WordsmithWarehouse.Repositories.Classes
                     {
                         if (tagId == tag.Id.ToString())
                         {
-                            ids += book.Id.ToString() + ",";
+                            books.Add(book);
                         }
                     }
                 }
             }
-            if (ids.Length != 0)
-                ids = ids.Substring(0, ids.Length - 1);
-
-            return ids;
+            
+            return books;
         }
     }
 }

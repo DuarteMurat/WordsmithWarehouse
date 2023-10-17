@@ -33,7 +33,11 @@ namespace WordsmithWarehouse.Controllers
 
             model.BestSellerBooks = await _tagRepository.GetBooksWithTags(model.Books, "Best Seller");
 
-            model.Books = await _bookRepository.GetBooksFromString(model.BestSellerBooks);
+            model.BookOfTheMonth = await _tagRepository.GetBooksWithTags(model.Books, "BookOfTheMonth");
+
+            model.Classics = await _tagRepository.GetBooksWithTags(model.Books, "Classics");
+
+            model.NewReleases = await _tagRepository.GetBooksWithTags(model.Books, "New Release");
 
 
             return View(model);

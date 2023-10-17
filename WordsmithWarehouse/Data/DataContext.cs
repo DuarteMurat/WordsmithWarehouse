@@ -38,5 +38,7 @@ namespace WordsmithWarehouse.Data
         public DbSet<ClassLibrary.Entities.Lease> Lease { get; set; }
 
         public DbSet<WordsmithWarehouse.Models.ManageUserViewModel> ManageUserViewModel { get; set; }
+
+        public DbSet<WordsmithWarehouse.Models.LibraryListViewModel> LibraryListViewModel { get; set; }
     }
 }

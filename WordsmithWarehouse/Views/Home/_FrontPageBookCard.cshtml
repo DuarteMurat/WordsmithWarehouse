@@ -4,7 +4,7 @@
 *@
 
 <div class="grid-container" style="border-width:3px; border-style:solid; border-color:lightgray">
-    @foreach (var item in Model.Books)
+    @foreach (var item in Model.BestSellerBooks)
     {
         <div class="item">
             @if (!string.IsNullOrEmpty(item.ImageURL))
@@ -18,4 +18,6 @@
             }
         </div>
     }
+
+
 </div>
