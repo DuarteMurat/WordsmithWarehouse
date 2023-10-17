@@ -15,15 +15,16 @@
     <hr />
 
     <div v-for="i in shelves" style="padding-left:30px">
-        <div class="row" style="border:3px; border-style:initial; margin:auto">
+            <div class="row" style="border:3px; border-style:initial;" v-on:click="onShelfClick(i.id)">
             <h1>{{ i.name }} - &thinsp; </h1>
             <h1>{{  getShelvesCount(i.books) }} Books</h1>
         </div>
+        <a class="btn btn-danger" v-on:click="onDeleteClick(i.id)"><i class="fas fa-trash"></i> -</a>
         <div class="row">
             <div v-for="j in i.books">
                 <div class="item" v-on:click="onBookClick(j.id)">
                     <div class="item-content">
-                        <a><img alt="Image" :src="getBookImage(j.imageURL)" id="bookImage" style="width:200px;height:150px;max-width:100%;height:auto"></a>
+                        <a><img alt="Image" :src="getBookImage(j.imageURL)" id="bookImage" style="width:200px;height:150px;max-width:100%;height:auto;padding:5px;"></a>
                         <div class="book-title">
                             <a>{{j.title}}</a>
                         </div>

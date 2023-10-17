@@ -1,0 +1,77 @@
+﻿@model ShelfDetailsViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div id="shelf">
+    
+
+    <div class="row" style="padding-left: 45px; padding-top: 15px; display: flex; justify-content: space-between">
+        <h1> @Model.Shelf.Name</h1>
+        <div style="padding-right:30px">
+            <button style="width:100%" class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
+        </div>
+    </div>
+
+    <hr />
+    @if (Model.Shelf.Description != null)
+    {
+        if (Model.Shelf.Description.Length > 0)
+        {
+            <cite>@Model.Shelf.Description</cite>
+        }
+    }
+
+
+    <div class="grid-container">
+        <div v-for="i in books">
+            <div class="item" v-on:click="onBookClick(i.id)">
+                <div class="item-content">
+                    <a><img alt="Image" :src="getBookImage(i.imageURL)" id="bookImage" style="width:200px;height:150px;max-width:100%;height:auto;padding:5px;"></a>
+                    <div class="book-title">
+                        <a>{{i.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shelfModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5> Edit Shelf </h5>
+                </div>
+                <form asp-action="UpdateShelf">
+                    
+                    <div class="modal-body">
+                        <h5> Name</h5>
+                        <input asp-for="@Model.Shelf.Name" type="text" />
+                        <h5> Description </h5>
+                        <input asp-for="@Model.Shelf.Description" type="text" />
+                        <input type="hidden" asp-for="@Model.Shelf.Id" />
+                        <input type="hidden" asp-for="@Model.Shelf.Name" />
+                        <input type="hidden" asp-for="@Model.Shelf.Description" />
+                        <input type="hidden" asp-for="@Model.Shelf.BookIds" />
+                    </div>
+                    <div class="modal-footer">
+                        <button asp-action="UpdateShelf" type="submit">Update Shelf</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section scripts{
+
+    <script>
+        var bookData = @Html.Raw(Json.Serialize(Model.Shelf.Books));
+    </script>
+    <script src="~/js/shelfdetails.js"></script>
+}

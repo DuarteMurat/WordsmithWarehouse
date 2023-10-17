@@ -23,7 +23,6 @@
             
         },
         onBookClick(id) {
-            console.log(id)
             window.location.assign(`/books/details/${id}`);
         },
         getBookImage(imagePath) {
@@ -31,6 +30,12 @@
                 return imagePath.substring(1);
             }
             return imagePath
+        },
+        onShelfClick(id) {
+            window.location.assign(`/Shelves/Shelf/${id}`);
+        },
+        onDeleteClick(id) {
+            window.location.assign(`/Shelves/Delete/${id}`);
         },
     },
     computed: {
