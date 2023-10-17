@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Entities;
-using WordsmithWarehouse.Data;
-using WordsmithWarehouse.Repositories.Interfaces;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -27,12 +22,14 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Libraries
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Index()
         {
             return View(_libraryRepository.GetAll().OrderBy(b => b.Name));
         }
 
         // GET: Libraries/Details/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,6 +49,8 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Libraries/Create
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -69,13 +68,14 @@ namespace WordsmithWarehouse.Controllers
                 var library = _converterHelper.ConvertToLibrary(model, true);
 
                 await _libraryRepository.CreateAsync(library);
-                
+
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
 
         // GET: Libraries/Edit/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -126,6 +126,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Libraries/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,7 +146,6 @@ namespace WordsmithWarehouse.Controllers
         // POST: Libraries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var library = await _libraryRepository.GetByIdAsync(id);

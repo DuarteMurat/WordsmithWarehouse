@@ -1,12 +1,10 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
@@ -46,7 +44,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books
-        [Authorize(Roles ="Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Index()
         {
             var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();
@@ -104,7 +102,6 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Create(BookViewModel model)
         {
 
@@ -164,7 +161,6 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(BookViewModel model)
         {
             if (ModelState.IsValid)
@@ -220,7 +216,6 @@ namespace WordsmithWarehouse.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _bookRepository.GetByIdAsync(id);

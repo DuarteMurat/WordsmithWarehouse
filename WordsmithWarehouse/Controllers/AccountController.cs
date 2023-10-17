@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -88,10 +90,10 @@ namespace WordsmithWarehouse.Controllers
 
                         var twofa = random.Next(10000, 99999);
                         
-                        _mailHelper.SendEmail(user.Email, "Your Two-Factor Authentication (2FA) Code for Login",
+                        await _mailHelper.SendEmail(user.Email, "Your Two-Factor Authentication (2FA) Code for Login",
                         $"Dear {model.Username}, <br/>" +
                         $"You are receiving this email because you recently requested to log in to your <b>WordsmithWarehouse</b> account. To ensure the security of your account, we have implemented Two-Factor Authentication (2FA), and here is your unique login code:<br/>" +
-                        $"{twofa.ToString()}, <br/>" +
+                        $"<b>{twofa}</b>, <br/>" +
                         $"If you did not initiate this login request or suspect any unauthorized access to your account, please contact our support team immediately at <a>wordsmithwarehouse@outlook.pt</a>.<br/>" +
                         $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
                         $"Best regards,<br/><br/>" +
@@ -185,7 +187,7 @@ namespace WordsmithWarehouse.Controllers
                         token = myToken
                     }, protocol: HttpContext.Request.Scheme);
 
-                    Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                    Response response = await _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
                        $"To allow the user, " +
                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
@@ -203,6 +205,7 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin, Employee, Customer")]
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
@@ -260,7 +263,8 @@ namespace WordsmithWarehouse.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult ChangePassword()
+		[Authorize(Roles = "Admin, Employee, Customer")]
+		public IActionResult ChangePassword()
         {
             return View();
         }
@@ -363,7 +367,8 @@ namespace WordsmithWarehouse.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ManageUsers()
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> ManageUsers()
         {
             var users = await _userHelper.GetAllAsync();
 
@@ -372,7 +377,8 @@ namespace WordsmithWarehouse.Controllers
             return View(usersConverted);
         }
 
-        public IActionResult CreateUsers()
+		[Authorize(Roles = "Admin")]
+		public IActionResult CreateUsers()
         {
             return View();
         }
@@ -423,7 +429,7 @@ namespace WordsmithWarehouse.Controllers
                     token = myToken
                 }, protocol: HttpContext.Request.Scheme);
 
-                Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                Response response = await _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
                    $"Hi \"{model.FirstName}\", congrats on joining our team, here is your information to login in into our platform <br/><br/>" +
                    $"Username:\"{model.Username}\" <br/><br/>" +
                    $"Password:\"{model.Password}\" <br/><br/>" +
@@ -443,7 +449,8 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Delete(string username)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Delete(string username)
         {
             if (username == null)
             {
@@ -499,7 +506,7 @@ namespace WordsmithWarehouse.Controllers
                     "Account",
                     new { token = myToken }, protocol: HttpContext.Request.Scheme);
 
-                Response response = _mailHelper.SendEmail(model.Email, "Shop Password Reset", $"<h1>Shop Password Reset</h1>" +
+                Response response = await _mailHelper.SendEmail(model.Email, "Shop Password Reset", $"<h1>Shop Password Reset</h1>" +
                 $"To reset the password click in this link:</br></br>" +
                 $"<a href = \"{link}\">Reset Password</a>");
 
@@ -515,7 +522,8 @@ namespace WordsmithWarehouse.Controllers
             return this.View(model);
         }
 
-        public async Task<IActionResult> UserDetails(string Username)
+		[Authorize(Roles = "Admin, Employee, Customer")]
+		public async Task<IActionResult> UserDetails(string Username)
         {
             if (Username == null)
             {
@@ -532,7 +540,8 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
-        public IActionResult ResetPassword(string token)
+		[Authorize(Roles = "Admin, Employee, Customer")]
+		public IActionResult ResetPassword(string token)
         {
             return View();
         }

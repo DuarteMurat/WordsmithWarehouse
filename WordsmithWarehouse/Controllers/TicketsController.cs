@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Entities;
 using WordsmithWarehouse.Data;
-using WordsmithWarehouse.Repositories.Interfaces;
-using WordsmithWarehouse.Repositories.Classes;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Helpers.Interfaces;
+using WordsmithWarehouse.Models;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -44,6 +39,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tickets/Details/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -61,6 +57,8 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tickets/Create
+
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public IActionResult Create()
         {
             return View();
@@ -90,6 +88,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tickets/Edit/5
+
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -109,7 +108,6 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(TicketDetailsViewModel model)
         {
             if (ModelState.IsValid)
@@ -134,6 +132,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Data;
 using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Shelves
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Index()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
@@ -54,6 +56,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Shelves/Details/5
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -72,6 +75,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Shelves/Create
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public IActionResult Create()
         {
             var model = new ShelfViewModel();
@@ -84,6 +88,7 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Create(ShelfViewModel model)
         {
             if (ModelState.IsValid)
@@ -103,6 +108,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Shelves/Edit/5
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -154,6 +160,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Shelves/Delete/5
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

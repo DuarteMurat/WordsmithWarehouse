@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,12 +30,14 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Authors
+        [Authorize(Roles = "Admin, Employee")]
         public IActionResult Index()
         {
             return View(_authorRepository.GetAll().OrderBy(a => a.Name));
         }
 
         // GET: Authors/Details/5
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,14 +46,14 @@ namespace WordsmithWarehouse.Controllers
             var author = await _authorRepository.GetByIdAsync(id.Value);
 
 
-           if (author == null)
+            if (author == null)
                 return NotFound();
 
             return View(author);
         }
 
         // GET: Authors/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public IActionResult Create()
         {
             return View();
@@ -87,7 +88,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Authors/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,7 +138,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Authors/Delete/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
