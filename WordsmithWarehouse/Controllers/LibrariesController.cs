@@ -125,6 +125,11 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
+        public IActionResult ListAllLibraries()
+        {
+            return View(_libraryRepository.GetAll());
+        }
+
         // GET: Libraries/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)

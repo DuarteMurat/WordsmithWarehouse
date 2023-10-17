@@ -354,5 +354,23 @@ namespace WordsmithWarehouse.Helpers.Classes
                 Username = model.UserName,
             };
         }
+
+        public Library ConvertToLibraryListViewModel(LibraryListViewModel model, bool isNew)
+        {
+            return new Library
+            {
+                Id = isNew ? 0 : model.Id,
+                Adress = model.Adress,
+                City = model.City,
+                ClosingHour = model.ClosingHour,
+                Country = model.Country,
+                IsOpened = model.IsOpened,
+                Name = model.Name,
+                OpeningHour = model.OpeningHour,
+                PhoneNumber = model.PhoneNumber,
+                PostalCode = model.PostalCode,
+                Region = model.Region,
+            };
+        }
     }
 }
