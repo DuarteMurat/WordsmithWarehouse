@@ -11,6 +11,10 @@ namespace WordsmithWarehouse.Helpers.Interfaces
 
         Book ConvertToBook(DetailsBookViewModel model, string path, bool isNew, string bookpath);
 
+        Ticket ConvertToTicket(TicketViewModel model, bool isNew);
+
+        Ticket ConvertToTicket(TicketDetailsViewModel model, bool isNew);
+
         BookViewModel ConvertToBookViewModel(Book book);
 
         DetailsBookViewModel ConvertToDetailsBookViewModel(Book book);

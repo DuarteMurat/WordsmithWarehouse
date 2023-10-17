@@ -17,18 +17,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-2">
+            <div class="col-2" style="border:solid; border-color:lightgray; border-radius:10px">
                 <h1 style="text-align: center">Filters</h1>
-
+                <hr />
+                <h3 class="text-left">Tags</h3>
                 <div v-for="i in userFilters">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <div class="input-group">
                                 <input type="checkbox" aria-label="Checkbox for following text input" v-on:change="onTagCheckboxClicked(i.id)">
+                                <p style="margin:0 !important">&thinsp;&thinsp;{{i.name}}</p>
                             </div>
                         </div>
-                        &thinsp;&thinsp; {{i.name}}
                     </div>
+                    <hr />
                 </div>
             </div>
             <div class="col" v-for="i in filteredBooks">
@@ -55,14 +57,11 @@
     //    });
     //});
 
-    
     var TagsJson = @Html.Raw(Json.Serialize(Model[0].Tags));
     var BooksJson = @Html.Raw(Json.Serialize(Model));
 </script>
 
 @section Scripts{
-    <script src="~/js/BookSearch.js"></script>
-
-        
+    <script src="~/js/BookSearch.js"></script>    
 }
 

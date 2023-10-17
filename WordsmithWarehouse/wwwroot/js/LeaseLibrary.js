@@ -13,7 +13,6 @@
     },
     methods: {
         getLibrary(index, prop) {
-            console.log(index);
             return this.libraries[index][prop];
         },
     },

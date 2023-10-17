@@ -13,6 +13,7 @@ using WordsmithWarehouse.Repositories.Interfaces;
 using WordsmithWarehouse.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -25,6 +26,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly ILeaseRepository _leaseRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IConverterHelper _converterHelper;
+        private readonly IMailHelper _mailHelper;
 
         public LeasesController(DataContext context,
             IUserHelper userHelper,
@@ -32,7 +34,8 @@ namespace WordsmithWarehouse.Controllers
             IBookRepository bookRepository,
             ILibraryRepository libraryRepository,
             IAuthorRepository authorRepository,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IMailHelper mailHelper)
         {
             _context = context;
             _userHelper = userHelper;
@@ -41,6 +44,7 @@ namespace WordsmithWarehouse.Controllers
             _leaseRepository = leaseRepository;
             _authorRepository = authorRepository;
             _converterHelper = converterHelper;
+            _mailHelper = mailHelper;
         }
 
         // GET: Leases
@@ -64,6 +68,8 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Leases/Details/5
+
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -82,6 +88,8 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Leases/Create
+
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Create(DetailsBookViewModel dets)
         {
             var model = new LeaseViewModel();
@@ -93,7 +101,6 @@ namespace WordsmithWarehouse.Controllers
             model.PickUpDate = null;
             model.ReturnDate = null;
             model.LeaseTime = null;
-
 
             return View(model);
         }
@@ -115,6 +122,17 @@ namespace WordsmithWarehouse.Controllers
                 var lease = _converterHelper.ConvertToLease(model, true);
 
                 await _leaseRepository.CreateAsync(lease);
+                model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
+                await _mailHelper.SendEmail(user.Email, "",
+                        $"Dear {user.UserName}, <br/>" +
+                        $"We are delighted to confirm your recent book lease from {model.Library.Name}. Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
+                        $"Book Title: {model.Book.Title}, <br/>" +
+                        $"Author: {model.Book.Author.Name}, <br/>" +
+                        $"We hope you enjoy reading this book and find it both informative and entertaining. Our library is dedicated to providing a wide range of books to our members, and we trust this selection meets your expectations.<br/>" +
+                        $"If you did not initiate this lease request or suspect any unauthorized access to your account, please contact our support team immediately at <a>wordsmithwarehouse@outlook.pt</a>.<br/>" +
+                        $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
+                        $"Best regards,<br/><br/>" +
+                        $"WordsmithWarehouse.");
 
                 return RedirectToAction(nameof(UserLeases));
             }
@@ -122,6 +140,8 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Leases/Edit/5
+
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -149,17 +169,67 @@ namespace WordsmithWarehouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(LeaseViewModel model)
         {
+            model.Library = await _libraryRepository.GetByIdAsync(model.LibraryId);
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    TimeSpan timeSpan = TimeSpan.FromDays(14);
+
                     var lease = await _leaseRepository.GetByIdAsync(model.Id);
+                    var user = await _userHelper.GetUserByIdAsync(model.UserId);
+
+                    Lease leaseEmail = _converterHelper.ConvertToLease(model, false);
+
+                    if (leaseEmail != lease)
+                    {
+                        if (leaseEmail.OnGoing && !leaseEmail.IsCompleted)
+                        {
+                            leaseEmail.ReturnDate = leaseEmail.PickUpDate + timeSpan;
+
+                            await _mailHelper.SendEmail(user.Email, "Your lease has been updated",
+                       $"Dear {user.UserName}, <br/>" +
+                       $"We hope this email finds you well. We want to inform you of recent updates to your library lease.<br/>" +
+                       $"At <b>WordsmithWarehouse</b>, we are committed to provide you with the best resources and services to enhance your reading and learning experience.<br/>" +
+                       $"Here are the key details of the lease update:<br/><br/>" +
+                       $"Lease ID: {model.Id},<br/>" +
+                       $"Book: {model.Book.Title},<br/>" +
+                       $"Pickup Date:{model.PickUpDate}<br/>" +
+                       $"Return Date: {leaseEmail.ReturnDate} <br/>" +
+                       $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
+                       $"Best regards,<br/><br/>" +
+                       $"WordsmithWarehouse.");
+
+                            
+                        }
+
+                        if (leaseEmail.IsCompleted && !leaseEmail.OnGoing)
+                        {
+                            await _mailHelper.SendEmail(user.Email, "Your lease has been updated",
+                       $"Dear {user.UserName}, <br/>" +
+                       $"We hope this email finds you well. We want to inform you of recent updates to your library lease.<br/>" +
+                       $"At <b>WordsmithWarehouse</b>, we are committed to provide you with the best resources and services to enhance your reading and learning experience.<br/>" +
+                       $"Here are the key details of the lease update:<br/><br/>" +
+                       $"Lease ID: {model.Id},<br/>" +
+                       $"Book: {model.Book.Title},<br/>" +
+                       $"Lease Status: Complete.<br/>" +
+                       $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
+                       $"Best regards,<br/><br/>" +
+                       $"WordsmithWarehouse.");
+                        }
+
+                    }
+
                     lease = _converterHelper.ConvertToLease(model, false);
+                    lease.ReturnDate = leaseEmail.ReturnDate;
+
 
                     await _leaseRepository.UpdateAsync(lease);
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -178,6 +248,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Leases/Delete/5
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -221,7 +292,7 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
 
         }
-        
+
         public async Task<IActionResult> GetLeaseAmount()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);

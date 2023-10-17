@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
+using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 
 namespace WordsmithWarehouse.Helpers.Classes
@@ -15,7 +16,7 @@ namespace WordsmithWarehouse.Helpers.Classes
             _configuration = configuration;
         }
 
-        public Response SendEmail(string to, string subject, string body)
+        public async Task<Response> SendEmail(string to, string subject, string body)
         {
             var nameFrom = _configuration["Mail:NameFrom"];
             var from = _configuration["Mail:From"];
@@ -39,10 +40,10 @@ namespace WordsmithWarehouse.Helpers.Classes
             {
                 using (var client = new SmtpClient())
                 {
-                    client.Connect(smtp, int.Parse(port), false);
-                    client.Authenticate(from, password);
-                    client.Send(message);
-                    client.Disconnect(true);
+                    await client.ConnectAsync(smtp, int.Parse(port), false);
+                    await client.AuthenticateAsync(from, password);
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
                 }
             }
             catch (Exception ex)

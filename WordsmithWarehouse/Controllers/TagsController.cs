@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Entities;
 using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -25,12 +22,14 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tags
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Index()
         {
             return View(_tagRepository.GetAll().OrderBy(t => t.Name));
         }
 
         // GET: Tags/Details/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,13 +38,14 @@ namespace WordsmithWarehouse.Controllers
             var tag = await _tagRepository.GetByIdAsync(id.Value);
 
             if (tag == null)
-                return NotFound();            
+                return NotFound();
 
             return View(tag);
         }
 
         // GET: Tags/Create
-        [Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Create()
         {
             return View();
@@ -60,14 +60,15 @@ namespace WordsmithWarehouse.Controllers
         {
             if (ModelState.IsValid)
             {
-               await _tagRepository.CreateAsync(tag);
+                await _tagRepository.CreateAsync(tag);
                 return RedirectToAction(nameof(Index));
             }
             return View(tag);
         }
 
         // GET: Tags/Edit/5
-        [Authorize(Roles ="Admin")]
+
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,7 +93,7 @@ namespace WordsmithWarehouse.Controllers
             {
                 try
                 {
-                   await _tagRepository.UpdateAsync(tag);
+                    await _tagRepository.UpdateAsync(tag);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -111,7 +112,7 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tags/Delete/5
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

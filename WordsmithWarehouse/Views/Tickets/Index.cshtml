@@ -1,62 +1,54 @@
-﻿@model UserLeasesViewModel
+﻿@model IEnumerable<ClassLibrary.Entities.Ticket>
 
-
+@{
+    ViewData["Title"] = "Index";
+}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
-
+<br />
+<h1>Users Tickets</h1>
+<br />
+<br />
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h1 class="panel-title">My Leases </h1>
-                <br />
-            </div>
             <div class="panel-body">
-                <table class="table table-hover" id="MyTable">
+                <table class="table" id="MyTable">
                     <thead>
                         <tr>
                             <th>
-                                Book
+                                @Html.DisplayNameFor(model => model.Username)
                             </th>
                             <th>
-                                Library
+                                @Html.DisplayNameFor(model => model.UserEmail)
                             </th>
                             <th>
-                                Pickup Date
+                                @Html.DisplayNameFor(model => model.Close)
                             </th>
                             <th>
-                                Return Date
+                                @Html.DisplayNameFor(model => model.Open)
                             </th>
-                            <th>
-                                OnGoing
-                            </th>
-                            <th>
-                                IsCompleted
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Leases)
+                        @foreach (var item in Model)
                         {
-                            var book = Model.Books.Where(b => b.Id == item.BookId).FirstOrDefault();
-                            var library  = Model.Libraries.Where(b => b.Id == item.LibraryId).FirstOrDefault();
                             <tr>
                                 <td>
-                                    <img src="@Url.Content(book.ImageURL)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto">
+                                    @Html.DisplayFor(modelItem => item.Username)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => library.Name)
+                                    @Html.DisplayFor(modelItem => item.UserEmail)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PickUpDate)
+                                    @Html.DisplayFor(modelItem => item.Open)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ReturnDate)
+                                    @Html.DisplayFor(modelItem => item.Close)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.OnGoing)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsCompleted)
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i>  Status</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i>  Details</a>
                                 </td>
                             </tr>
                         }
