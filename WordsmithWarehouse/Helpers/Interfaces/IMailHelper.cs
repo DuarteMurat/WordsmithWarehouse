@@ -1,9 +1,10 @@
-﻿using WordsmithWarehouse.Helpers.Classes;
+﻿using System.Threading.Tasks;
+using WordsmithWarehouse.Helpers.Classes;
 
 namespace WordsmithWarehouse.Helpers.Interfaces
 {
     public interface IMailHelper
     {
-        Response SendEmail(string to, string subject, string body);
+        Task<Response> SendEmail(string to, string subject, string body);
     }
 }
