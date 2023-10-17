@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -86,9 +87,15 @@ namespace WordsmithWarehouse.Controllers
                         var random = new Random();
 
                         var twofa = random.Next(10000, 99999);
-
-                        _mailHelper.SendEmail(user.Email, "Authenticate yourself",
-                            twofa.ToString());
+                        
+                        _mailHelper.SendEmail(user.Email, "Your Two-Factor Authentication (2FA) Code for Login",
+                        $"Dear {model.Username}, <br/>" +
+                        $"You are receiving this email because you recently requested to log in to your <b>WordsmithWarehouse</b> account. To ensure the security of your account, we have implemented Two-Factor Authentication (2FA), and here is your unique login code:<br/>" +
+                        $"{twofa.ToString()}, <br/>" +
+                        $"If you did not initiate this login request or suspect any unauthorized access to your account, please contact our support team immediately at <a>wordsmithwarehouse@outlook.pt</a>.<br/>" +
+                        $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
+                        $"Best regards,<br/><br/>" +
+                        $"WordsmithWarehouse.");
 
                         await _userHelper.UpdateUserTwofa(user, twofa.ToString());
                         model.IsTwofa = true;

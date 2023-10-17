@@ -116,10 +116,6 @@
 
         <!-- Circles which indicates the steps of the form: -->
         <div style="text-align:center;margin-top:40px;">
-            @if (!this.User.Identity.IsAuthenticated)
-            {
-                <span class="step"></span>
-            }
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
@@ -130,6 +126,5 @@
     <script>
         var libraryData = @Html.Raw(Json.Serialize(Model.Libraries));
     </script>
-
-<script src="~/js/leaselibrary.js"></script>
 <script src="~/js/LeaseForm.js"></script>
+<script src="~/js/leaselibrary.js"></script>
