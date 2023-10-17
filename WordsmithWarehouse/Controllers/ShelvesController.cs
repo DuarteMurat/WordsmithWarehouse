@@ -19,7 +19,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IShelfRepository _shelfRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IUserHelper _userHelper;
-        IConverterHelper _converterHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public ShelvesController(DataContext context,
             IUserHelper userHelper, IShelfRepository shelfRepository,
@@ -55,24 +55,6 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
-        // GET: Shelves/Details/5
-        [Authorize(Roles = "Admin,Employee,Customer")]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shelf = await _context.Shelves
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (shelf == null)
-            {
-                return NotFound();
-            }
-
-            return View(shelf);
-        }
 
         // GET: Shelves/Create
         [Authorize(Roles = "Admin,Employee,Customer")]
@@ -107,73 +89,18 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
-        // GET: Shelves/Edit/5
-        [Authorize(Roles = "Admin,Employee,Customer")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shelf = await _context.Shelves.FindAsync(id);
-            if (shelf == null)
-            {
-                return NotFound();
-            }
-            return View(shelf);
-        }
-
-        // POST: Shelves/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,BookIds,Description")] Shelf shelf)
-        {
-            if (id != shelf.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(shelf);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ShelfExists(shelf.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(shelf);
-        }
-
         // GET: Shelves/Delete/5
         [Authorize(Roles = "Admin,Employee,Customer")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var shelf = await _context.Shelves
-                .FirstOrDefaultAsync(m => m.Id == id);
+           
+
+            var shelf = await _shelfRepository.GetByIdAsync(id.Value);
             if (shelf == null)
-            {
-                return NotFound();
-            }
+                return new NotFoundViewResult("BookNotFound");
 
             return View(shelf);
         }
@@ -183,15 +110,31 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var shelf = await _context.Shelves.FindAsync(id);
-            _context.Shelves.Remove(shelf);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var shelf = await _shelfRepository.GetByIdAsync(id);
+            await _shelfRepository.DeleteAsync(shelf);
 
-        private bool ShelfExists(int id)
-        {
-            return _context.Shelves.Any(e => e.Id == id);
+            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            List<string> ids = user.ShelfIds.Split(',').ToList();
+            if (ids.Contains(id.ToString()))
+                ids.Remove(id.ToString());
+
+            user.ShelfIds = string.Empty;
+
+            if (ids.Count > 0)
+            {
+                foreach (var val in ids)
+                {
+                    user.ShelfIds += val + ',';
+                }
+            }
+            
+            if (user.ShelfIds.Length > 0)
+            {
+                user.ShelfIds = user.ShelfIds.Substring(0, user.ShelfIds.Length - 1);
+            }
+            await _userHelper.UpdateUserAsync(user);
+
+            return RedirectToAction(nameof(Index));
         }
 
         private string updateShelfIds(string source, int idToAdd)
@@ -261,6 +204,47 @@ namespace WordsmithWarehouse.Controllers
             await _shelfRepository.UpdateAsync(shelf);
 
             return Json("success");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateShelf(ShelfDetailsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var shelf = await _shelfRepository.GetByIdAsync(model.Shelf.Id);
+                    if (shelf.Name != model.Shelf.Name)
+                        shelf.Name = model.Shelf.Name;
+
+                    if (shelf.Description != model.Shelf.Description)
+                        shelf.Description = model.Shelf.Description;
+
+                    await _shelfRepository.UpdateAsync(shelf);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    await _shelfRepository.ExistAsync(model.Shelf.Id);
+                    return NotFound();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Shelf(int id)
+        {
+            var shelf = await _shelfRepository.GetByIdAsync(id);
+
+            var model = new ShelfDetailsViewModel
+            {
+                Shelf = shelf,
+            };
+
+            model.Shelf.Books = await _bookRepository.GetBooksFromString(shelf.BookIds);
+            model.Shelf.Books.OrderBy(b => b.Title);
+
+            return View(model);
         }
     }
 }
