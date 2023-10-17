@@ -15,7 +15,7 @@
     },
     methods: {
         getLibrary(index, prop) {
-            return this.libraries[index-1][prop];
+            return this.libraries[index][prop];
         },
     }
 })

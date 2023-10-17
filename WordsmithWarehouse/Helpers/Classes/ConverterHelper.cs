@@ -330,5 +330,29 @@ namespace WordsmithWarehouse.Helpers.Classes
 
         }
 
+        public Ticket ConvertToTicket(TicketViewModel model, bool isNew)
+        {
+            return new Ticket
+            {
+                Id = isNew ? 0 : model.Id,
+                Title = model.Title,
+                Description = model.Description,
+                UserEmail = model.UserEmail,
+            };
+        }
+
+        public Ticket ConvertToTicket(TicketDetailsViewModel model, bool isNew)
+        {
+            return new Ticket
+            {
+                Id = isNew ? 0 : model.Id,
+                Close = model.Close,
+                Open = model.Open,
+                Description = model.Description,
+                UserEmail = model.UserEmail,
+                Title = model.Title,
+                Username = model.UserName,
+            };
+        }
     }
 }

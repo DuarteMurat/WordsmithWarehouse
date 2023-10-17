@@ -50,7 +50,7 @@
                     {
                         <div class="row float-right">
                             <div class="nav-item">
-                                <a class="navbutton" asp-controller="Leases" asp-action="UserLeases" type="button"><i class="fas fa-shopping-basket" style="color: #ffffff;"></i></a>
+
                             </div>
                             <div class="dropdown nav-item">
                                 <button style="border: 0; background-color: transparent; outline:0;" data-toggle="dropdown">
@@ -58,7 +58,8 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right ">
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
-                                    <a class="nav-link text-dark" asp-controller="Shelves" asp-action="Index"><i class="fas fa-bookmark" style="color:#96a2b2"></i> Shelves</a>
+                                    <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Shelves" asp-action="Index"><i class="fas fa-bookmark" style="color:#96a2b2"></i> &thinsp;Shelves</a>
+                                    <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Leases" asp-action="UserLeases"><i class="fas fa-shopping-basket" style="color:#96a2b2"></i> Leases</a>
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                                 </div>
                             </div>
@@ -118,6 +119,10 @@
                 <a class="nav-link" asp-area="" asp-controller="Leases" asp-action="Index">
                     Leases<i class="fas fa-book-reader" style="color: #ffffff; float: right; padding-top: 6px"></i>
                 </a>
+                <hr />
+                <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="Index">
+                    Tickets<i class="fas fa-exclamation" style="color: #ffffff; float: right; padding-top: 6px"></i>
+                </a>
                 <div class="row" style="bottom:0; position:absolute; margin:auto">
                     <span class="align-text-bottom" style="color: white;" id="datetime"></span>
                     <p style="color:white; margin: 0 !important;">&emsp;&emsp;&emsp; v1.0.0</p>
@@ -158,7 +163,7 @@
                     <h6>Quick Links</h6>
                     <ul class="footer-links" style="color: white">
                         <li><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact us</a></li>
+                        <li><a asp-area="" asp-controller="Tickets" asp-action="Create">Contact us</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
                     </ul>
                 </div>

@@ -10,6 +10,8 @@ using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Repositories.Interfaces;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -143,6 +145,7 @@ namespace WordsmithWarehouse.Controllers
         // POST: Libraries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var library = await _libraryRepository.GetByIdAsync(id);

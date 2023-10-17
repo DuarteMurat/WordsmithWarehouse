@@ -1,0 +1,37 @@
+﻿@model ClassLibrary.Entities.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Create a ticket</h1>
+<hr />
+<div class="row">
+    <div class="col" style="background-color: lightgray">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @if (!this.User.Identity.IsAuthenticated)
+            {
+                <div class="form-group">
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <input asp-for="UserEmail" class="form-control" />
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Contact Us" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
