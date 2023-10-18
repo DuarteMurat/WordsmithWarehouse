@@ -1,19 +1,18 @@
-﻿using System;
+﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Prng;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClassLibrary.Entities;
 using WordsmithWarehouse.Data;
 using WordsmithWarehouse.Helpers.Interfaces;
-using WordsmithWarehouse.Repositories.Classes;
-using WordsmithWarehouse.Repositories.Interfaces;
+using WordsmithWarehouse.Migrations;
 using WordsmithWarehouse.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
+using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Controllers
 {
@@ -124,7 +123,7 @@ namespace WordsmithWarehouse.Controllers
                 model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
                 await _mailHelper.SendEmail(user.Email, "Lease",
                         $"Dear {user.UserName}, <br/>" +
-                        $"We are delighted to confirm your recent book lease from us! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
+                        $"We are delighted to confirm your recent book lease from {model.Library.Name}! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
                         $"Book Title: {model.Book.Title}, <br/>" +
                         $"Author: {model.Book.Author.Name}, <br/>" +
                         $"We hope you enjoy reading this book and find it both informative and entertaining. Our library is dedicated to providing a wide range of books to our members, and we trust this selection meets your expectations.<br/>" +
@@ -202,7 +201,7 @@ namespace WordsmithWarehouse.Controllers
                        $"Best regards,<br/><br/>" +
                        $"WordsmithWarehouse.");
 
-                            
+
                         }
 
                         if (leaseEmail.IsCompleted && !leaseEmail.OnGoing)
@@ -254,7 +253,7 @@ namespace WordsmithWarehouse.Controllers
                 return NotFound();
 
             var lease = _leaseRepository.GetByIdAsync(id.Value);
-            
+
             if (lease == null)
             {
                 return NotFound();
@@ -289,6 +288,13 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
+        public async Task<IActionResult> GetFines()
+        {
+            List<Fine> fines = await _leaseRepository.GetFinesAsync();
+
+            return View(fines);
+        }
+
         public async Task<IActionResult> GetLeaseAmount()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
@@ -296,6 +302,17 @@ namespace WordsmithWarehouse.Controllers
 
             string LeasesAmount = leases.Count().ToString();
             return Content(LeasesAmount);
+        }
+
+        public async Task<IActionResult> GetUserFines()
+        {
+            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+
+            var fines = await _leaseRepository.GetFinesAsync();
+
+            var userFines = fines.Where(f => f.UserId == user.Id);
+
+            return View(userFines);
         }
     }
 }

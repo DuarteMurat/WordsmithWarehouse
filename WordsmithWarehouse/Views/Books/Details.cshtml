@@ -224,7 +224,7 @@
                 <img :src="getUserImage(i.userImage)" style="width:75px; height:75px; border-radius:100%" id="imageSource" />
                 <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
                     <div class="row">
-                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
+                        <button type="button" style="background-color:transparent; outline-color:transparent" id="editCommentButton" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
                         <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light" v-on:click="onDeleteCommentClick(i.id)"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
                     </div>
                 </div>
@@ -237,8 +237,31 @@
             <h6> Rating: {{i.rating}}/10</h6>
             <p><cite>"{{i.text}}"</cite></p>
         </div>
+
+        <div class="modal fade" id="EditCommentModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4> Edit Comment </h4>
+                    </div>
+                    <div class="modal-body">
+                        <textarea style="border-radius:15px" class="form-control" rows="5" id="commentTextInput">{{i.text}}</textarea> @* comment message*@
+                        Rating: <input type="number" style="width: 30px; max-height:20px;" :value="i.rating" id="commentRatingInput" /> /10 @* comment rating *@
+                        <input type="hidden" :value="i.id" id="commentIdInput"/>
+                        <input type="hidden" :value="i.userIdString" id="userIdInput" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="editComment()"> Update </button> @*confirm edit*@
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
+
+
 @if (this.User.Identity.IsAuthenticated)
 {
     <template id="post-template">
@@ -295,6 +318,12 @@
         var shelfData = @Html.Raw(Json.Serialize(Model.Shelves));
     </script>
     <script>
+        $(document).ready(function () {
+            $("#editCommentButton").click(function () {
+                $("#EditCommentModal").modal();
+            });
+        });
+
         function addToShelf(el) {
             console.log(el);
 
@@ -302,7 +331,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                                }
+                                                }
                 console.log(item);
                 $.ajax({
                     url: "/Shelves/AddToShelf",
@@ -321,7 +350,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                            }
+                                            }
 
                 console.log(item);
                 $.ajax({
@@ -349,6 +378,36 @@
             setTimeout(function () {
                 o.style.display = "none";
             }, time);
+        }
+
+        function editComment(){
+            var comId = document.getElementById("commentIdInput");
+            var userId = document.getElementById("userIdInput");
+            var comText = document.getElementById("commentTextInput");
+            var comRating = document.getElementById("commentRatingInput");
+
+            let item = {
+                commentId : comId.value,
+                userId : userId.value,
+                commentText : comText.value,
+                commentRating : comRating.value,
+                bookId : @Model.Id
+            }
+            console.log(item);
+
+            $.ajax({
+                url: "/Books/UpdateComment",
+                type: "POST",
+                data: item,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            });
+
+            window.location.reload();
         }
     </script>
     <script src="~/js/CommentSection.js"></script>

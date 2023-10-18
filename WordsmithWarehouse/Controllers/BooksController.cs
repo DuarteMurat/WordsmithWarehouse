@@ -341,6 +341,23 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
+        public async Task<object> UpdateComment(string commentId, string userId, string commentText, string commentRating, string bookId)
+        {
+            var book = await _bookRepository.GetByIdAsync(int.Parse(bookId));
+
+            var comment = await _commentRepository.GetAll().Where(c => c.BookId == int.Parse(bookId) && c.Id == int.Parse(commentId)).FirstOrDefaultAsync();
+
+            var user = _userHelper.GetUserByIdAsync(userId);
+
+            comment.Text = commentText;
+            comment.Rating = float.Parse(commentRating);
+
+            await _commentRepository.UpdateAsync(comment);
+
+
+            return Json("success");
+        }
+
         private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)
         {
             var model = _converterHelper.ConvertToDetailsBookViewModel(book);
