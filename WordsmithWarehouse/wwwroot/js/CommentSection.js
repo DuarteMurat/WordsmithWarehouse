@@ -23,10 +23,6 @@ new Vue({
         this.comments = commentData;
         this.users = userData;
         this.userId = userId.value;
-
-        console.log(this.comments);
-        console.log(this.users);
-        console.log(this.userId);
     },
     computed: {
 

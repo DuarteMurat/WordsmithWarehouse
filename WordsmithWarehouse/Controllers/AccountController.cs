@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -67,7 +64,7 @@ namespace WordsmithWarehouse.Controllers
                     this.ModelState.AddModelError(string.Empty, "Failed to login!");
                     return View(model);
                 }
-                var result = await _userHelper.CheckPasswordAsync(user,model.Password);
+                var result = await _userHelper.CheckPasswordAsync(user, model.Password);
                 if (result)
                 {
                     if (model.Username == "Admin" || model.Username == "admin")
@@ -89,7 +86,7 @@ namespace WordsmithWarehouse.Controllers
                         var random = new Random();
 
                         var twofa = random.Next(10000, 99999);
-                        
+
                         await _mailHelper.SendEmail(user.Email, "Your Two-Factor Authentication (2FA) Code for Login",
                         $"Dear {model.Username}, <br/>" +
                         $"You are receiving this email because you recently requested to log in to your <b>WordsmithWarehouse</b> account. To ensure the security of your account, we have implemented Two-Factor Authentication (2FA), and here is your unique login code:<br/>" +
@@ -109,7 +106,7 @@ namespace WordsmithWarehouse.Controllers
                         if (model.Twofa != user.Twofa)
                         {
                             this.ModelState.AddModelError(string.Empty, "Incorrect 2fa code!");
-                            
+
                             model.Twofa = string.Empty;
                             model.IsTwofa = true;
                             return View(model);
@@ -240,13 +237,13 @@ namespace WordsmithWarehouse.Controllers
                     user.UserName = model.Username;
                     user.PhoneNumber = model.PhoneNumber;
                     user.Address = model.Address;
-                    
+
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Users");
                         user.ImageURL = path;
                     }
-                    
+
 
                     var response = await _userHelper.UpdateUserAsync(user);
                     if (response.Succeeded)
@@ -263,8 +260,8 @@ namespace WordsmithWarehouse.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-		[Authorize(Roles = "Admin, Employee, Customer")]
-		public IActionResult ChangePassword()
+        [Authorize(Roles = "Admin, Employee, Customer")]
+        public IActionResult ChangePassword()
         {
             return View();
         }
@@ -367,8 +364,8 @@ namespace WordsmithWarehouse.Controllers
             return View();
         }
 
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> ManageUsers()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ManageUsers()
         {
             var users = await _userHelper.GetAllAsync();
 
@@ -377,8 +374,8 @@ namespace WordsmithWarehouse.Controllers
             return View(usersConverted);
         }
 
-		[Authorize(Roles = "Admin")]
-		public IActionResult CreateUsers()
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateUsers()
         {
             return View();
         }
@@ -449,8 +446,8 @@ namespace WordsmithWarehouse.Controllers
             return View(model);
         }
 
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> Delete(string username)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(string username)
         {
             if (username == null)
             {
@@ -522,16 +519,16 @@ namespace WordsmithWarehouse.Controllers
             return this.View(model);
         }
 
-		[Authorize(Roles = "Admin, Employee, Customer")]
-		public async Task<IActionResult> UserDetails(string Username)
+        [Authorize(Roles = "Admin, Employee, Customer")]
+        public async Task<IActionResult> UserDetails(string Username)
         {
             if (Username == null)
             {
                 return new NotFoundViewResult("BookNotFound");
             }
-            
+
             var user = await _userHelper.GetUserByUsernameAsync(Username);
-            
+
             var model = _converterHelper.ConvertToManageUserViewModel(user);
             model.Role = await _userHelper.GetUserRole(user);
 
@@ -540,8 +537,8 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
-		[Authorize(Roles = "Admin, Employee, Customer")]
-		public IActionResult ResetPassword(string token)
+        [Authorize(Roles = "Admin, Employee, Customer")]
+        public IActionResult ResetPassword(string token)
         {
             return View();
         }

@@ -319,7 +319,7 @@ namespace WordsmithWarehouse.Controllers
                     query.StockAvailable = query.TotalStock - query.StockBeingUsed;
                     await _bookQuantityRepository.UpdateAsync(query);
                 }
-                    
+
             }
             int sum = 0;
             for (int i = 0; i < values.Length; i++)
@@ -330,7 +330,7 @@ namespace WordsmithWarehouse.Controllers
             await _bookRepository.UpdateAsync(book);
 
             return Json("success");
-
+        }
         public async Task<IActionResult> DeleteComment(int id)
         {
             var comment = await _commentRepository.GetByIdAsync(id);
@@ -338,6 +338,23 @@ namespace WordsmithWarehouse.Controllers
 
             return RedirectToAction("Details");
 
+        }
+
+        public async Task<object> UpdateComment(string commentId, string userId, string commentText, string commentRating, string bookId)
+        {
+            var book = await _bookRepository.GetByIdAsync(int.Parse(bookId));
+
+            var comment = await _commentRepository.GetAll().Where(c => c.BookId == int.Parse(bookId) && c.Id == int.Parse(commentId)).FirstOrDefaultAsync();
+
+            var user = _userHelper.GetUserByIdAsync(userId);
+
+            comment.Text = commentText;
+            comment.Rating = float.Parse(commentRating);
+
+            await _commentRepository.UpdateAsync(comment);
+
+
+            return Json("success");
         }
 
         private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)

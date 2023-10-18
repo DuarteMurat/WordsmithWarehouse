@@ -3,7 +3,7 @@
     data() {
         return{
             libraries: [],
-            selectedValue: '0',
+            selectedValue: 0,
         }
     },
     created() {
@@ -15,5 +15,9 @@
         getLibrary(index, prop) {
             return this.libraries[index][prop];
         },
+        getLibraryId(selectedValue) {
+            console.log(this.libraries[selectedValue].id);
+            return this.libraries[selectedValue].id;
+        }
     },
 })
