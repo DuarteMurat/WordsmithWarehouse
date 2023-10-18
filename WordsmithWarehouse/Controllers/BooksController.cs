@@ -280,6 +280,7 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
+
         public async Task<IActionResult> BookStock(int? id)
         {
             if (id == null)
@@ -329,6 +330,14 @@ namespace WordsmithWarehouse.Controllers
             await _bookRepository.UpdateAsync(book);
 
             return Json("success");
+
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var comment = await _commentRepository.GetByIdAsync(id);
+            await _commentRepository.DeleteAsync(comment);
+
+            return RedirectToAction("Details");
+
         }
 
         private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)

@@ -17,6 +17,9 @@ namespace WordsmithWarehouse.Data
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<BookQuantity> BookQuantity { get; set; }
+        public DbSet<Forum> Forums { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -39,7 +42,5 @@ namespace WordsmithWarehouse.Data
         public DbSet<ClassLibrary.Entities.Lease> Lease { get; set; }
 
         public DbSet<WordsmithWarehouse.Models.ManageUserViewModel> ManageUserViewModel { get; set; }
-
-        public DbSet<WordsmithWarehouse.Models.LibraryListViewModel> LibraryListViewModel { get; set; }
     }
 }
