@@ -79,6 +79,8 @@ namespace WordsmithWarehouse
             services.AddScoped<IShelfRepository, ShelfRepository>();
             services.AddScoped<ILeaseRepository, LeaseRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IForumRepository, ForumRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
 
             //Helpers
             services.AddScoped<IUserHelper, UserHelper>();

@@ -272,6 +272,14 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var comment = await _commentRepository.GetByIdAsync(id);
+            await _commentRepository.DeleteAsync(comment);
+
+            return RedirectToAction("Details");
+        }
+
         private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)
         {
             var model = _converterHelper.ConvertToDetailsBookViewModel(book);

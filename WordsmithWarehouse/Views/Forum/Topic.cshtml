@@ -1,0 +1,39 @@
+﻿@model WordsmithWarehouse.Models.TopicViewModel
+
+
+<div class="card mb-6">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="card-title">@Model.Title</div>
+            </div>
+            <div class="col-12">
+                <div class="card-body">@Model.Description</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (var message in Model.Messages)
+{
+    <div class="card mb-6">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-title">@message.Content</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <input asp-for="NewMessageContent" class="form-control" />
+        <span asp-validation-for="NewMessageContent" class="text-warning"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>Send Message</button>
+</form>

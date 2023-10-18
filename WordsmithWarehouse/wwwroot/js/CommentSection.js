@@ -62,6 +62,10 @@ new Vue({
 
             return false;
         },
+        onDeleteCommentClick(id) {
+            console.log(id)
+            window.location.assign(`/Books/DeleteComment/${id}`);
+        },
     }
 
 });
