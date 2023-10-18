@@ -20,43 +20,70 @@
 
 <body>
     <header style="background-color: #96a2b2">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
-            <div class="container-fluid align-content-center">
-                <div class="col-3">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="/images/logogray.png" alt="Wordsmith Warehouse" width="150" height="50">
-                    </a>
-                </div>
-                <div class="col-6">
-                    <div class="row justify-content-between">
-                        <a class="navbutton"><i class="fas fa-map-marker-alt" style="color: #ffffff;"></i> Locations</a>
-                        <a class="navbutton" asp-controller="Books" asp-action="Details"><i class="fas fa-random" style="color: #ffffff;"></i> Random Book</a>
-                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="Contact"><i class="fas fa-headset" style="color: #ffffff;"></i> Contact us</a>
-                        <a class="navbutton" asp-area="" asp-controller="Home" asp-action="About"><i class="fas fa-info" style="color: #ffffff;"></i> About us</a>
+      
+        <nav class="navbar navbar-expand-xl">
+
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainNavBar" aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavBar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="/images/logogray.png" alt="Wordsmith Warehouse" width="150" height="50">
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto ml-auto">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link"><i class="fas fa-map-marker-alt" style="color: #ffffff;"></i> Locations</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Books" asp-action="Details"><i class="fas fa-random" style="color: #ffffff;"></i> Random Book</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact"><i class="fas fa-headset" style="color: #ffffff;"></i> Contact us</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About"><i class="fas fa-info" style="color: #ffffff;"></i> About us</a>
+                    </li>
+
+                    <li class="nav-item">
+
                         <div class="dropdown">
-                            <button class="socialButton" data-toggle="dropdown"><i class="fas fa-share-alt" style="color:#ffffff"></i> Socials</button>
-                            <div class="dropdown-menu dropdown-menu-right">
+                            <a class="nav-link" data-toggle="dropdown"><i class="fas fa-share-alt" style="color:#ffffff" href="#"></i> Socials</a>
+                            <div class="dropdown-menu dropdown-menu-left">
                                 <a href="#" class="dropdown-item"><i class="fab fa-facebook-f" style="color:#96a2b2"></i> Facebook</a>
                                 <a href="#" class="dropdown-item"><i class="fab fa-instagram" style="color:#96a2b2"></i> Instragram</a>
                                 <a href="#" class="dropdown-item"><i class="fab fa-tiktok" style="color:#96a2b2"></i> TikTok</a>
                                 <a href="#" class="dropdown-item"><i class="fab fa-youtube" style="color:#96a2b2"></i> Youtube</a>
                             </div>
                         </div>
-                        <a class="navbutton" asp-area="" asp-controller="Forum" asp-action="Index"><i class="fas fa-info" style="color: #ffffff;"></i> Forum</a>
-                        <a class="navbutton" asp-area="" asp-controller="Books" asp-action="SearchBooks"><i class="fas fa-search" style="color: white;"></i></a>
-                    </div>
-                </div>
-                <div class="col-3">
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Forum" asp-action="Index"><i class="fas fa-info" style="color: #ffffff;"></i> Forum</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Books" asp-action="SearchBooks"><i class="fas fa-search" style="color: white;"></i> Find Books</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ml-auto">
                     @if (this.User.Identity.IsAuthenticated)
                     {
-                        <div class="row float-right">
-                            <div class="nav-item">
-
-                            </div>
-                            <div class="dropdown nav-item">
-                                <button style="border: 0; background-color: transparent; outline:0;" data-toggle="dropdown">
-                                    <img src="@Url.Action("GetImage", "Account")" alt="image" class="rounded-circle" style="max-width: 50px; max-height: 50px; margin-bottom: 10px">
-                                </button>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link" style="border: 0; background-color: transparent; outline:0;" data-toggle="dropdown">
+                                    @User.Identity.Name
+                                    <img src="@Url.Action("GetImage", "Account")" alt="image" class="rounded-circle" style="width: 50px; height: 50px; margin-bottom: 10px">
+                                </a>
                                 <div class="dropdown-menu dropdown-menu-right ">
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Shelves" asp-action="Index"><i class="fas fa-bookmark" style="color:#96a2b2"></i> &thinsp;Shelves</a>
@@ -64,20 +91,16 @@
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                                 </div>
                             </div>
-                        </div>
-
-
+                        </li>
                     }
                     else
                     {
-                        <ul class="nav navbar-nav navbar-right float-right">
-                            <li class="nav-item navbar-right">
-                                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Login" style="padding-left:150px;color:white"> Sign In | Register </a>
-                            </li>
-                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login" style="color:white"> Sign In | Register </a>
+                        </li>
                     }
-                    </>
-                </div>
+                </ul>
+            </div>
         </nav>
     </header>
 
@@ -142,33 +165,35 @@
     </div>
     <footer class="footer">
         <div style="padding-left: 15px">
-            <div class="row" style="max-width:100%">
-                <div class="col-7" style="padding-left:20px">
-                    <h6 style="padding-top:7px">About&#9874</h6>
-                    <p>
-                        Welcome to Wordsmith Warehouse &ndash; Your Online Literary Haven!
-                    </p>
-                    <p>
-                        Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
-                    </p>
+            <div class="d-none d-md-block">
+                <div class="row" style="max-width:100%">
+                    <div class="col-8" style="padding-left:20px">
+                        <h6 style="padding-top:7px">About&#9874</h6>
+                        <p>
+                            Welcome to Wordsmith Warehouse &ndash; Your Online Literary Haven!
+                        </p>
+                        <p>
+                            Immerse yourself in the boundless world of words at Wordsmith Warehouse, where pages come alive and stories never end. As an enchanting online library, we house a treasure trove of literary gems that span genres, eras, and imaginations. Whether you seek the rhythmic prose of classic poets, the pulse-pounding thrill of gripping novels, or the profound wisdom of timeless essays, our virtual shelves hold something special for every kind of reader.
+                        </p>
+                    </div>
+                    <div class="col-2" style="padding-top: 20px">
+                        <h6>Categories</h6>
+                        <ul class="footer-links" style="color: white">
+                            <li><a href="">Best Sellers</a></li>
+                            <li><a href="">Classics</a></li>
+                            <li><a href="">New Releases</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-2" style="padding-top: 20px">
+                        <h6>Quick Links</h6>
+                        <ul class="footer-links" style="color: white">
+                            <li><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
+                            <li><a asp-area="" asp-controller="Tickets" asp-action="Create">Contact us</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col" style="padding-top: 20px">
-                    <h6>Categories</h6>
-                    <ul class="footer-links" style="color: white">
-                        <li><a href="">Best Sellers</a></li>
-                        <li><a href="">Classics</a></li>
-                        <li><a href="">New Releases</a></li>
-                    </ul>
-                </div>
-                <div class="col" style="padding-top: 20px">
-                    <h6>Quick Links</h6>
-                    <ul class="footer-links" style="color: white">
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
-                        <li><a asp-area="" asp-controller="Tickets" asp-action="Create">Contact us</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
+            </div>         
             <hr />
             <div class="row" style="max-width:100%">
                 <div class="col">

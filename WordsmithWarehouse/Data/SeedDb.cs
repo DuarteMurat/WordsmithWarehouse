@@ -84,18 +84,6 @@ namespace WordsmithWarehouse.Data
                 await _context.SaveChangesAsync();
             }
 
-            if (!_context.Forums.Any())
-            {
-                await _context.Forums.AddAsync(new Forum
-                {
-                    Title = "Teste",
-                    Description = "This is a test site",
-                    UserId = user.Id,
-                });
-
-                await _context.SaveChangesAsync();
-            }
-
             if (!_context.Messages.Any())
             {
                 await _context.Messages.AddAsync(new Message

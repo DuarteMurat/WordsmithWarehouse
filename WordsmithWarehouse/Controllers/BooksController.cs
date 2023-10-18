@@ -331,6 +331,7 @@ namespace WordsmithWarehouse.Controllers
 
             return Json("success");
         }
+
         public async Task<IActionResult> DeleteComment(int id)
         {
             var comment = await _commentRepository.GetByIdAsync(id);

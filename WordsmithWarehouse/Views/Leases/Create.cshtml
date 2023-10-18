@@ -17,29 +17,33 @@
             <div class="row justify-content-center">
                 <h3>Book Information</h3>
             </div>
-            <div class="row justify-content-between justify-content-center">
-                <div class="col-2">
-                    <img style="width:60%;height:100%;padding-top: 60px" src="@Url.Content(Model.Book.ImageURL)" />
+            <div class="row justify-content-center">
+                <div class="col-md-2 col-sm-12" style="padding-top: 120px">
+                    <img class="img-fluid" src="@Url.Content(Model.Book.ImageURL)" />
                 </div>
-                <div class="col-2">
-                    <h5 style="padding-top: 120px">Title</h5>
-                    <p>@Url.Content(Model.Book.Title)</p>
-                </div>
-                <div class="col-2">
-                    <h5 style="padding-top: 120px">Author</h5>
-                    <p>@Url.Content(Model.Book.Author.Name)</p>
-                </div>
-                <div class="col-2">
-                    <h5 style="padding-top: 120px">Release Year</h5>
-                    <p>@Url.Content(Model.Book.ReleaseYear.ToString())</p>
-                </div>
-                <div class="col-2">
-                    <h5 style="padding-top: 120px">ISBN</h5>
-                    <p>@Url.Content(Model.Book.ISBN)</p>
-                </div>
-                <div class="col-2">
-                    <h5 style="padding-top: 120px">Publisher</h5>
-                    <p>@Url.Content(Model.Book.Publisher)</p>
+                <div class="col-md-10 col-sm-12" style="padding-top: 120px">
+                    <div class="row text-center">
+                        <div class="col-md-2 col-sm-12">
+                            <h5>Title</h5>
+                            <p>@Url.Content(Model.Book.Title)</p>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <h5>Author</h5>
+                            <p>@Url.Content(Model.Book.Author.Name)</p>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <h5>Release Year</h5>
+                            <p>@Url.Content(Model.Book.ReleaseYear.ToString())</p>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <h5>ISBN</h5>
+                            <p>@Url.Content(Model.Book.ISBN)</p>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <h5>Publisher</h5>
+                            <p>@Url.Content(Model.Book.Publisher)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
