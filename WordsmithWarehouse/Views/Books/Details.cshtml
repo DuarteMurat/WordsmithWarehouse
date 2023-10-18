@@ -10,7 +10,7 @@
     <div class="row" style="padding-top: 60px">
         <div class="col-md-5 col-sm-12">
             <div class="detailsImage">
-                <img src="@Url.Content(Model.ImageURL)" class="detailsImage" alt="Image" />
+                <img src="@Url.Content(Model.ImageURL)" class="detailsImage img-fluid" alt="Image" />
             </div>
             <div class="row justify-content-center">
                 <div class="col-5">
@@ -38,26 +38,27 @@
                         </form>
                         if (string.IsNullOrEmpty(Model.BookFileUrl))
                         {
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mt-1">
                                 <button style="width:100%" disabled class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Book is not Available Online </a></button>
                             </div>
                         }
                         else
                         {
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mt-1">
                                 <button style="width:100%" class="btn btn-info"><a style="color:white" target="_blank" href="@Url.Content(Model.BookFileUrl)">Read Book</a></button>
                             </div>
                         }
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mt-1">
                             <button style="width:100%" class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal">Add To Shelf</button>
                         </div>
                     }
-                    <br />
                     @if (this.User.IsInRole("Admin") || this.User.IsInRole("Employee"))
                     {
-                        <div class="row justify-content-between">
-                            <a asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a>
-                            <a asp-controller="Books" asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</a>
+                        <div class="row justify-content-between mt-3">
+                            <button style="width:100%" asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</button>
+                        </div>
+                        <div class="row justify-content-between mt-1">
+                            <button style="width:100%" asp-controller="Books" asp-action="Index" class="btn btn-info"><i class="fas fa-chevron-left"></i> Back to List</button>
                         </div>
                     }
                 </div>

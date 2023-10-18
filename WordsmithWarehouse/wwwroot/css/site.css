@@ -13,13 +13,13 @@ body {
 
 /*---------------------------------------------------------Navbar-------------------------------------------------------------*/
 
-.navbutton {
+.nav-link {
     font-weight: bold;
     color: #ffffff !important;
     font-size: 18px;
 }
 
-.navbutton:hover{
+.nav-link:hover {
     text-decoration: underline;
 }
 
