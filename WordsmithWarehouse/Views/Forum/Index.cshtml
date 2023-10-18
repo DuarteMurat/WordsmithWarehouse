@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WordsmithWarehouse.Models.ForumViewModel>
+
+<div class="row" style="padding-left: 45px; padding-top: 15px; display: flex; justify-content: space-between;">
+    <h1>Shelves</h1>
+    <div style="padding-right:30px">
+        <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Create new topic</a>
+    </div>
+</div>
+
+@foreach(var forum in Model)
+{
+    <div class="card mb-6">
+        <div class="card-header">
+            <a class="row" asp-action="Topic" asp-route-id="@forum.Id">
+                <div class="card-title">@forum.Title</div>
+            </a>
+        </div>
+    </div>
+}
