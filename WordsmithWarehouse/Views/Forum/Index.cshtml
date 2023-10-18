@@ -1,19 +1,33 @@
 ﻿@model IEnumerable<WordsmithWarehouse.Models.ForumViewModel>
 
-<div class="row" style="padding-left: 45px; padding-top: 15px; display: flex; justify-content: space-between;">
-    <h1>Shelves</h1>
-    <div style="padding-right:30px">
-        <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Create new topic</a>
+<div>
+    <div class="row" style="padding-top: 15px; display: flex; justify-content: space-between;">
+        <div class="col-10">
+            <h2>Welcome to the WordsmihtWarehouse Forum!</h2>
+            <h5>Here you can discuss everything you want with other books enthusiasts.Just create a topic of discussion and explore others opinions on that matter!</h5>
+        </div>
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <div class="col-2 text-right">
+                <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Create new topic</a>
+            </div>
+        }
+    </div>
+    <br />
+    <div>
+        @foreach (var forum in Model)
+        {
+            <div class="card mb-6">
+                <div class="card-header">
+                    <a class="row" asp-action="Topic" asp-route-id="@forum.Id">
+                        <p style="color:black; padding-left:20px" class="card-title">@forum.Title</p>
+                    </a>
+                </div>
+                <p>This topic was created by @forum.Username at @forum.CreateDate.</p>
+            </div>
+            <br />
+        }
     </div>
 </div>
 
-@foreach(var forum in Model)
-{
-    <div class="card mb-6">
-        <div class="card-header">
-            <a class="row" asp-action="Topic" asp-route-id="@forum.Id">
-                <div class="card-title">@forum.Title</div>
-            </a>
-        </div>
-    </div>
-}
+

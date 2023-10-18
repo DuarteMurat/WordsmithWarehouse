@@ -82,7 +82,7 @@ namespace WordsmithWarehouse.Controllers
                 }
                 await _ticketRepository.CreateAsync(ticket);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }
