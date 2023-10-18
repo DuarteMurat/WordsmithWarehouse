@@ -319,7 +319,7 @@ namespace WordsmithWarehouse.Controllers
                     query.StockAvailable = query.TotalStock - query.StockBeingUsed;
                     await _bookQuantityRepository.UpdateAsync(query);
                 }
-
+                    
             }
             int sum = 0;
             for (int i = 0; i < values.Length; i++)
@@ -330,7 +330,6 @@ namespace WordsmithWarehouse.Controllers
             await _bookRepository.UpdateAsync(book);
 
             return Json("success");
-        }
 
         public async Task<IActionResult> DeleteComment(int id)
         {
