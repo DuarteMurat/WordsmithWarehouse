@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
 using WordsmithWarehouse.Models;
@@ -30,13 +31,18 @@ namespace WordsmithWarehouse.Controllers
 
             var forumModel = new List<ForumViewModel>();
 
-            await forums.ForEachAsync(f =>
+            var users = await _userHelper.GetAllAsync();
+
+            foreach (var f in forums)
             {
+                var forumUser =users.FirstOrDefault(u => u.Id == f.UserId);
                 forumModel.Add(new ForumViewModel { 
                     Id = f.Id,
                     Title = f.Title,
+                    Username = forumUser.UserName,
+                    CreateDate = f.CreateDate.ToString("dd/MM/yy H:mm"),
                 });
-            });
+            }
 
             return View(forumModel);
         }
@@ -47,15 +53,20 @@ namespace WordsmithWarehouse.Controllers
 
             var messages = await _messageRepository.GetMessagesByForumId(forum.Id);
 
+            var usertopic = await _userHelper.GetUserByIdAsync(forum.UserId);
+
             var messageModel = new List<MessageViewModel>();
 
-            messages.ForEach(m =>
+            foreach(var m in messages)
             {
+                var usermessage = await _userHelper.GetUserByIdAsync(m.UserId);
                 messageModel.Add(new MessageViewModel
                 {
                     Content = m.Content,
+                    Username = usermessage.UserName,
+                    
                 });
-            });
+            }
 
             var topicModel = new TopicViewModel
             {
@@ -63,6 +74,7 @@ namespace WordsmithWarehouse.Controllers
                 Title = forum.Title,
                 Description = forum.Description,
                 Messages = messageModel,
+                Username= usertopic.UserName,
             };
 
 
@@ -84,6 +96,7 @@ namespace WordsmithWarehouse.Controllers
                 Title = model.Title,
                 Description = model.Description,
                 CreateDate = DateTime.Now,
+                UserId = user.Id,
             });
 
             return RedirectToAction("Index");
@@ -99,7 +112,6 @@ namespace WordsmithWarehouse.Controllers
                 Content = model.NewMessageContent,
                 ForumId = model.Id,
                 UserId = user.Id,
-
             });
 
             return await Topic(model.Id);
