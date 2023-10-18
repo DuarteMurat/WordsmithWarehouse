@@ -77,8 +77,7 @@ namespace WordsmithWarehouse.Controllers
                 return NotFound();
             }
 
-            var lease = await _context.Lease
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lease = _leaseRepository.GetByIdAsync(id.Value);
             if (lease == null)
             {
                 return NotFound();
@@ -123,9 +122,9 @@ namespace WordsmithWarehouse.Controllers
 
                 await _leaseRepository.CreateAsync(lease);
                 model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
-                await _mailHelper.SendEmail(user.Email, "",
+                await _mailHelper.SendEmail(user.Email, "Lease",
                         $"Dear {user.UserName}, <br/>" +
-                        $"We are delighted to confirm your recent book lease from {model.Library.Name}. Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
+                        $"We are delighted to confirm your recent book lease from us! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
                         $"Book Title: {model.Book.Title}, <br/>" +
                         $"Author: {model.Book.Author.Name}, <br/>" +
                         $"We hope you enjoy reading this book and find it both informative and entertaining. Our library is dedicated to providing a wide range of books to our members, and we trust this selection meets your expectations.<br/>" +
@@ -252,12 +251,10 @@ namespace WordsmithWarehouse.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var lease = await _context.Lease
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lease = _leaseRepository.GetByIdAsync(id.Value);
+            
             if (lease == null)
             {
                 return NotFound();
@@ -271,9 +268,8 @@ namespace WordsmithWarehouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var lease = await _context.Lease.FindAsync(id);
-            _context.Lease.Remove(lease);
-            await _context.SaveChangesAsync();
+            var lease = await _leaseRepository.GetByIdAsync(id);
+            await _leaseRepository.DeleteAsync(lease);
             return RedirectToAction(nameof(Index));
         }
 

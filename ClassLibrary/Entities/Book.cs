@@ -1,12 +1,5 @@
 ﻿using ClassLibrary.Data;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ClassLibrary.Entities
 {
@@ -32,6 +25,8 @@ namespace ClassLibrary.Entities
         [Required]
         [Display(Name = "Author")]
         public int AuthorId { get; set; }
+
+        public int TotalStock { get; set; }
 
         public string tagIds { get; set; }
 
@@ -62,7 +57,7 @@ namespace ClassLibrary.Entities
         #region Book Image
         [Display(Name = "Image")]
         public string ImageURL { get; set; }
-        
+
         public string ImageFullPath
         {
             get

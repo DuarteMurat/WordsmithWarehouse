@@ -16,8 +16,10 @@ namespace WordsmithWarehouse.Data
         public DbSet<BookComments> BookComments { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<BookQuantity> BookQuantity { get; set; }
         public DbSet<Forum> Forums { get; set; }
         public DbSet<Message> Messages { get; set; }
+
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {

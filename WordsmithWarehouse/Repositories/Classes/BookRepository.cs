@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Data;
+using WordsmithWarehouse.Migrations;
 using WordsmithWarehouse.Repositories.Interfaces;
 
 namespace WordsmithWarehouse.Repositories.Classes
