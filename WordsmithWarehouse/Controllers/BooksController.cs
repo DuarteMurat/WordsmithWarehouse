@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WordsmithWarehouse.Helpers.Interfaces;
+using WordsmithWarehouse.Migrations;
 using WordsmithWarehouse.Models;
 using WordsmithWarehouse.Repositories.Interfaces;
 
@@ -22,6 +24,8 @@ namespace WordsmithWarehouse.Controllers
         private readonly IUserHelper _userHelper;
         private readonly ICommentRepository _commentRepository;
         private readonly IShelfRepository _shelfRepository;
+        private readonly ILibraryRepository _libraryRepository;
+        private readonly IBookQuantityRepository _bookQuantityRepository;
         Random r;
 
         public BooksController(IBookRepository bookRepository,
@@ -31,7 +35,9 @@ namespace WordsmithWarehouse.Controllers
             IAuthorRepository authorRepository,
             IUserHelper userHelper,
             ICommentRepository commentRepository,
-            IShelfRepository shelfRepository)
+            IShelfRepository shelfRepository,
+            ILibraryRepository libraryRepository,
+            IBookQuantityRepository bookQuantityRepository)
         {
             _bookRepository = bookRepository;
             _converterHelper = converterHelper;
@@ -41,6 +47,8 @@ namespace WordsmithWarehouse.Controllers
             _userHelper = userHelper;
             _commentRepository = commentRepository;
             _shelfRepository = shelfRepository;
+            _libraryRepository = libraryRepository;
+            _bookQuantityRepository = bookQuantityRepository;
         }
 
         // GET: Books
@@ -270,6 +278,57 @@ namespace WordsmithWarehouse.Controllers
 
             return View();
 
+        }
+
+        public async Task<IActionResult> BookStock(int? id)
+        {
+            if (id == null)
+                return BookNotFound();
+
+            var model = new BookStockViewModel
+            {
+                Id = id.Value,
+                Book = await _bookRepository.GetByIdAsync(id.Value),
+                Libraries = await _libraryRepository.GetAll().ToListAsync(),
+            };
+
+            return View(model);
+        }
+
+        public async Task<object> GetBookStock(string[] values, int bookId)
+        {
+            List<Library> libraries = await _libraryRepository.GetAll().ToListAsync();
+            var book = await _bookRepository.GetByIdAsync(bookId);
+            List<BookQuantity> bookQuantity = await _bookQuantityRepository.GetAll().ToListAsync();
+            for (int i = 0; i < values.Length; i++)
+            {
+                var query = bookQuantity.Where(x => x.BookId == bookId && x.LibraryId == libraries[i].Id).FirstOrDefault();
+                var quant = new BookQuantity
+                {
+                    BookId = bookId,
+                    LibraryId = libraries[i].Id,
+                    TotalStock = int.Parse(values[i]),
+                    StockAvailable = int.Parse(values[i]),
+                };
+                if (query == null)
+                    await _bookQuantityRepository.CreateAsync(quant);
+                else
+                {
+                    query.TotalStock = int.Parse(values[i]);
+                    query.StockAvailable = query.TotalStock - query.StockBeingUsed;
+                    await _bookQuantityRepository.UpdateAsync(query);
+                }
+                    
+            }
+            int sum = 0;
+            for (int i = 0; i < values.Length; i++)
+            {
+                sum += int.Parse(values[i]);
+            }
+            book.TotalStock = sum;
+            await _bookRepository.UpdateAsync(book);
+
+            return Json("success");
         }
 
         private async Task<DetailsBookViewModel> CreateDetailsModel(Book book)

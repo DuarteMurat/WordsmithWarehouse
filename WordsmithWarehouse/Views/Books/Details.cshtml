@@ -194,6 +194,9 @@
                     }
                 </div>
                 <hr />
+                <div class="modal-footer">
+                    <div id="successMessage" style="display:none"> this is the message</div>
+                </div>
             </div>
         </div>
     </div>
@@ -221,7 +224,7 @@
                 <div style="padding-top:10px; padding-left:11px" v-if="verifyButtons(i.userIdString)">
                     <div class="row">
                         <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-edit" style="color: #3e4274;"></i></button>
-                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
+                        <button type="button" style="background-color:transparent; outline-color:transparent" class="btn btn-light" v-on:click="onDeleteClick(i.id)"><i class="far fa-minus-square" style="color: #d21414;"></i></button>
                     </div>
                 </div>
             </div>
@@ -298,7 +301,7 @@
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                                                }
+                                }
                 console.log(item);
                 $.ajax({
                     url: "/Shelves/AddToShelf",
@@ -311,11 +314,13 @@
                         console.log(request.responseText);
                     }
                 });
+
+                showMessage(`The book has been added to ${el.id} successfully`, 2000);
             } else {
                 let item = {
                     shelfId: $(el).val(),
                     bookId: @Model.Id
-                                                }
+                            }
 
                 console.log(item);
                 $.ajax({
@@ -329,8 +334,20 @@
                         console.log(request.responseText);
                     }
                 });
+
+                showMessage(`The book has been successfuly removed from ${el.id}`, 2000)
+
             }
 
+        }
+
+        function showMessage(text, time) {
+            var o = document.getElementById("successMessage");
+            o.style.display = "block";
+            o.innerHTML = text;
+            setTimeout(function () {
+                o.style.display = "none";
+            }, time);
         }
     </script>
     <script src="~/js/CommentSection.js"></script>

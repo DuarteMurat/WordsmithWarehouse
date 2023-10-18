@@ -95,7 +95,7 @@ namespace WordsmithWarehouse.Controllers
             if (id == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            var ticket = await _context.Ticket.FindAsync(id);
+            var ticket = _ticketRepository.GetByIdAsync(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -159,11 +159,6 @@ namespace WordsmithWarehouse.Controllers
             _context.Ticket.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TicketExists(int id)
-        {
-            return _context.Ticket.Any(e => e.Id == id);
         }
     }
 }

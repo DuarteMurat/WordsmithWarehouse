@@ -48,14 +48,7 @@
 </body>
 
 <script>
-    //$(document).ready(function () {
-    //    $("#myInput").on("keyup", function () {
-    //        var value = $(this).val().toLowerCase();
-    //        $(".item").filter(function () {
-    //            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    //        });
-    //    });
-    //});
+ 
 
     var TagsJson = @Html.Raw(Json.Serialize(Model[0].Tags));
     var BooksJson = @Html.Raw(Json.Serialize(Model));
