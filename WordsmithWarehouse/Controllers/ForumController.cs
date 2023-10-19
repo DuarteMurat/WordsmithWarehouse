@@ -35,12 +35,16 @@ namespace WordsmithWarehouse.Controllers
 
             foreach (var f in forums)
             {
+                var msgCount = await _messageRepository.GetMessagesByForumId(f.Id);
+
                 var forumUser =users.FirstOrDefault(u => u.Id == f.UserId);
-                forumModel.Add(new ForumViewModel { 
+                forumModel.Add(new ForumViewModel
+                {
                     Id = f.Id,
                     Title = f.Title,
                     Username = forumUser.UserName,
                     CreateDate = f.CreateDate.ToString("dd/MM/yy H:mm"),
+                    MessageCount = msgCount.Count(),
                 });
             }
 
@@ -64,7 +68,7 @@ namespace WordsmithWarehouse.Controllers
                 {
                     Content = m.Content,
                     Username = usermessage.UserName,
-                    
+                    CreateDate = DateTime.Now,
                 });
             }
 

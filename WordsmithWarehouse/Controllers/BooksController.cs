@@ -52,7 +52,6 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Books
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Index()
         {
             var list = await _bookRepository.GetAll().OrderBy(b => b.Title).ToListAsync();

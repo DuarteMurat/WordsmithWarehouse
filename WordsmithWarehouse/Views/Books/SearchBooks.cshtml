@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-2" style="border:solid; border-color:lightgray; border-radius:10px">
+            <div class="col-sm-2 col-md-2" style="border:solid; border-color:lightgray; border-radius:10px;max-height:950px">
                 <h1 style="text-align: center">Filters</h1>
                 <hr />
                 <h3 class="text-left">Tags</h3>
@@ -33,12 +33,14 @@
                     <hr />
                 </div>
             </div>
-            <div class="col" v-for="i in filteredBooks">
-                <div class="item" v-on:click="onBookClick(i.id)">
-                    <div class="item-content">
-                        <a><img alt="Image" :src="getBookImage(i.imageURL)" style="width:200px;height:150px;max-width:100%;height:auto" id="bookImage"></a>
-                        <div class="book-title">
-                            <a style="color:black">{{i.title}}</a>
+            <div class="col-sm-10 col-md-10" style="display:flex;flex-wrap:wrap;">
+                <div v-for="i in filteredBooks" style="margin:auto">
+                    <div class="item" v-on:click="onBookClick(i.id)">
+                        <div class="item-content">
+                            <a><img alt="Image" :src="getBookImage(i.imageURL)" style="width: 300px; height: 150px; max-width: 100%; height: auto;" id="bookImage"></a>
+                            <div class="book-title text-center">
+                                <a style="color:black">{{i.title}}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
