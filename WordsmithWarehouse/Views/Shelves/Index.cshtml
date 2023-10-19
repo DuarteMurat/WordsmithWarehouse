@@ -9,13 +9,13 @@
     <div class="row" style="padding-left: 45px; padding-top: 15px; display: flex; justify-content: space-between;">
         <h1>Shelves</h1>
         <div style="padding-right:30px">
-            <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Add shelve</a>
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#shelfModal"><i class="fas fa-plus"></i> Add shelve</button>
         </div>
     </div>
     <hr />
 
     <div v-for="i in shelves" style="padding-left:30px">
-            <div class="row" style="border:3px; border-style:initial;" v-on:click="onShelfClick(i.id)">
+        <div class="row" style="border:3px; border-style:initial;" v-on:click="onShelfClick(i.id)">
             <h1>{{ i.name }} - &thinsp; </h1>
             <h1>{{  getShelvesCount(i.books) }} Books</h1>
         </div>
@@ -36,10 +36,59 @@
     </div>
 </div>
 
+
+<div id="shelfModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4> Create Shelf </h4>
+            </div>
+            <div class="modal-body">
+                Name
+                <input type="text" id="nameInput" />
+                Description
+                <input type="text" id="descInput" />
+            </div>
+            <hr />
+            <div class="modal-footer">
+                <button type="button" onclick="Create()"> Create </button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
-        <script>
-            var shelfData = @Html.Raw(Json.Serialize(Model.shelves));
-        </script>
+    <script>
+        var shelfData = @Html.Raw(Json.Serialize(Model.shelves));
+
+        function Create() {
+            var nameInput = document.getElementById('nameInput');
+            var descInput = document.getElementById('descInput');
+
+            console.log(nameInput.value);
+            console.log(descInput.value);
+
+            let item = {
+                name : nameInput.value,
+                description : descInput.value
+            };
+            console.log(item);
+
+            $.ajax({
+                url:"/Shelves/Create",
+                type:"POST",
+                data:item,
+                success:function(response){
+                    console.log(response);
+                },
+                error: function(request, status, error){
+                    console.log(request.responseText);
+                }
+            });
+
+            window.location.assign("/Home/Index");
+        }
+
+    </script>
 
     <script src="~/js/ShelvesIndex.js"></script>
 }
