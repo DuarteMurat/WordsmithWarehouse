@@ -51,10 +51,10 @@ namespace WordsmithWarehouse.Repositories.Classes
 
             string ids = string.Empty;
 
-            if (Tags.Count == 0 || Tags == null)
+            if (Tags == null || Tags.Count == 0)
+            {
                 return ids;
-
-            if (Tags == null) return ids;
+            }
 
             foreach (var tag in Tags)
             {

@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Entities;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IMailHelper _mailHelper;
+        private readonly IBookQuantityRepository _bookQuantityRepository;
 
         public LeasesController(DataContext context,
             IUserHelper userHelper,
@@ -34,7 +36,8 @@ namespace WordsmithWarehouse.Controllers
             ILibraryRepository libraryRepository,
             IAuthorRepository authorRepository,
             IConverterHelper converterHelper,
-            IMailHelper mailHelper)
+            IMailHelper mailHelper,
+            IBookQuantityRepository bookQuantityRepository)
         {
             _context = context;
             _userHelper = userHelper;
@@ -44,13 +47,14 @@ namespace WordsmithWarehouse.Controllers
             _authorRepository = authorRepository;
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
+            _bookQuantityRepository = bookQuantityRepository;
         }
 
         // GET: Leases
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Index()
         {
-            var list = await _leaseRepository.GetAll().OrderBy(l => l.Id).ToListAsync();
+            var list = await _leaseRepository.GetAll().OrderBy(l => l.IsCompleted).ThenBy(l => !l.OnGoing).ToListAsync();
 
             List<LeaseViewModel> leases = new List<LeaseViewModel>();
             foreach (var item in list)
@@ -117,24 +121,47 @@ namespace WordsmithWarehouse.Controllers
             {
                 var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
                 model.UserId = user.Id;
-                var lease = _converterHelper.ConvertToLease(model, true);
 
-                await _leaseRepository.CreateAsync(lease);
-                model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
-                await _mailHelper.SendEmail(user.Email, "Lease",
-                        $"Dear {user.UserName}, <br/>" +
-                        $"We are delighted to confirm your recent book lease from {model.Library.Name}! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
-                        $"Book Title: {model.Book.Title}, <br/>" +
-                        $"Author: {model.Book.Author.Name}, <br/>" +
-                        $"We hope you enjoy reading this book and find it both informative and entertaining. Our library is dedicated to providing a wide range of books to our members, and we trust this selection meets your expectations.<br/>" +
-                        $"If you did not initiate this lease request or suspect any unauthorized access to your account, please contact our support team immediately at <a>wordsmithwarehouse@outlook.pt</a>.<br/>" +
-                        $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
-                        $"Best regards,<br/><br/>" +
-                        $"WordsmithWarehouse.");
+                var quant = await _bookQuantityRepository.GetAll().Where(q => q.BookId == model.Book.Id && q.LibraryId == model.LibraryId).FirstOrDefaultAsync();
+
+                if (quant.StockAvailable > 0)
+                {
+                    var lease = _converterHelper.ConvertToLease(model, true);
+
+                    await _leaseRepository.CreateAsync(lease);
+
+                    model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
+                    await _mailHelper.SendEmail(user.Email, "Lease",
+                            $"Dear {user.UserName}, <br/>" +
+                            $"We are delighted to confirm your recent book lease from {model.Library.Name}! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
+                            $"Book Title: {model.Book.Title}, <br/>" +
+                            $"Author: {model.Book.Author.Name}, <br/>" +
+                            $"We hope you enjoy reading this book and find it both informative and entertaining. Our library is dedicated to providing a wide range of books to our members, and we trust this selection meets your expectations.<br/>" +
+                            $"If you did not initiate this lease request or suspect any unauthorized access to your account, please contact our support team immediately at <a>wordsmithwarehouse@outlook.pt</a>.<br/>" +
+                            $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
+                            $"Best regards,<br/><br/>" +
+                            $"WordsmithWarehouse.");
+                }
+                else
+                {
+                    model.LibraryList = await _libraryRepository.GetComboLibraries();
+                    model.Libraries = await _libraryRepository.GetAll().ToListAsync();
+                    model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
+                    model.ErrorMessage = $"Unfortunately, the book {model.Book.Title} is currently out of stock in this Library ({model.Library.Name})! Would you like to place a reservation?";
+                    model.LibraryId = model.Library.Id;
+                    model.ViewReturn = true;
+
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(UserLeases));
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> CreateReservation(LeaseViewModel model)
+        {
+            return View();
         }
 
         // GET: Leases/Edit/5
@@ -201,7 +228,10 @@ namespace WordsmithWarehouse.Controllers
                        $"Best regards,<br/><br/>" +
                        $"WordsmithWarehouse.");
 
-
+                            var quant = await _bookQuantityRepository.GetQuantityByIdsAsync(lease.BookId, lease.LibraryId);
+                            quant.StockBeingUsed++;
+                            quant.StockAvailable--;
+                            await _bookQuantityRepository.UpdateAsync(quant);
                         }
 
                         if (leaseEmail.IsCompleted && !leaseEmail.OnGoing)
@@ -217,6 +247,11 @@ namespace WordsmithWarehouse.Controllers
                        $"Thank you for choosing <b>WordsmithWarehouse</b>. We appreciate your trust in us.<br/>" +
                        $"Best regards,<br/><br/>" +
                        $"WordsmithWarehouse.");
+
+                            var quant = await _bookQuantityRepository.GetQuantityByIdsAsync(lease.BookId, lease.LibraryId);
+                            quant.StockBeingUsed--;
+                            quant.StockAvailable++;
+                            await _bookQuantityRepository.UpdateAsync(quant);
                         }
 
                     }
@@ -293,6 +328,16 @@ namespace WordsmithWarehouse.Controllers
             List<Fine> fines = await _leaseRepository.GetFinesAsync();
 
             return View(fines);
+        }
+
+        public async Task<IActionResult> GetUserFines()
+        {
+            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+            List<Fine> userfines = await _leaseRepository.GetFinesAsync();
+
+            userfines = userfines.Where(uf => uf.UserId == user.Id).ToList();
+
+            return View(userfines);
         }
 
         public async Task<IActionResult> GetLeaseAmount()

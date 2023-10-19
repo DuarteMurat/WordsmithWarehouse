@@ -11,6 +11,6 @@ namespace WordsmithWarehouse.Models
 
         public Book Book { get; set; }
 
-
+        public List<BookQuantity> quantities { get; set; }
     }
 }
