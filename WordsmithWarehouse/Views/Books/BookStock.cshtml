@@ -12,7 +12,7 @@
         {
             <div class="col" >
                 <h3>@item.Name</h3>
-                <input type="number" class="libInput"/>
+                <input type="number" class="libInput" value="@Model.quantities.Where(q => q.BookId == Model.Book.Id && q.LibraryId == item.Id).FirstOrDefault().TotalStock"/>
             </div>
         }
             

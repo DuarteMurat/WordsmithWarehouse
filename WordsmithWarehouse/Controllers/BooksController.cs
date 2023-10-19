@@ -291,6 +291,7 @@ namespace WordsmithWarehouse.Controllers
                 Id = id.Value,
                 Book = await _bookRepository.GetByIdAsync(id.Value),
                 Libraries = await _libraryRepository.GetAll().ToListAsync(),
+                quantities = await _bookQuantityRepository.GetAll().Where(q => q.BookId == id).ToListAsync(),
             };
 
             return View(model);

@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Bcpg;
@@ -81,6 +82,7 @@ namespace WordsmithWarehouse.Controllers
             return View(topicModel);
         }
 
+        [Authorize(Roles = "Admin,Employee,Customer")]
         public IActionResult Create()
         {
             return View();

@@ -12,7 +12,13 @@
         <input type="hidden" asp-for="Book.Id" />
         <input type="hidden" asp-for="Book.ISBN" />
         <input type="hidden" asp-for="Book.Title" />
-
+        @if (Model.ViewReturn)
+        {
+            <h2 style="color:red">@Model.ErrorMessage</h2>
+            <button asp-controller="Leases" asp-action="CreateReservation"> Yes</button>
+            <button asp-controller="Books" asp-action="Details" asp-route-id="@Model.Book.Id"> No</button>
+            <input type="hidden" asp-for="LibraryId"/>
+        }
         <div class="tab">
             <div class="row justify-content-center">
                 <h3>Book Information</h3>
@@ -84,7 +90,7 @@
                         <p>{{ getLibrary(selectedValue, 'closingHour') }}</p>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="tab">
@@ -126,8 +132,10 @@
             <span class="step"></span>
             <span class="step"></span>
         </div>
-
-        <input type="hidden" asp-for="LibraryId" :value="getLibraryId(selectedValue)" />
+        @if(!Model.ViewReturn){
+            <input type="hidden" asp-for="LibraryId" :value="getLibraryId(selectedValue)" />
+        }
+        
     </form>
 
 </div>

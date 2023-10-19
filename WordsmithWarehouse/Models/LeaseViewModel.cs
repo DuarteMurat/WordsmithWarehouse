@@ -35,5 +35,9 @@ namespace WordsmithWarehouse.Models
         public bool OnGoing { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public bool ViewReturn { get; set; }
     }
 }
