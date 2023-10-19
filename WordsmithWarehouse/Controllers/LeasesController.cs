@@ -330,16 +330,6 @@ namespace WordsmithWarehouse.Controllers
             return View(fines);
         }
 
-        public async Task<IActionResult> GetUserFines()
-        {
-            var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
-            List<Fine> userfines = await _leaseRepository.GetFinesAsync();
-
-            userfines = userfines.Where(uf => uf.UserId == user.Id).ToList();
-
-            return View(userfines);
-        }
-
         public async Task<IActionResult> GetLeaseAmount()
         {
             var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);

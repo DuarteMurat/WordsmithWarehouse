@@ -3,6 +3,7 @@ using ClassLibrary.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,24 +56,19 @@ namespace WordsmithWarehouse.Controllers
 
         }
 
-
-        // GET: Shelves/Create
-        [Authorize(Roles = "Admin,Employee,Customer")]
-        public IActionResult Create()
-        {
-            var model = new ShelfViewModel();
-
-            return View(model);
-        }
-
         // POST: Shelves/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Employee,Customer")]
-        public async Task<IActionResult> Create(ShelfViewModel model)
+        public async Task<object> Create(string name, string description)
         {
+            var model = new ShelfViewModel
+            {
+                Name = name,
+                Description = description,
+            };
+
             if (ModelState.IsValid)
             {
                 var shelf = _converterHelper.ConvertToShelf(model, true);
@@ -84,9 +80,9 @@ namespace WordsmithWarehouse.Controllers
 
                 await _userHelper.UpdateUserAsync(user);
 
-                return RedirectToAction(nameof(Index));
+                return Json("success");
             }
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Shelves/Delete/5
@@ -96,7 +92,7 @@ namespace WordsmithWarehouse.Controllers
             if (id == null)
                 return NotFound();
 
-           
+
 
             var shelf = await _shelfRepository.GetByIdAsync(id.Value);
             if (shelf == null)
@@ -127,7 +123,7 @@ namespace WordsmithWarehouse.Controllers
                     user.ShelfIds += val + ',';
                 }
             }
-            
+
             if (user.ShelfIds.Length > 0)
             {
                 user.ShelfIds = user.ShelfIds.Substring(0, user.ShelfIds.Length - 1);
