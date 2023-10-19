@@ -28,6 +28,7 @@ namespace WordsmithWarehouse.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IMailHelper _mailHelper;
         private readonly IBookQuantityRepository _bookQuantityRepository;
+        private readonly IBookReservationRepository _bookReservationRepository;
 
         public LeasesController(DataContext context,
             IUserHelper userHelper,
@@ -37,7 +38,8 @@ namespace WordsmithWarehouse.Controllers
             IAuthorRepository authorRepository,
             IConverterHelper converterHelper,
             IMailHelper mailHelper,
-            IBookQuantityRepository bookQuantityRepository)
+            IBookQuantityRepository bookQuantityRepository,
+            IBookReservationRepository bookReservationRepository)
         {
             _context = context;
             _userHelper = userHelper;
@@ -48,6 +50,7 @@ namespace WordsmithWarehouse.Controllers
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
             _bookQuantityRepository = bookQuantityRepository;
+            _bookReservationRepository = bookReservationRepository;
         }
 
         // GET: Leases
@@ -122,7 +125,7 @@ namespace WordsmithWarehouse.Controllers
                 var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
                 model.UserId = user.Id;
 
-                var quant = await _bookQuantityRepository.GetAll().Where(q => q.BookId == model.Book.Id && q.LibraryId == model.LibraryId).FirstOrDefaultAsync();
+                var quant = await _bookQuantityRepository.GetQuantityByIdsAsync(model.Book.Id, model.LibraryId);
 
                 if (quant.StockAvailable > 0)
                 {
@@ -131,6 +134,10 @@ namespace WordsmithWarehouse.Controllers
                     await _leaseRepository.CreateAsync(lease);
 
                     model.Book.Author = await _authorRepository.GetAuthorById(model.Book.AuthorId);
+                    quant.stockOnHold++;
+                    quant.StockAvailable--;
+                    await _bookQuantityRepository.UpdateAsync(quant);
+
                     await _mailHelper.SendEmail(user.Email, "Lease",
                             $"Dear {user.UserName}, <br/>" +
                             $"We are delighted to confirm your recent book lease from {model.Library.Name}! Thank you for choosing us to fulfill your reading needs. Here are the details of your book lease:<br/>" +
@@ -161,7 +168,44 @@ namespace WordsmithWarehouse.Controllers
 
         public async Task<IActionResult> CreateReservation(LeaseViewModel model)
         {
-            return View();
+
+            model.Book = await _bookRepository.GetByIdAsync(model.Book.Id);
+            model.Library = await _libraryRepository.GetByIdAsync(model.LibraryId);
+
+            var reservationModel = new BookReservationViewModel
+            {
+                BookId = model.Book.Id,
+                LibraryId = model.Library.Id,
+            };
+
+            return View(reservationModel);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReservation(BookReservationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByUsernameAsync(this.User.Identity.Name);
+                model.UserId = user.Id;
+
+                int QueueNumber = await _bookReservationRepository.GetHighestQueue(model.BookId, model.LibraryId);
+
+                BookReservation br = new BookReservation
+                {
+                    BookId = model.BookId,
+                    LibraryId = model.LibraryId,
+                    UserId = user.Id,
+                    QueueNumber = QueueNumber + 1,
+                };
+
+                await _bookReservationRepository.CreateAsync(br);
+
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
+
         }
 
         // GET: Leases/Edit/5
@@ -229,7 +273,7 @@ namespace WordsmithWarehouse.Controllers
                        $"WordsmithWarehouse.");
 
                             var quant = await _bookQuantityRepository.GetQuantityByIdsAsync(lease.BookId, lease.LibraryId);
-                            quant.StockBeingUsed++;
+                            quant.stockOnHold++;
                             quant.StockAvailable--;
                             await _bookQuantityRepository.UpdateAsync(quant);
                         }

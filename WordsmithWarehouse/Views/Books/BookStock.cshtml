@@ -12,7 +12,23 @@
         {
             <div class="col" >
                 <h3>@item.Name</h3>
-                <input type="number" class="libInput" value="@Model.quantities.Where(q => q.BookId == Model.Book.Id && q.LibraryId == item.Id).FirstOrDefault().TotalStock"/>
+                @{
+                    if (Model.quantities.Count > 0)
+                    {
+                        var quant = Model.quantities.Where(q => q.BookId == Model.Book.Id && q.LibraryId == item.Id).FirstOrDefault().TotalStock;
+
+                        if (quant > 0)
+                        {
+                            <input type="number" class="libInput" value="@Model.quantities.Where(q => q.BookId == Model.Book.Id && q.LibraryId == item.Id).FirstOrDefault().TotalStock" />
+                        }
+                    }
+                    else
+                    {
+                        <input type="number" class="libInput"/>
+                    }
+
+                }
+                
             </div>
         }
             
