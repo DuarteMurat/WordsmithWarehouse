@@ -182,7 +182,7 @@ namespace WordsmithWarehouse.Helpers.Classes
             return new BookReservation
             {
                 Id = model.Id,
-                UserId = model.Id,
+                
                 BookId = model.Id,
                 LibraryId = model.Id,
                 ReservationDate = model.ReservationDate,
@@ -197,7 +197,7 @@ namespace WordsmithWarehouse.Helpers.Classes
                 UserId= bookReservation.UserId,
                 LibraryId= bookReservation.LibraryId,
                 ReservationDate = bookReservation.ReservationDate,
-                BoookId = bookReservation.BookId,
+                
             };
         }
 

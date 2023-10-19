@@ -18,6 +18,8 @@ namespace ClassLibrary.Entities
         public int TotalStock { get; set; }
 
         public int StockAvailable { get; set; }
+
+        public int stockOnHold { get; set; }
         
         public int StockBeingUsed { get; set; }
     }

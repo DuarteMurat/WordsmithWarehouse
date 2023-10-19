@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model LeaseViewModel
+
+
+<div class="card" style="margin:auto; margin-top:200px">
+    <form>
+        <input type="hidden" asp-for="Book.Id" />
+        <input type="hidden" asp-for="LibraryId"/>
+        <div class="card-header">
+            <p class="text-center">Create book reservation</p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 text-center">
+                    <h1>Book</h1>
+                    <img src="@Url.Content(Model.Book.ImageURL)">
+                    <p>@Model.Book.Title</p>
+                </div>
+                <div class="col-4 text-center">
+                    <h1>Library</h1>
+                    <p>@Model.Library.Name</p>
+                    <p>@Model.Library.Country</p>
+                    <p>@Model.Library.City</p>
+                    <p>@Model.Library.Region</p>
+                    <p>@Model.Library.Adress</p>
+                    <p>@Model.Library.PostalCode</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit"> Confirm Reservation </button> <button type="button" onclick="returnToDetails()"> Cancel </button>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script>
+        function returnToDetails(){
+            window.location.assign(`/Books/Details/${@Model.Book.Id}`);
+        }
+    </script>
 }
+
