@@ -4,7 +4,7 @@
     <div class="row" style="padding-top: 15px; display: flex; justify-content: space-between;">
         <div class="col-10">
             <h2>Welcome to the WordsmihtWarehouse Forum!</h2>
-            <h5>Here you can discuss everything you want with other books enthusiasts.Just create a topic of discussion and explore others opinions on that matter!</h5>
+            <h5>Here you can discuss everything you want with other books enthusiasts. Just create a topic of discussion and explore others opinions on that matter!</h5>
         </div>
         @if (this.User.Identity.IsAuthenticated)
         {
@@ -15,15 +15,22 @@
     </div>
     <br />
     <div>
-        @foreach (var forum in Model)
+        @foreach (var forum in Model.OrderByDescending(m => m.CreateDate))
         {
-            <div class="card mb-6">
-                <div class="card-header">
-                    <a class="row" asp-action="Topic" asp-route-id="@forum.Id">
-                        <p style="color:black; padding-left:20px" class="card-title">@forum.Title</p>
-                    </a>
+            <div class="card mb-6" style="border-style:inset; border-color:black;">
+                <a asp-action="Topic" asp-route-id="@forum.Id">
+                    <div class="card-header" style="background-color:#96a2b2; color:black;">
+                    <i class="fas fa-user"></i> @forum.Username
+                    <p class="float-right"><i class="fas fa-comments"></i> @forum.MessageCount</p>
                 </div>
-                <p>This topic was created by @forum.Username at @forum.CreateDate.</p>
+                    <div class="card-body" style="background-color:#ffffff; color:black;">
+
+                        <h4 style="padding-left:20px; color:black;" class="card-title">@forum.Title</h4>
+                </div>
+                    <div class="card-footer" style="background-color:#96a2b2; color:black;">
+                    <i class="fas fa-calendar-alt"></i> @forum.CreateDate
+                </div>
+                </a>
             </div>
             <br />
         }

@@ -57,11 +57,10 @@ namespace WordsmithWarehouse.Controllers
         }
 
         // GET: Tickets/Create
-
-        [Authorize(Roles = "Admin,Employee,Customer")]
         public IActionResult Create()
         {
-            return View();
+            var model = new TicketViewModel();
+            return View(model);
         }
 
         // POST: Tickets/Create
@@ -80,6 +79,10 @@ namespace WordsmithWarehouse.Controllers
                     var user = await _userHelper.GetUserByUsernameAsync(ticket.Username);
                     ticket.UserEmail = user.Email;
                 }
+                else
+                {
+                    ticket.Username = "Unregistered User";
+                }
                 await _ticketRepository.CreateAsync(ticket);
 
                 return RedirectToAction("Index", "Home");
@@ -95,7 +98,7 @@ namespace WordsmithWarehouse.Controllers
             if (id == null)
                 return new NotFoundViewResult("BookNotFound");
 
-            var ticket = _ticketRepository.GetByIdAsync(id.Value);
+            var ticket = await _ticketRepository.GetByIdAsync(id.Value);
             if (ticket == null)
             {
                 return NotFound();

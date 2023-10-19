@@ -37,23 +37,23 @@
                 </ul>
                 <ul class="navbar-nav mr-auto ml-auto">
                     
-                    <li class="nav-item">
-                        <a class="nav-link"><i class="fas fa-map-marker-alt" style="color: #ffffff;"></i> Locations</a>
+                    <li class="nav-item" style="margin-right: 50px;">
+                        <a class="nav-link" asp-controller="Libraries" asp-action="ListAllLibraries"><i class="fas fa-map-marker-alt" style="color: #ffffff;"></i> Locations</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 50px;">
                         <a class="nav-link" asp-controller="Books" asp-action="Details"><i class="fas fa-random" style="color: #ffffff;"></i> Random Book</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact"><i class="fas fa-headset" style="color: #ffffff;"></i> Contact us</a>
+                    <li class="nav-item" style="margin-right: 50px;">
+                        <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="Create"><i class="fas fa-headset" style="color: #ffffff;"></i> Contact us</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 50px;">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About"><i class="fas fa-info" style="color: #ffffff;"></i> About us</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 50px;">
 
                         <div class="dropdown">
                             <a class="nav-link" data-toggle="dropdown"><i class="fas fa-share-alt" style="color:#ffffff" href="#"></i> Socials</a>
@@ -66,11 +66,11 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 50px;">
                         <a class="nav-link" asp-area="" asp-controller="Forum" asp-action="Index"><i class="fas fa-comments" style="color: white;"></i> Forum</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 50px;">
                         <a class="nav-link" asp-area="" asp-controller="Books" asp-action="SearchBooks"><i class="fas fa-search" style="color: white;"></i> Find Books</a>
                     </li>
                 </ul>
@@ -88,6 +88,7 @@
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="account" asp-action="changeuser"><i class="fas fa-user" style="color:#96a2b2"></i> &thinsp;@this.User.Identity.Name</a>
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Shelves" asp-action="Index"><i class="fas fa-bookmark" style="color:#96a2b2"></i> &thinsp;Shelves</a>
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Leases" asp-action="UserLeases"><i class="fas fa-shopping-basket" style="color:#96a2b2"></i> Leases</a>
+                                    <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Leases" asp-action="GetUserFines"><i class="fas fa-exclamation-circle" style="color:#96a2b2"></i> Fines</a>
                                     <a class="userbuttons nav-link text-dark dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt" style="color:#96a2b2"></i> &thinsp;Logout</a>
                                 </div>
                             </div>
@@ -146,6 +147,10 @@
                 <hr />
                 <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="Index">
                     Tickets<i class="fas fa-exclamation" style="color: #ffffff; float: right; padding-top: 6px"></i>
+                </a>
+                <hr />
+                <a class="nav-link" asp-area="" asp-controller="Leases" asp-action="GetFines">
+                    Fines<i class="fas fa-exclamation-circle" style="color:#ffffff; float: right; padding-top: 6px"></i>
                 </a>
                 <hr />
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="GetWebsiteAnalytics">

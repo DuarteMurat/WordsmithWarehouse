@@ -1,43 +1,58 @@
 ﻿@model WordsmithWarehouse.Models.TopicViewModel
 
-
-<div class="card mb-6">
-    <div class="card-header">
+<br />
+<div class="card mb-6" style="border-style:inset; border-color:black;">
+    <div class="card-header" style="background-color:#96a2b2; color:black;">
         <div class="row">
             <div class="col-12">
                 <div class="card-title">@Model.Title</div>
             </div>
-            <div class="col-12">
-                <div class="card-body">@Model.Description</div>
-            </div>
-            <p>Made by:@Model.Username</p>
         </div>
     </div>
+    <div class="card-body" style="background-color:#ffffff; color:black;">
+        <div class="card-body">@Model.Description</div>
+    </div>
+    <div class="card-footer" style="background-color:#96a2b2; color:black;">
+        Posted by: <b>@Model.Username</b>
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <a style="float:right; color:black;" class="btn btn-info" href="#" data-toggle="modal" data-target="#PostComment"> Comment </a>
+        }
+    </div>
 </div>
+<br />
 
 @foreach (var message in Model.Messages)
 {
-    <div class="card mb-6">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card-title row"><h3>@message.Username:</h3>@message.Content</div>
-                </div>
+    <div class="card mb-6" style="border-style:inset; border-color:black;">
+        <div class="card-body">
+            <p><i class="fas fa-user"></i> @message.Username: @message.Content</p>
+        </div>
+        <div class="card-footer" style="background-color:#96a2b2; color:black;">
+            <p>@message.CreateDate</p>
+        </div>
+    </div>
+    <br />
+}
+
+<div class="modal fade" id="PostComment" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4> Comment </h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <div class="form-group">
+                        <input asp-for="NewMessageContent" class="form-control" />
+                        <span asp-validation-for="NewMessageContent" class="text-warning"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>Send Message</button>
+                </form>
             </div>
         </div>
     </div>
-}
-
-@if (this.User.Identity.IsAuthenticated)
-{
-    <form method="post">
-        <input type="hidden" asp-for="Id" />
-        <div asp-validation-summary="ModelOnly"></div>
-        <div class="form-group">
-            <input asp-for="NewMessageContent" class="form-control" />
-            <span asp-validation-for="NewMessageContent" class="text-warning"></span>
-        </div>
-
-        <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>Send Message</button>
-    </form>
-}
+</div>

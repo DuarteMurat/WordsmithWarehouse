@@ -4,82 +4,24 @@
     ViewData["Title"] = "ListAllLibraries";
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h1 class="panel-title">All locations</h1>
-                <br />
+<h1>All of our Libraries</h1>
+<div class="card-container" style="display:flex;flex-wrap:wrap;">
+    @foreach (var item in Model)
+    {
+        <div class="card" style="width: calc(25% - 20px);margin: 10px;border: 1px solid #ccc;border-radius: 5px;padding: 10px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);background-color: #fff;box-sizing: border-box;">
+            <div class="card-header" style="background-color: #333;color: #fff;padding: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+                <h4>@item.Name</h4>
             </div>
-            <div class="panel-body">
-                <table class="table" id="MyTable">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Country)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Region)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.City)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Adress)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PostalCode)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PhoneNumber)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.OpeningHour)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.ClosingHour)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Country)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Region)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.City)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Adress)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PostalCode)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OpeningHour)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ClosingHour)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="card-body" style="padding: 10px;">
+                <p><b>Country:</b> @item.Country</p>
+                <p><b>Region:</b> @item.Region</p>
+                <p><b>City:</b> @item.City</p>
+                <p><b>Address:</b> @item.Adress</p>
+                <p><b>Postal Code:</b> @item.PostalCode</p>
+                <p><b>Phone Number:</b> @item.PhoneNumber</p>
+                <p><b>Opening Hour:</b> @item.OpeningHour</p>
+                <p><b>Closing Hour:</b> @item.ClosingHour</p>
             </div>
         </div>
-    </div>
+    }
 </div>

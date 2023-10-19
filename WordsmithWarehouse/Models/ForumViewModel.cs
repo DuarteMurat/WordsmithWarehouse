@@ -9,5 +9,7 @@
         public string Username { get; set; }
 
         public string CreateDate { get; set; }
+
+        public int MessageCount { get; set; }
     }
 }
